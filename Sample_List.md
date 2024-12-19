@@ -53,57 +53,6 @@ typedef struct list
     int size;
 } list;
 
-void Init_list(list* mylist);
-void Push_back(list* mylist, int value);
-int Get_idx(list* mylist, int idx);
-int Count_target(list* mylist, int target);
-void Clear_list(list* mylist);
-void Free_node(node* current_node);
-
-int main()
-{
-    int n;
-    scanf("%d", &n);
-
-    list mylist;
-    Init_list(&mylist);
-    while(n--)
-    {
-        char command[10];
-        scanf("%s", command);
-
-        // push, get, size, count, clear
-        if(command[0] == 'p')
-        {
-            int value;
-            scanf("%d", &value);
-            Push_back(&mylist, value);
-        }
-        else if(command[0] == 'g')
-        {
-            int idx;
-            scanf("%d", &idx);
-            printf("%d\n", Get_idx(&mylist, idx));
-        }
-        else if(command[0] == 's')
-        {
-            printf("%d\n", mylist.size);
-        }
-        else if(command[1] == 'o')
-        {
-            int target;
-            scanf("%d", &target);
-            printf("%d\n", Count_target(&mylist, target));
-        }
-        else
-        {
-            Clear_list(&mylist);
-        }
-    }
-
-    return 0;
-}
-
 void Init_list(list* mylist)
 {
     mylist->head = (node*)malloc(sizeof(node));
@@ -158,6 +107,51 @@ void Free_node(node* current_node)
         Free_node(current_node->next);
     }
     free(current_node);
+}
+
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    list mylist;
+    Init_list(&mylist);
+    while(n--)
+    {
+        char command[10];
+        scanf("%s", command);
+
+        // push, get, size, count, clear
+        if(command[0] == 'p')
+        {
+            int value;
+            scanf("%d", &value);
+            Push_back(&mylist, value);
+        }
+        else if(command[0] == 'g')
+        {
+            int idx;
+            scanf("%d", &idx);
+            printf("%d\n", Get_idx(&mylist, idx));
+        }
+        else if(command[0] == 's')
+        {
+            printf("%d\n", mylist.size);
+        }
+        else if(command[1] == 'o')
+        {
+            int target;
+            scanf("%d", &target);
+            printf("%d\n", Count_target(&mylist, target));
+        }
+        else
+        {
+            Clear_list(&mylist);
+        }
+    }
+
+    return 0;
 }
 
 ```
