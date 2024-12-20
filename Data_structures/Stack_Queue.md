@@ -63,19 +63,19 @@ Consider the implementations of the above operations:
 deque<int> q;
 ```
 
-* Finding the minimum:
+* Tìm giá trị nhỏ nhất:
 ```cpp
 int minimum = q.front();
 ```
 
-* Adding an element:
+* Thêm một phần tử:
 ```cpp
 while (!q.empty() && q.back() > new_element)
     q.pop_back();
 q.push_back(new_element);
 ```
 
-* Removing an element:
+* Xoá một phần tử:
 ```cpp
 if (!q.empty() && q.front() == remove_element)
     q.pop_front();
@@ -96,12 +96,12 @@ int cnt_added = 0;
 int cnt_removed = 0;
 ```
 
-* Finding the minimum:
+* Tìm giá trị nhỏ nhất:
 ```cpp
 int minimum = q.front().first;
 ```
 
-* Adding an element:
+* Thêm một phần tử:
 ```cpp
 while (!q.empty() && q.back().first > new_element)
     q.pop_back();
@@ -109,7 +109,7 @@ q.push_back({new_element, cnt_added});
 cnt_added++;
 ```
 
-* Removing an element:
+* Xoá một phần tử:
 ```cpp
 if (!q.empty() && q.front().second == cnt_removed) 
     q.pop_front();
