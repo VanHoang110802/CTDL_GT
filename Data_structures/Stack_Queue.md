@@ -48,16 +48,15 @@ Tuy nhiên, phương pháp này có một nhược điểm lớn, vì hàng đ�
 
 Ý tưởng chính là chỉ lưu trữ các phần tử trong hàng đợi cần thiết để xác định giá trị nhỏ nhất. 
 Cụ thể, chúng ta sẽ giữ hàng đợi theo thứ tự không giảm (tức là giá trị nhỏ nhất sẽ được lưu ở đầu), và tất nhiên không theo cách tùy ý, giá trị nhỏ nhất thực sự phải luôn có mặt trong hàng đợi.
-This way the smallest element will always be in the head of the queue.
-Before adding a new element to the queue, it is enough to make a "cut":
-we will remove all trailing elements of the queue that are larger than the new element, and afterwards add the new element to the queue. 
-This way we don't break the order of the queue, and we will also not loose the current element if it is at any subsequent step the minimum. 
-All the elements that we removed can never be a minimum itself, so this operation is allowed.
-When we want to extract an element from the head, it actually might not be there (because we removed it previously while adding a smaller element). 
-Therefore when deleting an element from a queue we need to know the value of the element.
-If the head of the queue has the same value, we can safely remove it, otherwise we do nothing.
+Theo cách này, phần tử nhỏ nhất sẽ luôn ở đầu hàng đợi. 
+Trước khi thêm một phần tử mới vào hàng đợi, chỉ cần thực hiện một 'cắt': chúng ta sẽ loại bỏ tất cả các phần tử phía sau trong hàng đợi mà lớn hơn phần tử mới, và sau đó thêm phần tử mới vào hàng đợi.
+Cách này giúp chúng ta không làm thay đổi thứ tự của hàng đợi, và chúng ta cũng sẽ không mất phần tử hiện tại nếu nó là phần tử nhỏ nhất ở bất kỳ bước tiếp theo nào.
+Tất cả các phần tử mà chúng ta đã loại bỏ sẽ không bao giờ là phần tử nhỏ nhất, vì vậy thao tác này là hợp lệ.
+Khi chúng ta muốn lấy một phần tử từ đầu, thực tế nó có thể không có ở đó (bởi vì chúng ta đã loại bỏ nó trước đó khi thêm một phần tử nhỏ hơn).
+Vì vậy, khi xóa một phần tử khỏi hàng đợi, chúng ta cần phải biết giá trị của phần tử đó.
+Nếu phần tử ở đầu hàng đợi có cùng giá trị, chúng ta có thể an toàn loại bỏ nó, nếu không chúng ta sẽ không làm gì cả.
 
-Consider the implementations of the above operations:
+Hãy xem xét các triển khai của các thao tác trên:
 
 ```cpp
 deque<int> q;
@@ -118,12 +117,12 @@ cnt_removed++;
 
 ## Queue modification (Chỉnh sửa hàng đợi) (method 3)
 
-Here we consider another way of modifying a queue to find the minimum in $O(1)$.
-This way is somewhat more complicated to implement, but this time we actually store all elements.
-And we also can remove an element from the front without knowing its value.
+Ở đây, chúng ta xem xét một cách khác để chỉnh sửa hàng đợi nhằm tìm giá trị nhỏ nhất trong thời gian $O(1)$.
+Cách này hơi phức tạp hơn để triển khai, nhưng lần này chúng ta thực sự lưu trữ tất cả các phần tử.
+Và chúng ta cũng có thể loại bỏ một phần tử từ đầu mà không cần biết giá trị của nó.
 
-The idea is to reduce the problem to the problem of stacks, which was already solved by us.
-So we only need to learn how to simulate a queue using two stacks.
+Ý tưởng là giảm bài toán này thành bài toán về ngăn xếp, mà chúng ta đã giải quyết trước đó.
+Vậy nên, chúng ta chỉ cần học cách mô phỏng một hàng đợi bằng hai ngăn xếp.
 
 We make two stacks, `s1` and `s2`. 
 Of course these stack will be of the modified form, so that we can find the minimum in $O(1)$. 
