@@ -39,7 +39,7 @@ st.pop();
 int minimum = st.top().second;
 ```
 
-## Queue modification (method 1) (Chỉnh sửa hàng đợi)
+## Queue modification (Chỉnh sửa hàng đợi) (method 1)
 
 Giờ đây, chúng ta muốn thực hiện các thao tác tương tự với một hàng đợi, tức là chúng ta muốn thêm phần tử ở cuối và loại bỏ chúng từ đầu.
 
@@ -83,7 +83,7 @@ if (!q.empty() && q.front() == remove_element)
 
 It is clear that on average all these operation only take $O(1)$ time (because every element can only be pushed and popped once).
 
-## Queue modification (method 2)
+## Queue modification (Sửa đổi hàng đợi) (method 2)
 
 This is a modification of method 1.
 We want to be able to remove elements without knowing which element we have to remove.
@@ -116,7 +116,7 @@ if (!q.empty() && q.front().second == cnt_removed)
 cnt_removed++;
 ```
 
-## Queue modification (method 3)
+## Queue modification (Chỉnh sửa hàng đợi) (method 3)
 
 Here we consider another way of modifying a queue to find the minimum in $O(1)$.
 This way is somewhat more complicated to implement, but this time we actually store all elements.
@@ -167,7 +167,7 @@ int remove_element = s2.top().first;
 s2.pop();
 ```
 
-## Finding the minimum for all subarrays of fixed length
+## Finding the minimum for all subarrays of fixed length (Tìm giá trị nhỏ nhất cho tất cả các dãy con có độ dài cố định.)
 
 Suppose we are given an array $A$ of length $N$ and a given $M \le N$.
 We have to find the minimum of each subarray of length $M$ in this array, i.e. we have to find:
