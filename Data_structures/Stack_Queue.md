@@ -85,10 +85,10 @@ Rõ ràng là trung bình, tất cả các thao tác này chỉ tốn thời gia
 
 ## Queue modification (Sửa đổi hàng đợi) (method 2)
 
-This is a modification of method 1.
-We want to be able to remove elements without knowing which element we have to remove.
-We can accomplish that by storing the index for each element in the queue.
-And we also remember how many elements we already have added and removed.
+Đây là một sự chỉnh sửa của phương pháp 1. 
+Chúng ta muốn có thể loại bỏ các phần tử mà không cần biết phần tử nào cần được loại bỏ.
+Chúng ta có thể thực hiện điều đó bằng cách lưu trữ chỉ số của mỗi phần tử trong hàng đợi. 
+Và chúng ta cũng nhớ số lượng phần tử mà chúng ta đã thêm vào và loại bỏ.
 
 ```cpp
 deque<pair<int, int>> q;
