@@ -81,7 +81,7 @@ if (!q.empty() && q.front() == remove_element)
     q.pop_front();
 ```
 
-It is clear that on average all these operation only take $O(1)$ time (because every element can only be pushed and popped once).
+Rõ ràng là trung bình, tất cả các thao tác này chỉ tốn thời gian $O(1)$ (bởi vì mỗi phần tử chỉ có thể được đẩy vào và loại bỏ một lần duy nhất)
 
 ## Queue modification (Sửa đổi hàng đợi) (method 2)
 
