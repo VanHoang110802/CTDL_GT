@@ -124,13 +124,13 @@ Và chúng ta cũng có thể loại bỏ một phần tử từ đầu mà khô
 Ý tưởng là giảm bài toán này thành bài toán về ngăn xếp, mà chúng ta đã giải quyết trước đó.
 Vậy nên, chúng ta chỉ cần học cách mô phỏng một hàng đợi bằng hai ngăn xếp.
 
-We make two stacks, `s1` and `s2`. 
-Of course these stack will be of the modified form, so that we can find the minimum in $O(1)$. 
-We will add new elements to the stack `s1`, and remove elements from the stack `s2`.
-If at any time the stack `s2` is empty, we move all elements from `s1` to `s2` (which essentially reverses the order of those elements).
-Finally finding the minimum in a queue involves just finding the minimum of both stacks.
+Chúng ta tạo hai ngăn xếp, `s1` and `s2`. 
+Chắc chắn rằng những ngăn xếp này sẽ ở dạng đã được chỉnh sửa, để chúng ta có thể tìm giá trị nhỏ nhất trong thời gian $O(1)$. 
+Chúng ta sẽ thêm các phần tử mới vào ngăn xếp `s1`, và loại bỏ các phần tử từ ngăn xếp `s2`.
+Nếu vào bất kỳ thời điểm nào ngăn xếp `s2` rỗng, chúng ta sẽ chuyển tất cả các phần tử từ `s1` sang `s2` (điều này thực chất đảo ngược thứ tự của các phần tử).
+Cuối cùng việc tìm giá trị nhỏ nhất trong hàng đợi chỉ đơn giản là tìm giá trị nhỏ nhất của cả hai ngăn xếp.
 
-Thus we perform all operations in $O(1)$ on average (each element will be once added to stack `s1`, once transferred to `s2`, and once popped from `s2`)
+Do đó, chúng ta thực hiện tất cả các thao tác trong thời gian $O(1)$ trung bình (mỗi phần tử sẽ được thêm vào ngăn xếp `s1` một lần, chuyển sang `s2`một lần, và bị loại bỏ khỏi `s2` một lần).
 
 Implementation:
 
