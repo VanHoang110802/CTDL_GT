@@ -1,26 +1,26 @@
 > Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/stack_queue_modification.html)
 
-# Minimum stack / Minimum queue
+# Minimum stack / Minimum queue (Ngăn xếp tối thiểu / Hàng đợi tối thiểu)
 
-In this article we will consider three problems: 
-first we will modify a stack in a way that allows us to find the smallest element of the stack in $O(1)$, then we will do the same thing with a queue, and finally we will use these data structures to find the minimum in all subarrays of a fixed length in an array in $O(n)$
+Trong bài viết này, chúng ta sẽ xem xét ba vấn đề:
+Đầu tiên, chúng ta sẽ chỉnh sửa một ngăn xếp theo cách cho phép tìm phần tử nhỏ nhất trong ngăn xếp với thời gian $O(1)$, sau đó, chúng ta sẽ làm điều tương tự với một hàng đợi, và cuối cùng, chúng ta sẽ sử dụng các cấu trúc dữ liệu này để tìm phần tử nhỏ nhất trong tất cả các dãy con có độ dài cố định trong một mảng với thời gian $O(n)$
 
-## Stack modification
+## Stack modification (chỉnh sửa ngăn xếp)
 
-We want to modify the stack data structure in such a way, that it possible to find the smallest element in the stack in $O(1)$ time, while maintaining the same asymptotic behavior for adding and removing elements from the stack.
-Quick reminder, on a stack we only add and remove elements on one end.
+Chúng ta muốn chỉnh sửa cấu trúc dữ liệu ngăn xếp sao cho có thể tìm phần tử nhỏ nhất trong ngăn xếp trong thời gian $O(1)$, đồng thời vẫn duy trì hành vi đồng dạng đối với việc thêm và loại bỏ phần tử khỏi ngăn xếp.
+Nhắc lại nhanh, trong một ngăn xếp, chúng ta chỉ thêm và loại bỏ phần tử ở một đầu.
 
-To do this, we will not only store the elements in the stack, but we will store them in pairs: the element itself and the minimum in the stack starting from this element and below.
+Để làm điều này, chúng ta không chỉ lưu trữ các phần tử trong ngăn xếp, mà còn lưu trữ chúng dưới dạng cặp: phần tử đó và phần tử nhỏ nhất trong ngăn xếp bắt đầu từ phần tử này và phía dưới.
 
 ```cpp
 stack<pair<int, int>> st;
 ```
 
-It is clear that finding the minimum in the whole stack consists only of looking at the value `stack.top().second`.
+Rõ ràng là việc tìm phần tử nhỏ nhất trong toàn bộ ngăn xếp chỉ đơn giản là nhìn vào giá trị `stack.top().second`.
 
-It is also obvious that adding or removing a new element to the stack can be done in constant time.
+Điều này cũng rõ ràng rằng việc thêm hoặc loại bỏ một phần tử mới vào ngăn xếp có thể thực hiện trong thời gian hằng số.
 
-Implementation:
+Cài đặt:
 
 * Adding an element:
 ```cpp
