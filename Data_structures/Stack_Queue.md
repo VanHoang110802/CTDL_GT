@@ -22,32 +22,32 @@ Rõ ràng là việc tìm phần tử nhỏ nhất trong toàn bộ ngăn xếp 
 
 Cài đặt:
 
-* Adding an element:
+* Thêm một phần tử:
 ```cpp
 int new_min = st.empty() ? new_elem : min(new_elem, st.top().second);
 st.push({new_elem, new_min});
 ```
 
-* Removing an element:
+* Xoá một phần tử:
 ```cpp
 int removed_element = st.top().first;
 st.pop();
 ```
 
-* Finding the minimum:
+* Tìm giá trị nhỏ nhất:
 ```cpp
 int minimum = st.top().second;
 ```
 
-## Queue modification (method 1)
+## Queue modification (method 1) (Chỉnh sửa hàng đợi)
 
-Now we want to achieve the same operations with a queue, i.e. we want to add elements at the end and remove them from the front.
+Giờ đây, chúng ta muốn thực hiện các thao tác tương tự với một hàng đợi, tức là chúng ta muốn thêm phần tử ở cuối và loại bỏ chúng từ đầu.
 
-Here we consider a simple method for modifying a queue.
-It has a big disadvantage though, because the modified queue will actually not store all elements.
+Ở đây, chúng ta xem xét một phương pháp đơn giản để chỉnh sửa một hàng đợi. 
+Tuy nhiên, phương pháp này có một nhược điểm lớn, vì hàng đợi đã được chỉnh sửa thực tế sẽ không lưu trữ tất cả các phần tử.
 
-The key idea is to only store the items in the queue that are needed to determine the minimum.
-Namely we will keep the queue in nondecreasing order (i.e. the smallest value will be stored in the head), and of course not in any arbitrary way, the actual minimum has to be always contained in the queue.
+Ý tưởng chính là chỉ lưu trữ các phần tử trong hàng đợi cần thiết để xác định giá trị nhỏ nhất. 
+Cụ thể, chúng ta sẽ giữ hàng đợi theo thứ tự không giảm (tức là giá trị nhỏ nhất sẽ được lưu ở đầu), và tất nhiên không theo cách tùy ý, giá trị nhỏ nhất thực sự phải luôn có mặt trong hàng đợi.
 This way the smallest element will always be in the head of the queue.
 Before adding a new element to the queue, it is enough to make a "cut":
 we will remove all trailing elements of the queue that are larger than the new element, and afterwards add the new element to the queue. 
