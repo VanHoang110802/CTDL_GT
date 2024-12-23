@@ -1,4 +1,4 @@
-# Segment Tree
+![sum-segment-tree-query](https://github.com/user-attachments/assets/64a41f9f-d926-4c62-b70d-cde97e56a7d7)# Segment Tree
 
 Cây Segment (Segment Tree) là một cấu trúc dữ liệu lưu trữ thông tin về các khoảng (intervals) trong mảng dưới dạng một cây. Điều này cho phép trả lời các truy vấn theo khoảng trên mảng một cách hiệu quả, đồng thời vẫn đủ linh hoạt để cho phép thay đổi nhanh chóng mảng.
 Điều này bao gồm việc tìm tổng các phần tử liên tiếp trong mảng $a[l \dots r]$, hoặc tìm phần tử nhỏ nhất trong một khoảng như vậy với thời gian $O(\log n)$.
@@ -104,7 +104,7 @@ Again the array $a = [1, 3, -2, 8, -7]$ is used, and here we want to compute the
 The colored vertices will be visited, and we will use the precomputed values of the green vertices.
 This gives us the result $-2 + 1 = -1$.
 
-!["Sum Segment Tree Query"](sum-segment-tree-query.png)
+![sum-segment-tree-query](https://github.com/user-attachments/assets/80e47893-b3b7-467d-9fc4-bfe31c790ec7)
 
 Why is the complexity of this algorithm $O(\log n)$?
 To show this complexity we look at each level of the tree. 
@@ -146,7 +146,8 @@ Again here is a visualization using the same array.
 Here we perform the update $a[2] = 3$.
 The green vertices are the vertices that we visit and update.
 
-!["Sum Segment Tree Update"](sum-segment-tree-update.png)
+![sum-segment-tree-update](https://github.com/user-attachments/assets/9f4b0f09-6c34-4dbc-a72b-eed3b14252d7)
+
 
 ### Implementation ### { #implementation}
 
