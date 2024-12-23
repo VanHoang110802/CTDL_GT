@@ -1,4 +1,4 @@
-![sum-segment-tree-query](https://github.com/user-attachments/assets/64a41f9f-d926-4c62-b70d-cde97e56a7d7)# Segment Tree
+# Segment Tree
 
 Cây Segment (Segment Tree) là một cấu trúc dữ liệu lưu trữ thông tin về các khoảng (intervals) trong mảng dưới dạng một cây. Điều này cho phép trả lời các truy vấn theo khoảng trên mảng một cách hiệu quả, đồng thời vẫn đủ linh hoạt để cho phép thay đổi nhanh chóng mảng.
 Điều này bao gồm việc tìm tổng các phần tử liên tiếp trong mảng $a[l \dots r]$, hoặc tìm phần tử nhỏ nhất trong một khoảng như vậy với thời gian $O(\log n)$.
@@ -1114,16 +1114,16 @@ It is easy to generate lookup tables (e.g. using $\text{map}$), that convert a v
 
 ### Dynamic segment tree
 
-(Called so because its shape is dynamic and the nodes are usually dynamically allocated.
-Also known as _implicit segment tree_ or _sparse segment tree_.)
+(Được gọi như vậy vì hình dạng của nó là động và các đỉnh thường được cấp phát động.
+Cũng được biết đến với tên gọi _implicit segment tree_ hoặc _sparse segment tree_.)
 
-Previously, we considered cases when we have the ability to build the original segment tree. But what to do if the original size is filled with some default element, but its size does not allow you to completely build up to it in advance?
+Trước đây, chúng ta đã xem xét các trường hợp khi có khả năng xây dựng cây segment ban đầu. Nhưng phải làm gì nếu kích thước ban đầu được điền với một số phần tử mặc định, nhưng kích thước của nó không cho phép bạn xây dựng hoàn toàn cây segment lên trước?
 
-We can solve this problem by creating a segment tree lazily (incrementally). Initially, we will create only the root, and we will create the other vertexes only when we need them.
-In this case, we will use the implementation on pointers(before going to the vertex children, check whether they are created, and if not, create them).
-Each query has still only the complexity $O(\log n)$, which is small enough for most use-cases (e.g. $\log_2 10^9 \approx 30$).
+Chúng ta có thể giải quyết vấn đề này bằng cách tạo cây segment một cách lười biếng (theo từng bước). Ban đầu, chúng ta chỉ tạo gốc cây, và chỉ tạo các đỉnh còn lại khi cần thiết.
+Trong trường hợp này, chúng ta sẽ sử dụng triển khai trên con trỏ (trước khi đi đến các đỉnh con, kiểm tra xem chúng đã được tạo hay chưa, và nếu chưa, thì tạo chúng).
+Mỗi truy vấn vẫn có độ phức tạp chỉ $O(\log n)$, điều này đủ nhỏ cho hầu hết các trường hợp sử dụng (ví dụ $\log_2 10^9 \approx 30$).
 
-In this implementation we have two queries, adding a value to a position (initially all values  are $0$), and computing the sum of all values in a range.
+rong triển khai này, chúng ta có hai truy vấn: thêm một giá trị vào một vị trí (ban đầu tất cả các giá trị đều là $0$), và tính tổng của tất cả các giá trị trong một phạm vi.
 `Vertex(0, n)` will be the root vertex of the implicit tree.
 
 ```cpp
@@ -1167,4 +1167,4 @@ struct Vertex {
 };
 ```
 
-Obviously this idea can be extended in lots of different ways. E.g. by adding support for range updates via lazy propagation.
+Rõ ràng, ý tưởng này có thể được mở rộng theo nhiều cách khác nhau. Ví dụ, bằng cách thêm hỗ trợ cho các cập nhật theo phạm vi thông qua lazy propagation.
