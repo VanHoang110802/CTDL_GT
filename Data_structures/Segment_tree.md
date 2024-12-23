@@ -20,16 +20,16 @@ Chúng ta muốn trả lời các truy vấn về tổng một cách hiệu qu�
 Cho một mảng $a[0 \dots n-1]$, Cây Segment phải có khả năng tìm tổng các phần tử giữa các chỉ số $l$ and $r$ (tức là tính tổng $\sum_{i=l}^r a[i]$), và cũng phải xử lý việc thay đổi giá trị của các phần tử trong mảng (tức là thực hiện các phép gán dưới dạng $a[i] = x$).
 Cây Segment phải có khả năng xử lý cả hai truy vấn trong thời gian $O(\log n)$.
 
-This is an improvement over the simpler approaches.
-A naive array implementation - just using a simple array - can update elements in $O(1)$, but requires $O(n)$ to compute each sum query.
-And precomputed prefix sums can compute sum queries in $O(1)$, but updating an array element requires $O(n)$ changes to the prefix sums.
+Đây là một cải tiến so với các phương pháp đơn giản hơn.
+Một cách triển khai mảng ngây thơ - chỉ sử dụng một mảng đơn giản - có thể cập nhật các phần tử trong thời gian $O(1)$, nhưng yêu cầu $O(n)$ để tính mỗi truy vấn tổng.
+Còn việc tính tổng truy vấn bằng cách sử dụng mảng tổng tiền tố đã được tính trước có thể thực hiện trong $O(1)$, nhưng việc cập nhật một phần tử trong mảng lại yêu cầu phải thay đổi $O(n)$ giá trị trong mảng tổng tiền tố.
 
 ### Structure of the Segment Tree
 
-We can take a divide-and-conquer approach when it comes to array segments. 
-We compute and store the sum of the elements of the whole array, i.e. the sum of the segment $a[0 \dots n-1]$. 
-We then split the array into two halves $a[0 \dots n/2-1]$ and $a[n/2 \dots n-1]$ and compute the sum of each halve and store them. 
-Each of these two halves in turn are split in half, and so on until all segments reach size $1$. 
+Chúng ta có thể áp dụng phương pháp chia để trị (divide-and-conquer) khi làm việc với các đoạn mảng.
+Chúng ta tính toán và lưu trữ tổng của tất cả các phần tử trong mảng, tức là tổng của đoạn $a[0 \dots n-1]$. 
+Sau đó, chúng ta chia mảng thành hai phần: $a[0 \dots n/2-1]$ và $a[n/2 \dots n-1]$ và tính tổng của mỗi phần rồi lưu trữ chúng. 
+Mỗi phần trong số hai phần này lại tiếp tục được chia đôi, và quá trình này lặp lại cho đến khi tất cả các đoạn mảng có kích thước bằng $1$. 
 
 We can view these segments as forming a binary tree: 
 the root of this tree is the segment $a[0 \dots n-1]$, and each vertex (except leaf vertices) has exactly two child vertices. 
