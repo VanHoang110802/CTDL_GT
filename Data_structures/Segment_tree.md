@@ -12,13 +12,13 @@ Chẳng hạn, với Cây Segment hai chiều, bạn có thể trả lời các 
 Một đặc điểm quan trọng của Cây Segment là chúng chỉ yêu cầu một lượng bộ nhớ tuyến tính. 
 Cây Segment chuẩn yêu cầu $4n$ đỉnh để hoạt động trên một mảng có kích thước $n$.
 
-## Simplest form of a Segment Tree
+## Dạng đơn giản nhất của Cây Segment (Simplest form of a Segment Tree)
 
-To start easy, we consider the simplest form of a Segment Tree. 
-We want to answer sum queries efficiently. 
-The formal definition of our task is:
-Given an array $a[0 \dots n-1]$, the Segment Tree must be able to find the sum of elements between the indices $l$ and $r$ (i.e. computing the sum $\sum_{i=l}^r a[i]$), and also handle changing values of the elements in the array (i.e. perform assignments of the form $a[i] = x$).
-The Segment Tree should be able to process **both** queries in $O(\log n)$ time.
+Để bắt đầu một cách dễ dàng, chúng ta xem xét dạng đơn giản nhất của Cây Segment.
+Chúng ta muốn trả lời các truy vấn về tổng một cách hiệu quả.
+Định nghĩa chính thức của bài toán của chúng ta là:
+Cho một mảng $a[0 \dots n-1]$, Cây Segment phải có khả năng tìm tổng các phần tử giữa các chỉ số $l$ and $r$ (tức là tính tổng $\sum_{i=l}^r a[i]$), và cũng phải xử lý việc thay đổi giá trị của các phần tử trong mảng (tức là thực hiện các phép gán dưới dạng $a[i] = x$).
+Cây Segment phải có khả năng xử lý cả hai truy vấn trong thời gian $O(\log n)$.
 
 This is an improvement over the simpler approaches.
 A naive array implementation - just using a simple array - can update elements in $O(1)$, but requires $O(n)$ to compute each sum query.
