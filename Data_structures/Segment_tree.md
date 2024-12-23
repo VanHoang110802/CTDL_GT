@@ -1105,10 +1105,10 @@ for (int i = 0; i < a.size(); i++) {
 int result = find_kth(roots[2], roots[20], tl, tr, 5);
 ```
 
-Now to the restrictions on the array elements:
-We can actually transform any array to such an array by index compression.
-The smallest element in the array will gets assigned the value 0, the second smallest the value 1, and so forth.
-It is easy to generate lookup tables (e.g. using $\text{map}$), that convert a value to its index and vice versa in $O(\log n)$ time.
+Bây giờ, về các hạn chế đối với các phần tử trong mảng:
+Chúng ta thực tế có thể chuyển đổi bất kỳ mảng nào thành một mảng như vậy thông qua việc nén chỉ mục (index compression).
+Phần tử nhỏ nhất trong mảng sẽ được gán giá trị 0, phần tử nhỏ thứ hai sẽ được gán giá trị 1, và cứ như vậy.
+Việc tạo bảng tra cứu (ví dụ, sử dụng $\text{map}$), để chuyển đổi một giá trị thành chỉ mục của nó và ngược lại là rất dễ dàng, với độ phức tạp $O(\log n)$.
 
 
 
