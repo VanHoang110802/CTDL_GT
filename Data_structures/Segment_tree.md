@@ -1060,7 +1060,7 @@ It is easy to see that such a Segment Tree is just the difference between the Se
 
 In the implementation of the $\text{find_kth}$ function this can be handled by passing two vertex pointer and computing the count/sum of the current segment as difference of the two counts/sums of the vertices.
 
-Here are the modified $\text{build}$, $\text{update}$  and $\text{find_kth}$ functions
+Dưới đây là các hàm $\text{build}$, $\text{update}$  và $\text{find_kth}$ đã được chỉnh sửa.
 
 ```{.cpp file=kth_smallest_persistent_segment_tree}
 Vertex* build(int tl, int tr) {
@@ -1090,8 +1090,8 @@ int find_kth(Vertex* vl, Vertex *vr, int tl, int tr, int k) {
 }
 ```
 
-As already written above, we need to store the root of the initial Segment Tree, and also all the roots after each update.
-Here is the code for building a persistent Segment Tree over an vector `a` with elements in the range `[0, MAX_VALUE]`.
+Như đã đề cập ở trên, chúng ta cần lưu trữ gốc của Cây Segment ban đầu, cũng như tất cả các gốc sau mỗi lần cập nhật.
+Dưới đây là đoạn mã để xây dựng một Cây Segment bền vững (persistent Segment Tree) trên một vector `a` với các phần tử có giá trị trong khoảng `[0, MAX_VALUE]`.
 
 ```{.cpp file=kth_smallest_persistent_segment_tree_build}
 int tl = 0, tr = MAX_VALUE + 1;
