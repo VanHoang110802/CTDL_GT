@@ -1051,16 +1051,16 @@ For each modification we will receive a new root vertex, let's call $root_i$ the
 The Segment Tree rooted at $root_i$ will contain the histogram of the prefix $a[1 \dots i]$.
 Using this Segment Tree we can find in $O(\log n)$ time the position of the $k$-th element using the same technique discussed in [Counting the number of zeros, searching for the $k$-th zero](segment_tree.md#counting-zero-search-kth).
 
-Now to the not-restricted version of the problem.
+Bây giờ, đến phiên bản không bị giới hạn của bài toán.
 
-First for the restriction on the queries: 
-Instead of only performing these queries over a prefix of $a$, we want to use any arbitrary segments $a[l \dots r]$.
-Here we need a Segment Tree that represents the histogram of the elements in the range $a[l \dots r]$. 
-It is easy to see that such a Segment Tree is just the difference between the Segment Tree rooted at $root_{r}$ and the Segment Tree rooted at $root_{l-1}$, i.e. every vertex in the $[l \dots r]$ Segment Tree can be computed with the vertex of the $root_{r}$ tree minus the vertex of the $root_{l-1}$ tree.
+Đầu tiên là sự hạn chế đối với các truy vấn:
+Thay vì chỉ thực hiện các truy vấn này trên một tiền tố của mảng $a$, chúng ta muốn sử dụng bất kỳ đoạn nào tùy ý $a[l \dots r]$.
+Ở đây, chúng ta cần một Cây Segment đại diện cho biểu đồ tần suất (histogram) của các phần tử trong đoạn $a[l \dots r]$. 
+Dễ dàng nhận thấy rằng một Cây Segment như vậy chỉ là hiệu giữa Cây Segment có gốc tại $root_{r}$ và Cây Segment có gốc tại $root_{l-1}$, tức là mỗi đỉnh trong Cây Segment $[l \dots r]$ có thể được tính bằng cách lấy giá trị của đỉnh trong cây $root_{r}$ trừ đi giá trị của đỉnh trong cây $root_{l-1}$.
 
-In the implementation of the $\text{find_kth}$ function this can be handled by passing two vertex pointer and computing the count/sum of the current segment as difference of the two counts/sums of the vertices.
+Trong triển khai của hàm find_kth điều này có thể được xử lý bằng cách truyền hai con trỏ của các đỉnh và tính toán số lượng/tổng của đoạn hiện tại dưới dạng hiệu của hai số lượng/tổng của các đỉnh.
 
-Dưới đây là các hàm $\text{build}$, $\text{update}$  và $\text{find_kth}$ đã được chỉnh sửa.
+Dưới đây là các hàm build, update và find_kth đã được chỉnh sửa.
 
 ```{.cpp file=kth_smallest_persistent_segment_tree}
 Vertex* build(int tl, int tr) {
