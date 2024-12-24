@@ -849,14 +849,14 @@ Nếu trong trường hợp một chiều, chúng ta chia các chỉ số của 
 
 #### Cây Segment 2D đơn giản (Simple 2D Segment Tree)
 
-A matrix $a[0 \dots n-1, 0 \dots m-1]$ is given, and we have to find the sum (or minimum/maximum) on some submatrix $a[x_1 \dots x_2, y_1 \dots y_2]$, as well as perform modifications of individual matrix elements (i.e. queries of the form $a[x][y] = p$).
+Cho một ma trận $a[0 \dots n-1, 0 \dots m-1]$, và chúng ta phải tìm tổng (hoặc giá trị nhỏ nhất/lớn nhất) trong một ma trận con $a[x_1 \dots x_2, y_1 \dots y_2]$, cũng như thực hiện các phép thay đổi giá trị của các phần tử trong ma trận (tức là các truy vấn có dạng $a[x][y] = p$).
 
-So we build a 2D Segment Tree: first the Segment Tree using the first coordinate ($x$), then the second ($y$).
+Vậy là chúng ta xây dựng một Cây Segment 2D: đầu tiên là Cây Segment sử dụng tọa độ thứ nhất ($x$), sau đó là tọa độ thứ hai ($y$).
 
-To make the construction process more understandable, you can forget for a while that the matrix is two-dimensional, and only leave the first coordinate.
-We will construct an ordinary one-dimensional Segment Tree using only the first coordinate.
-But instead of storing a number in a segment, we store an entire Segment Tree: 
-i.e. at this moment we remember that we also have a second coordinate; but because at this moment the first coordinate is already fixed to some interval $[l \dots r]$, we actually work with such a strip $a[l \dots r, 0 \dots m-1]$ and for it we build a Segment Tree.
+Để làm cho quá trình xây dựng dễ hiểu hơn, bạn có thể tạm quên rằng ma trận là hai chiều, và chỉ xét đến tọa độ đầu tiên.
+Chúng ta sẽ xây dựng một cây Segment một chiều thông thường chỉ sử dụng tọa độ đầu tiên.
+Tuy nhiên, thay vì lưu trữ một số trong một đoạn, chúng ta lưu trữ toàn bộ cây Segment:
+Tức là, vào thời điểm này, chúng ta nhớ rằng chúng ta còn có một tọa độ thứ hai; nhưng vì vào thời điểm này, tọa độ thứ nhất đã được cố định trong một khoảng $[l \dots r]$, nên thực tế chúng ta đang làm việc với một đoạn $a[l \dots r, 0 \dots m-1]$ và xây dựng một Cây Segment cho đoạn này.
 
 Dưới đây là cách triển khai xây dựng Cây Segment 2D.
 Trên thực tế, nó đại diện cho hai khối chức năng riêng biệt:
