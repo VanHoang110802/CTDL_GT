@@ -250,32 +250,32 @@ Hãy cùng thử phân loại chúng dưới đây.
 
 ### Các truy vấn phức tạp hơn (More complex queries)
 
-It can be quite easy to change the Segment Tree in a direction, such that it computes different queries (e.g. computing the minimum / maximum instead of the sum), but it also can be very nontrivial. 
+Việc thay đổi Cây Đoạn theo một hướng sao cho nó tính toán các truy vấn khác (ví dụ: tính toán giá trị nhỏ nhất/tối đa thay vì tổng) có thể khá dễ dàng, nhưng cũng có thể rất không đơn giản.
 
-#### Finding the maximum
+#### Tìm giá trị lớn nhất (Finding the maximum)
 
-Let us slightly change the condition of the problem described above: instead of querying the sum, we will now make maximum queries.
+Hãy thay đổi một chút điều kiện của bài toán được mô tả ở trên: thay vì truy vấn tổng, chúng ta sẽ thực hiện các truy vấn giá trị lớn nhất.
 
-The tree will have exactly the same structure as the tree described above. 
-We only need to change the way $t[v]$ is computed in the $\text{build}$ and $\text{update}$ functions.
-$t[v]$ will now store the maximum of the corresponding segment. 
-And we also need to change the calculation of the returned value of the $\text{sum}$ function (replacing the summation by the maximum).
+Cây sẽ có cấu trúc giống hệt như cây đã mô tả ở trên.
+Chúng ta chỉ cần thay đổi cách tính $t[v]$ trong các hàm $\text{build}$ và $\text{update}$.
+Giờ đây, $t[v]$ sẽ lưu trữ giá trị lớn nhất của đoạn tương ứng.
+Và chúng ta cũng cần thay đổi cách tính giá trị trả về của hàm $\text{sum}$ (thay thế phép tính tổng bằng phép tính giá trị lớn nhất).
 
-Of course this problem can be easily changed into computing the minimum instead of the maximum.
+Tất nhiên, bài toán này có thể dễ dàng được thay đổi thành việc tính giá trị nhỏ nhất thay vì giá trị lớn nhất.
 
-Instead of showing an implementation to this problem, the implementation will be given to a more complex version of this problem in the next section.
+Thay vì trình bày một triển khai cho bài toán này, phần triển khai sẽ được đưa ra cho một phiên bản phức tạp hơn của bài toán trong phần tiếp theo.
 
-#### Finding the maximum and the number of times it appears 
+#### Tìm giá trị lớn nhất và số lần nó xuất hiện (Finding the maximum and the number of times it appears)
 
-This task is very similar to the previous one.
-In addition of finding the maximum, we also have to find the number of occurrences of the maximum. 
+Nhiệm vụ này rất giống với bài toán trước.
+Ngoài việc tìm giá trị lớn nhất, chúng ta còn phải tìm số lần giá trị lớn nhất xuất hiện.
 
-To solve this problem, we store a pair of numbers at each vertex in the tree: 
-In addition to the maximum we also store the number of occurrences of it in the corresponding segment. 
-Determining the correct pair to store at $t[v]$ can still be done in constant time using the information of the pairs stored at the child vertices. 
-Combining two such pairs should be done in a separate function, since this will be an operation that we will do while building the tree, while answering maximum queries and while performing modifications.
+Để giải quyết vấn đề này, chúng ta lưu trữ một cặp số tại mỗi đỉnh trong cây:
+Ngoài giá trị lớn nhất, chúng ta cũng lưu trữ số lần xuất hiện của nó trong đoạn tương ứng.
+Việc xác định cặp số chính xác để lưu trữ tại $t[v]$ vẫn có thể thực hiện trong thời gian hằng số bằng cách sử dụng thông tin của các cặp số được lưu trữ tại các đỉnh con. 
+Kết hợp hai cặp số như vậy nên được thực hiện trong một hàm riêng biệt, vì đây sẽ là một phép toán mà chúng ta sẽ thực hiện khi xây dựng cây, khi trả lời các truy vấn giá trị lớn nhất và khi thực hiện các phép sửa đổi.
 
-```{.cpp file=segment_tree_maximum_and_count}
+```cpp
 pair<int, int> t[4*MAXN];
 
 pair<int, int> combine(pair<int, int> a, pair<int, int> b) {
