@@ -606,54 +606,54 @@ Việc xử lý yêu cầu sửa đổi này cũng mất $O(\log^2 n)$ thời gi
 
 #### Tìm số nhỏ nhất lớn hơn hoặc bằng một số chỉ định. Tăng tốc với "fractional cascading" (Find the smallest number greater or equal to a specified number. Acceleration with "fractional cascading".)
 
-We have the same problem statement, we want to find the minimal number greater than or equal to $x$ in a segment, but this time in $O(\log n)$ time.
-We will improve the time complexity using the technique "fractional cascading".
+Chúng ta có cùng một đề bài, chúng ta muốn tìm số nhỏ nhất lớn hơn hoặc bằng $x$ trong một đoạn, nhưng lần này trong thời gian $O(\log n)$.
+Chúng ta sẽ cải thiện độ phức tạp thời gian bằng cách sử dụng kỹ thuật "fractional cascading".
 
-Fractional cascading is a simple technique that allows you to improve the running time of multiple binary searches, which are conducted at the same time. 
-Our previous approach to the search query was, that we divide the task into several subtasks, each of which is solved with a binary search. 
-Fractional cascading allows you to replace all of these binary searches with a single one.
+Fractional cascading là một kỹ thuật đơn giản cho phép cải thiện thời gian chạy của nhiều tìm kiếm nhị phân, được thực hiện đồng thời.
+Cách tiếp cận trước đây của chúng ta cho truy vấn tìm kiếm là chia bài toán thành nhiều tiểu bài toán, mỗi bài toán được giải quyết bằng một tìm kiếm nhị phân.
+Fractional cascading cho phép bạn thay thế tất cả các tìm kiếm nhị phân này bằng một tìm kiếm duy nhất.
 
-The simplest and most obvious example of fractional cascading is the following problem:
-there are $k$ sorted lists of numbers, and we must find in each list the first number greater than or equal to the given number.
+Ví dụ đơn giản và rõ ràng nhất về fractional cascading là bài toán sau:
+Có $k$ danh sách đã được sắp xếp, và chúng ta phải tìm trong mỗi danh sách số đầu tiên lớn hơn hoặc bằng số cho trước.
 
-Instead of performing a binary search for each list, we could merge all lists into one big sorted list.
-Additionally for each element $y$ we store a list of results of searching for $y$ in each of the $k$ lists.
-Therefore if we want to find the smallest number greater than or equal to $x$, we just need to perform one single binary search, and from the list of indices we can determine the smallest number in each list.
-This approach however requires $O(n \cdot k)$ ($n$ is the length of the combined lists), which can be quite inefficient. 
+Thay vì thực hiện một tìm kiếm nhị phân cho mỗi danh sách, chúng ta có thể gộp tất cả các danh sách lại thành một danh sách lớn duy nhất.
+Thêm vào đó, đối với mỗi phần tử $y$ chúng ta lưu một danh sách các kết quả tìm kiếm cho $y$ trong mỗi danh sách $k$.
+Do đó, nếu chúng ta muốn tìm số nhỏ nhất lớn hơn hoặc bằng $x$, chúng ta chỉ cần thực hiện một tìm kiếm nhị phân duy nhất, và từ danh sách các chỉ số, chúng ta có thể xác định số nhỏ nhất trong mỗi danh sách.
+Tuy nhiên, cách tiếp cận này yêu cầu $O(n \cdot k)$ bộ nhớ ($n$ là độ dài của các danh sách đã gộp), điều này có thể khá không hiệu quả. 
 
-Fractional cascading reduces this memory complexity to $O(n)$ memory, by creating from the $k$ input lists $k$ new lists, in which each list contains the corresponding list and additionally also every second element of the following new list.
-Using this structure it is only necessary to store two indices, the index of the element in the original list, and the index of the element in the following new list.
-So this approach only uses $O(n)$ memory, and still can answer the queries using a single binary search. 
+Fractional cascading giảm độ phức tạp bộ nhớ này xuống $O(n)$ bộ nhớ, bằng cách tạo ra từ $k$ danh sách đầu vào $k$ danh sách mới, trong đó mỗi danh sách chứa danh sách tương ứng và thêm vào đó mỗi phần tử thứ hai của danh sách tiếp theo.
+Sử dụng cấu trúc này, chỉ cần lưu hai chỉ số, chỉ số của phần tử trong danh sách ban đầu và chỉ số của phần tử trong danh sách mới tiếp theo. 
+Vì vậy, cách tiếp cận này chỉ sử dụng $O(n)$ bộ nhớ, và vẫn có thể trả lời các truy vấn bằng một tìm kiếm nhị phân duy nhất. 
 
-But for our application we do not need the full power of fractional cascading.
-In our Segment Tree a vertex will contain the sorted list of all elements that occur in either the left or the right subtrees (like in the Merge Sort Tree). 
-Additionally to this sorted list, we store two positions for each element.
-For an element $y$ we store the smallest index $i$, such that the $i$th element in the sorted list of the left child is greater or equal to $y$.
-And we store the smallest index $j$, such that the $j$th element in the sorted list of the right child is greater or equal to $y$.
-These values can be computed in parallel to the merging step when we build the tree.
+Tuy nhiên, đối với ứng dụng của chúng ta, chúng ta không cần toàn bộ khả năng của fractional cascading.
+Trong Segment Tree của chúng ta, mỗi đỉnh sẽ chứa danh sách đã được sắp xếp của tất cả các phần tử xuất hiện trong cây con bên trái hoặc bên phải (giống như trong Merge Sort Tree). 
+Ngoài danh sách đã sắp xếp này, chúng ta lưu hai chỉ số cho mỗi phần tử.
+Đối với một phần tử $y$ chúng ta lưu chỉ số nhỏ nhất $i$, sao cho phần tử thứ $i$ trong danh sách đã sắp xếp của cây con trái lớn hơn hoặc bằng $y$.
+Và chúng ta lưu chỉ số nhỏ nhất $j$, sao cho phần tử thứ $j$th trong danh sách đã sắp xếp của cây con phải lớn hơn hoặc bằng $y$.
+Các giá trị này có thể được tính song song với bước kết hợp khi xây dựng cây.
 
-How does this speed up the queries?
+Làm thế nào để tăng tốc các truy vấn?
 
-Remember, in the normal solution we did a binary search in every node.
-But with this modification, we can avoid all except one.
+Hãy nhớ lại, trong giải pháp bình thường, chúng ta thực hiện một tìm kiếm nhị phân tại mỗi nút.
+Nhưng với sự điều chỉnh này, chúng ta có thể tránh tất cả các tìm kiếm nhị phân ngoại trừ một.
 
-To answer a query, we simply do a binary search in the root node.
-This gives us the smallest element $y \ge x$ in the complete array, but it also gives us two positions.
-The index of the smallest element greater or equal $x$ in the left subtree, and the index of the smallest element $y$ in the right subtree. Notice that $\ge y$ is the same as $\ge x$, since our array doesn't contain any elements between $x$ and $y$.
-In the normal Merge Sort Tree solution we would compute these indices via binary search, but with the help of the precomputed values we can just look them up in $O(1)$.
-And we can repeat that until we visited all nodes that cover our query interval.
+Để trả lời một truy vấn, chúng ta chỉ cần thực hiện một tìm kiếm nhị phân tại nút gốc.
+Điều này cho chúng ta phần tử nhỏ nhất $y \ge x$ trong toàn bộ mảng, nhưng nó cũng cho chúng ta hai chỉ số.
+Chỉ số của phần tử nhỏ nhất lớn hơn hoặc bằng $x$ trong cây con bên trái, và chỉ số của phần tử nhỏ nhất $y$ trong cây con bên phải. Lưu ý rằng $\ge y$ là giống như $\ge x$, vì mảng của chúng ta không chứa bất kỳ phần tử nào giữa $x$ và $y$.
+Trong giải pháp Merge Sort Tree thông thường, chúng ta sẽ tính toán các chỉ số này qua tìm kiếm nhị phân, nhưng với sự trợ giúp của các giá trị đã được tính sẵn, chúng ta chỉ cần tra cứu chúng trong $O(1)$.
+Và chúng ta có thể lặp lại điều này cho đến khi thăm tất cả các nút bao phủ phạm vi truy vấn của chúng ta.
 
-To summarize, as usual we touch $O(\log n)$ nodes during a query. In the root node we do a binary search, and in all other nodes we only do constant work.
-This means the complexity for answering a query is $O(\log n)$.
+Tóm lại, như thường lệ, chúng ta sẽ chạm vào $O(\log n)$ nút trong một truy vấn. Ở nút gốc, chúng ta thực hiện một tìm kiếm nhị phân, và ở tất cả các nút khác, chúng ta chỉ làm công việc hằng số.
+Điều này có nghĩa là độ phức tạp để trả lời một truy vấn là $O(\log n)$.
 
-But notice, that this uses three times more memory than a normal Merge Sort Tree, which already uses a lot of memory ($O(n \log n)$).
+Nhưng lưu ý rằng, điều này sử dụng bộ nhớ gấp ba lần so với Merge Sort Tree bình thường, vốn đã sử dụng rất nhiều bộ nhớ ($O(n \log n)$).
 
-It is straightforward to apply this technique to a problem, that doesn't require any modification queries.
-The two positions are just integers and can easily be computed by counting when merging the two sorted sequences.
+Kỹ thuật này dễ dàng áp dụng cho một bài toán không yêu cầu truy vấn sửa đổi. 
+Hai chỉ số này chỉ là các số nguyên và có thể dễ dàng tính toán khi hợp nhất hai dãy đã sắp xếp.
 
-It it still possible to also allow modification queries, but that complicates the entire code.
-Instead of integers, you need to store the sorted array as `multiset`, and instead of indices you need to store iterators.
-And you need to work very carefully, so that you increment or decrement the correct iterators during a modification query.
+Tuy nhiên, vẫn có thể cho phép truy vấn sửa đổi, nhưng điều này làm cho toàn bộ code phức tạp hơn.
+Thay vì các số nguyên, bạn cần lưu trữ mảng đã sắp xếp dưới dạng `multiset`, và thay vì các chỉ số, bạn cần lưu trữ các iterator.
+Và bạn cần làm việc rất cẩn thận, để đảm bảo rằng bạn tăng hoặc giảm đúng iterator trong một truy vấn sửa đổi.
 
 #### Other possible variations
 
