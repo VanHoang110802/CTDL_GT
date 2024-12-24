@@ -1,25 +1,25 @@
 > Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/sparse-table.html)
 
-# Sparse Table
+# Bảng thưa (Sparse Table)
 
-Sparse Table is a data structure, that allows answering range queries.
-It can answer most range queries in $O(\log n)$, but its true power is answering range minimum queries (or equivalent range maximum queries).
-For those queries it can compute the answer in $O(1)$ time.
+Sparse Table là một cấu trúc dữ liệu, cho phép trả lời các truy vấn phạm vi.
+Nó có thể trả lời hầu hết các truy vấn phạm vi trong thời gian $O(\log n)$, nhưng sức mạnh thực sự của nó là trả lời các truy vấn giá trị nhỏ nhất trong phạm vi (hoặc các truy vấn giá trị lớn nhất tương đương).
+Đối với những truy vấn này, nó có thể tính toán kết quả trong thời gian $O(1)$.
 
-The only drawback of this data structure is, that it can only be used on _immutable_ arrays.
-This means, that the array cannot be changed between two queries.
-If any element in the array changes, the complete data structure has to be recomputed.
+Nhược điểm duy nhất của cấu trúc dữ liệu này là nó chỉ có thể được sử dụng trên các mảng bất biến ( _immutable arrays_ ).
+Điều này có nghĩa là mảng không thể thay đổi giữa hai truy vấn.
+Nếu bất kỳ phần tử nào trong mảng thay đổi, toàn bộ cấu trúc dữ liệu phải được tính toán lại.
 
 ## Intuition
 
-Any non-negative number can be uniquely represented as a sum of decreasing powers of two.
-This is just a variant of the binary representation of a number.
-E.g. $13 = (1101)_2 = 8 + 4 + 1$.
-For a number $x$ there can be at most $\lceil \log_2 x \rceil$ summands.
+Mọi số không âm có thể được biểu diễn duy nhất dưới dạng tổng của các lũy thừa giảm dần của số hai.
+Đây thực chất là một biến thể của biểu diễn nhị phân của một số.
+Ví dụ: $13 = (1101)_2 = 8 + 4 + 1$.
+Với một số $x$ có thể có tối đa $\lceil \log_2 x \rceil$ hạng tử.
 
-By the same reasoning any interval can be uniquely represented as a union of intervals with lengths that are decreasing powers of two.
-E.g. $[2, 14] = [2, 9] \cup [10, 13] \cup [14, 14]$, where the complete interval has length 13, and the individual intervals have the lengths 8, 4 and 1 respectively.
-And also here the union consists of at most $\lceil \log_2(\text{length of interval}) \rceil$ many intervals.
+Dựa trên lý luận tương tự, bất kỳ khoảng nào cũng có thể được biểu diễn duy nhất dưới dạng hợp của các khoảng có độ dài là các lũy thừa giảm dần của số hai.
+Ví dụ: $[2, 14] = [2, 9] \cup [10, 13] \cup [14, 14]$, trong đó khoảng đầy đủ có độ dài 13, và các khoảng con có độ dài lần lượt là 8, 4 và 1.
+Và ở đây, hợp của các khoảng cũng có tối đa $\lceil \log_2(\text{length of interval}) \rceil$ khoảng.
 
 The main idea behind Sparse Tables is to precompute all answers for range queries with power of two length.
 Afterwards a different range query can be answered by splitting the range into ranges with power of two lengths, looking up the precomputed answers, and combining them to receive a complete answer.
