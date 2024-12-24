@@ -147,4 +147,4 @@ Tức là, nó hoạt động rất tốt cho các truy vấn tìm giá trị nh
 
 Có những cấu trúc dữ liệu tương tự có thể xử lý bất kỳ loại hàm kết hợp nào và trả lời các truy vấn phạm vi trong thời gian $O(1)$.
 Một trong số đó được gọi là [Disjoint Sparse Table](https://discuss.codechef.com/questions/117696/tutorial-disjoint-sparse-table).
-Một cấu trúc khác là [Sqrt Tree](sqrt-tree.md).
+Một cấu trúc khác là [Sqrt Tree](https://cp-algorithms.com/data_structures/sqrt-tree.html).
