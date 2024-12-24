@@ -117,7 +117,7 @@ int log2_floor(unsigned long long i) {
     return i ? __builtin_clzll(1) - __builtin_clzll(i) : -1;
 }
 ```
-[This benchmark](https://quick-bench.com/q/Zghbdj_TEkmw4XG2nqOpD3tsJ8U) shows that using `lg` array is slower because of cache misses.
+[Thử nghiệm này](https://quick-bench.com/q/Zghbdj_TEkmw4XG2nqOpD3tsJ8U) cho thấy việc sử dụng mảng `lg` chậm hơn do lỗi bộ nhớ cache.
 
 Sau đó, chúng ta cần tính toán trước cấu trúc Sparse Table. Lần này, chúng ta định nghĩa $f$ với $f(x, y) = \min(x, y)$.
 
