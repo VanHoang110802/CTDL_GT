@@ -329,7 +329,7 @@ Việc kết hợp hai đỉnh có thể được thực hiện bằng cách tí
 
 #### Đếm số lượng số không, tìm kiếm số không thứ k (Counting the number of zeros, searching for the $k$-th zero)
 
-ITrong bài toán này, chúng ta muốn tìm số lượng số không trong một phạm vi cho trước, và thêm vào đó là tìm chỉ số của số không thứ $k$ bằng cách sử dụng một hàm thứ hai.
+Trong bài toán này, chúng ta muốn tìm số lượng số không trong một phạm vi cho trước, và thêm vào đó là tìm chỉ số của số không thứ $k$ bằng cách sử dụng một hàm thứ hai.
 
 Một lần nữa, chúng ta cần thay đổi một chút cách lưu trữ giá trị trong cây:
 Lần này, chúng ta sẽ lưu trữ số lượng số không trong mỗi đoạn trong $t[]$. 
@@ -409,12 +409,12 @@ Nói cách khác, đối với mỗi đoạn trong Cây Phân Đoạn, kết qu�
 
 Làm thế nào để xây dựng một cây với dữ liệu như vậy?
 Lại một lần nữa, chúng ta tính toán nó theo cách đệ quy:
-chúng ta đầu tiên tính toán tất cả bốn giá trị cho con trái và con phải, và sau đó kết hợp chúng để có được bốn giá trị cho đỉnh hiện tại.
+chúng ta đầu tiên tính toán tất cả bốn giá trị cho con trái (the left child) và con phải (the right child), và sau đó kết hợp chúng để có được bốn giá trị cho đỉnh hiện tại.
 Lưu ý rằng kết quả cho đỉnh hiện tại là một trong các giá trị sau:
 
- * the answer of the left child, which means that the optimal subsegment is entirely placed in the segment of the left child
- * the answer of the right child, which means that the optimal subsegment is entirely placed in the segment of the right child
- * the sum of the maximum suffix sum of the left child and the maximum prefix sum of the right child, which means that the optimal subsegment intersects with both children.
+ * Câu trả lời của con trái, có nghĩa là đoạn con tối ưu hoàn toàn nằm trong đoạn của con trái.
+ * Câu trả lời của con phải, có nghĩa là đoạn con tối ưu hoàn toàn nằm trong đoạn của con phải.
+ * Tổng của tổng hậu tố tối đa của con trái và tổng tiền tố tối đa của con phải, có nghĩa là đoạn con tối ưu giao với cả hai con.
 
 Vì vậy, câu trả lời cho đỉnh hiện tại là giá trị lớn nhất trong ba giá trị này. 
 Việc tính toán tổng tiền tố (prefix sum) / tổng hậu tố (suffix sum) tối đa còn dễ dàng hơn. 
@@ -435,9 +435,9 @@ data combine(data l, data r) {
 }
 ```
 
-Using the $\text{combine}$ function it is easy to build the Segment Tree. 
-We can implement it in exactly the same way as in the previous implementations.
-To initialize the leaf vertices, we additionally create the auxiliary function $\text{make_data}$, which will return a $\text{data}$ object holding the information of a single value.
+Sử dụng hàm ${combine}$ chúng ta có thể dễ dàng xây dựng cây phân đoạn (Segment Tree).
+Chúng ta có thể triển khai nó theo cách giống như các triển khai trước đây.
+Để khởi tạo các đỉnh lá, chúng ta tạo thêm hàm phụ trợ ${make_data}$, hàm này sẽ trả về một đối tượng ${data}$ chứa thông tin của một giá trị duy nhất.
 
 ```cpp
 data make_data(int val) {
