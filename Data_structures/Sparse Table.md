@@ -19,14 +19,14 @@ Với một số $x$ có thể có tối đa $\lceil \log_2 x \rceil$ hạng t�
 
 Dựa trên lý luận tương tự, bất kỳ khoảng nào cũng có thể được biểu diễn duy nhất dưới dạng hợp của các khoảng có độ dài là các lũy thừa giảm dần của số hai.
 Ví dụ: $[2, 14] = [2, 9] \cup [10, 13] \cup [14, 14]$, trong đó khoảng đầy đủ có độ dài 13, và các khoảng con có độ dài lần lượt là 8, 4 và 1.
-Và ở đây, hợp của các khoảng cũng có tối đa $\lceil \log_2(\text{length of interval}) \rceil$ khoảng.
+Và ở đây, hợp của các khoảng cũng có tối đa $\lceil \log_2(\text{độ dài khoảng}) \rceil$ khoảng.
 
-The main idea behind Sparse Tables is to precompute all answers for range queries with power of two length.
-Afterwards a different range query can be answered by splitting the range into ranges with power of two lengths, looking up the precomputed answers, and combining them to receive a complete answer.
+Ý tưởng chính đằng sau Sparse Tables là tính toán trước tất cả các câu trả lời cho các truy vấn phạm vi có độ dài là các lũy thừa của hai.
+Sau đó, một truy vấn phạm vi khác có thể được trả lời bằng cách chia phạm vi thành các phạm vi có độ dài là các lũy thừa của hai, tra cứu các câu trả lời đã tính toán trước, và kết hợp chúng lại để nhận được câu trả lời hoàn chỉnh.
 
-## Precomputation
+## Tính toán trước (Precomputation)
 
-We will use a 2-dimensional array for storing the answers to the precomputed queries.
+Chúng ta sẽ sử dụng một mảng 2 chiều để lưu trữ các câu trả lời cho các truy vấn đã được tính toán trước.
 $\text{st}[i][j]$ will store the answer for the range $[j, j + 2^i - 1]$ of length $2^i$.
 The size of the 2-dimensional array will be $(K + 1) \times \text{MAXN}$, where $\text{MAXN}$ is the biggest possible array length.
 $\text{K}$ has to satisfy $\text{K} \ge \lfloor \log_2 \text{MAXN} \rfloor$, because $2^{\lfloor \log_2 \text{MAXN} \rfloor}$ is the biggest power of two range, that we have to support.
