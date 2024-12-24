@@ -140,11 +140,11 @@ int minimum = min(st[i][L], st[i][R - (1 << i) + 1]);
 
 Time complexity for a Range Minimum Query is $O(1)$.
 
-## Similar data structures supporting more types of queries
+## Các cấu trúc dữ liệu tương tự hỗ trợ nhiều loại truy vấn hơn (Similar data structures supporting more types of queries)
 
-One of the main weakness of the $O(1)$ approach discussed in the previous section is, that this approach only supports queries of [idempotent functions](https://en.wikipedia.org/wiki/Idempotence).
-I.e. it works great for range minimum queries, but it is not possible to answer range sum queries using this approach.
+Một trong những điểm yếu chính của phương pháp $O(1)$ được thảo luận trong phần trước là phương pháp này chỉ hỗ trợ các truy vấn với [idempotent functions](https://en.wikipedia.org/wiki/Idempotence).
+Tức là, nó hoạt động rất tốt cho các truy vấn tìm giá trị nhỏ nhất trong phạm vi, nhưng không thể trả lời các truy vấn tổng trong phạm vi bằng phương pháp này.
 
-There are similar data structures that can handle any type of associative functions and answer range queries in $O(1)$.
-One of them is called [Disjoint Sparse Table](https://discuss.codechef.com/questions/117696/tutorial-disjoint-sparse-table).
-Another one would be the [Sqrt Tree](sqrt-tree.md).
+Có những cấu trúc dữ liệu tương tự có thể xử lý bất kỳ loại hàm kết hợp nào và trả lời các truy vấn phạm vi trong thời gian $O(1)$.
+Một trong số đó được gọi là [Disjoint Sparse Table](https://discuss.codechef.com/questions/117696/tutorial-disjoint-sparse-table).
+Một cấu trúc khác là [Sqrt Tree](sqrt-tree.md).
