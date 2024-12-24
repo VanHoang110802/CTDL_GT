@@ -534,7 +534,7 @@ we are given a tree, each leaf has a number assigned (same number can appear mul
 We want to compute the number of different numbers in the subtree for every node of the tree.
 
 Applying to this task the same idea it is possible to obtain this solution:
-we can implement a [DFS](../graph/depth-first-search.md), which will return a pointer to a set of integers - the list of numbers in that subtree.
+we can implement a [DFS](https://cp-algorithms.com/graph/depth-first-search.html), which will return a pointer to a set of integers - the list of numbers in that subtree.
 Then to get the answer for the current node (unless of course it is a leaf), we call DFS for all children of that node, and merge all the received sets together.
 The size of the resulting set will be the answer for the current node.
 To efficiently combine multiple sets we just apply the above-described recipe:
