@@ -32,15 +32,15 @@ Kích thước của mảng 2 chiều sẽ là $(K + 1) \times \text{MAXN}$, tro
 $\text{K}$ phải thỏa mãn $\text{K} \ge \lfloor \log_2 \text{MAXN} \rfloor$, bởi vì $2^{\lfloor \log_2 \text{MAXN} \rfloor}$ là lũy thừa của hai lớn nhất mà chúng ta phải hỗ trợ.
 Đối với các mảng có độ dài hợp lý ($\le 10^7$ phần tử), giá trị $K = 25$ là một lựa chọn tốt.
 
-Kích thước $\text{MAXN}$ được đặt ở chiều thứ hai để cho phép truy cập bộ nhớ liên tiếp (cache friendly).
+Kích thước $\text{MAXN}$ được đặt ở chiều thứ hai để cho phép truy cập bộ nhớ liên tiếp (cache friendly - thân thiện với bộ nhớ cache).
 
 ```cpp
 int st[K + 1][MAXN];
 ```
 
-Because the range $[j, j + 2^i - 1]$ of length $2^i$ splits nicely into the ranges $[j, j + 2^{i - 1} - 1]$ and $[j + 2^{i - 1}, j + 2^i - 1]$, both of length $2^{i - 1}$, we can generate the table efficiently using dynamic programming:
+Vì khoảng $[j, j + 2^i - 1]$ có độ dài $2^i$ chia đẹp thành hai khoảng $[j, j + 2^{i - 1} - 1]$ và $[j + 2^{i - 1}, j + 2^i - 1]$, cả hai đều có độ dài $2^{i - 1}$, chúng ta có thể tạo bảng một cách hiệu quả bằng cách sử dụng quy hoạch động:
 
-```{.cpp file=sparsetable_generation}
+```cpp
 std::copy(array.begin(), array.end(), st[0]);
 
 for (int i = 1; i <= K; i++)
@@ -48,18 +48,18 @@ for (int i = 1; i <= K; i++)
         st[i][j] = f(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
 ```
 
-The function $f$ will depend on the type of query.
-For range sum queries it will compute the sum, for range minimum queries it will compute the minimum.
+Hàm $f$ sẽ phụ thuộc vào loại truy vấn.
+Đối với các truy vấn tổng trong phạm vi, nó sẽ tính tổng, còn đối với các truy vấn tìm giá trị nhỏ nhất trong phạm vi, nó sẽ tính giá trị nhỏ nhất.
 
-The time complexity of the precomputation is $O(\text{N} \log \text{N})$.
+Độ phức tạp thời gian của việc tính toán trước là $O(\text{N} \log \text{N})$.
 
 ## Range Sum Queries
 
-For this type of queries, we want to find the sum of all values in a range.
-Therefore the natural definition of the function $f$ is $f(x, y) = x + y$.
-We can construct the data structure with:
+Đối với loại truy vấn này, chúng ta cần tìm tổng của tất cả các giá trị trong một khoảng.
+Do đó, định nghĩa tự nhiên của hàm $f$ is $f(x, y) = x + y$.
+Chúng ta có thể xây dựng cấu trúc dữ liệu với:
 
-```{.cpp file=sparsetable_sum_generation}
+```cpp
 long long st[K + 1][MAXN];
 
 std::copy(array.begin(), array.end(), st[0]);
@@ -69,10 +69,10 @@ for (int i = 1; i <= K; i++)
         st[i][j] = st[i - 1][j] + st[i - 1][j + (1 << (i - 1))];
 ```
 
-To answer the sum query for the range $[L, R]$, we iterate over all powers of two, starting from the biggest one.
-As soon as a power of two $2^i$ is smaller or equal to the length of the range ($= R - L + 1$), we process the first part of range $[L, L + 2^i - 1]$, and continue with the remaining range $[L + 2^i, R]$.
+Để trả lời truy vấn tổng cho khoảng $[L, R]$, chúng ta lặp qua tất cả các lũy thừa của hai, bắt đầu từ lũy thừa lớn nhất.
+Ngay khi một lũy thừa của hai $2^i$ nhỏ hơn hoặc bằng độ dài của khoảng ($= R - L + 1$), chúng ta xử lý phần đầu của khoảng $[L, L + 2^i - 1]$, và tiếp tục với phần còn lại của khoảng $[L + 2^i, R]$.
 
-```{.cpp file=sparsetable_sum_query}
+```cpp
 long long sum = 0;
 for (int i = K; i >= 0; i--) {
     if ((1 << i) <= R - L + 1) {
@@ -82,7 +82,7 @@ for (int i = K; i >= 0; i--) {
 }
 ```
 
-Time complexity for a Range Sum Query is $O(K) = O(\log \text{MAXN})$.
+Độ phức tạp thời gian cho một truy vấn tổng trong phạm vi là $O(K) = O(\log \text{MAXN})$.
 
 ## Range Minimum Queries (RMQ)
 
