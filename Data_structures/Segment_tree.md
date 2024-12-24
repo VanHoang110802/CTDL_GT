@@ -169,18 +169,19 @@ Như đã đề cập trước đó, chúng ta cần lưu trữ tối đa $4n$ �
 Có thể ít hơn, nhưng để thuận tiện, chúng ta luôn cấp phát một mảng có kích thước $4n$.
 Sẽ có một số phần tử trong mảng tổng mà không tương ứng với bất kỳ đỉnh nào trong cây thực tế, nhưng điều này không làm phức tạp hóa việc triển khai.
 
-So, we store the Segment Tree simply as an array $t[]$ with a size of four times the input size $n$:
+Vậy, chúng ta lưu trữ Cây Đoạn đơn giản dưới dạng một mảng $t[]$ có kích thước gấp bốn lần kích thước đầu vào $n$:
 
-```{.cpp file=segment_tree_implementation_definition}
+```cpp
 int n, t[4*MAXN];
 ```
 
-The procedure for constructing the Segment Tree from a given array $a[]$ looks like this: 
-it is a recursive function with the parameters $a[]$ (the input array), $v$ (the index of the current vertex), and the boundaries $tl$ and $tr$ of the current segment. 
-In the main program this function will be called with the parameters of the root vertex: $v = 1$, $tl = 0$, and $tr = n - 1$. 
+Quy trình xây dựng Cây Phân Đoạn từ một mảng cho trước $a[]$ có dạng như sau:
+Đây là một hàm đệ quy với các tham số $a[]$ (mảng đầu vào), $v$ (chỉ số của đỉnh hiện tại), và các biên giới $tl$ và $tr$ của đoạn hiện tại.
+Trong chương trình chính, hàm này sẽ được gọi với các tham số của đỉnh gốc: $v = 1$, $tl = 0$, và $tr = n - 1$. 
 
-```{.cpp file=segment_tree_implementation_build}
-void build(int a[], int v, int tl, int tr) {
+```cpp
+void build(int a[], int v, int tl, int tr)
+{
     if (tl == tr) {
         t[v] = a[tl];
     } else {
@@ -192,10 +193,10 @@ void build(int a[], int v, int tl, int tr) {
 }
 ```
 
-Further the function for answering sum queries is also a recursive function, which receives as parameters information about the current vertex/segment (i.e. the index $v$ and the boundaries $tl$ and $tr$) and also the information about the boundaries of the query, $l$ and $r$. 
-In order to simplify the code, this function always does two recursive calls, even if only one is necessary - in that case the superfluous recursive call will have $l > r$, and this can easily be caught using an additional check at the beginning of the function.
+Hơn nữa, hàm để trả lời các truy vấn tổng cũng là một hàm đệ quy, nhận làm tham số thông tin về đỉnh/đoạn hiện tại (tức là chỉ số $v$ và các biên giới $tl$ và $tr$) và cũng nhận thông tin về các biên giới của truy vấn, $l$ và $r$. 
+Để đơn giản hóa mã nguồn, hàm này luôn thực hiện hai cuộc gọi đệ quy, ngay cả khi chỉ cần một cuộc gọi - trong trường hợp đó, cuộc gọi đệ quy thừa sẽ có $l > r$, và điều này có thể dễ dàng được phát hiện bằng cách kiểm tra thêm ở đầu hàm.
 
-```{.cpp file=segment_tree_implementation_sum}
+```cpp
 int sum(int v, int tl, int tr, int l, int r) {
     if (l > r) 
         return 0;
@@ -207,9 +208,9 @@ int sum(int v, int tl, int tr, int l, int r) {
 }
 ```
 
-Finally the update query. The function will also receive information about the current vertex/segment, and additionally also the parameter of the update query (i.e. the position of the element and its new value).
+Cuối cùng là truy vấn cập nhật. Hàm này cũng sẽ nhận thông tin về đỉnh/đoạn hiện tại, và ngoài ra còn nhận tham số của truy vấn cập nhật (tức là vị trí của phần tử và giá trị mới của nó).
 
-```{.cpp file=segment_tree_implementation_update}
+```cpp
 void update(int v, int tl, int tr, int pos, int new_val) {
     if (tl == tr) {
         t[v] = new_val;
@@ -226,27 +227,26 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 
 ### Memory efficient implementation
 
-Most people use the implementation from the previous section. If you look at the array `t` you can see that it follows the numbering of the tree nodes in the order of a BFS traversal (level-order traversal). 
-Using this traversal the children of vertex $v$ are $2v$ and $2v + 1$ respectively.
-However if $n$ is not a power of two, this method will skip some indices and leave some parts of the array `t` unused.
-The memory consumption is limited by $4n$, even though a Segment Tree of an array of $n$ elements requires only $2n - 1$ vertices.
+Hầu hết mọi người sử dụng triển khai từ phần trước. Nếu bạn nhìn vào mảng `t` bạn sẽ thấy rằng nó theo thứ tự đánh số các đỉnh của cây theo cách duyệt theo chiều rộng (duyệt theo thứ tự cấp).
+Sử dụng duyệt này, các đỉnh con của đỉnh $v$ là $2v$ và $2v + 1$ tương ứng.
+Tuy nhiên, nếu $n$ không phải là lũy thừa của hai, phương pháp này sẽ bỏ qua một số chỉ số và để trống một số phần của mảng `t`.
+Tuy nhiên, mức tiêu thụ bộ nhớ bị giới hạn bởi $4n$, mặc dù Cây Phân Đoạn của một mảng có $n$ phần tử chỉ yêu cầu $2n - 1$ đỉnh.
 
-However it can be reduced. 
-We renumber the vertices of the tree in the order of an Euler tour traversal (pre-order traversal), and we write all these vertices next to each other.
+Tuy nhiên, điều này có thể được giảm thiểu.
+Chúng ta sẽ đánh số lại các đỉnh của cây theo thứ tự của một chuyến tham quan Euler (pre-order traversal)(duyệt trước) , và chúng ta ghi tất cả các đỉnh này cạnh nhau.
 
-Let's look at a vertex at index $v$, and let it be responsible for the segment $[l, r]$, and let $mid = \dfrac{l + r}{2}$.
-It is obvious that the left child will have the index $v + 1$.
-The left child is responsible for the segment $[l, mid]$, i.e. in total there will be $2 * (mid - l + 1) - 1$ vertices in the left child's subtree.
-Thus we can compute the index of the right child of $v$. The index will be $v + 2 * (mid - l + 1)$.
-By this numbering we achieve a reduction of the necessary memory to $2n$.
+Hãy xem xét một đỉnh có chỉ số $v$, và giả sử nó chịu trách nhiệm cho đoạn $[l, r]$, và giả sử $mid = \dfrac{l + r}{2}$.
+Điều hiển nhiên là đỉnh trái sẽ có chỉ số $v + 1$.
+Đỉnh trái chịu trách nhiệm cho đoạn $[l, mid]$, tức là tổng cộng sẽ có $2 * (mid - l + 1) - 1$ đỉnh trong cây con của đỉnh trái.
+Vì vậy, chúng ta có thể tính chỉ số của đỉnh phải của $v$. Chỉ số của nó sẽ là $v + 2 * (mid - l + 1)$.
+Với cách đánh số này, chúng ta đạt được việc giảm bộ nhớ cần thiết xuống còn $2n$.
 
-## <a name="advanced-versions-of-segment-trees"></a>Advanced versions of Segment Trees
+## Các phiên bản nâng cao của Cây Đoạn (Advanced versions of Segment Trees)
 
+Cây Đoạn là một cấu trúc dữ liệu rất linh hoạt, và cho phép các biến thể và mở rộng theo nhiều hướng khác nhau.
+Hãy cùng thử phân loại chúng dưới đây.
 
-A Segment Tree is a very flexible data structure, and allows variations and extensions in many different directions. 
-Let's try to categorize them below. 
-
-### More complex queries
+### Các truy vấn phức tạp hơn (More complex queries)
 
 It can be quite easy to change the Segment Tree in a direction, such that it computes different queries (e.g. computing the minimum / maximum instead of the sum), but it also can be very nontrivial. 
 
