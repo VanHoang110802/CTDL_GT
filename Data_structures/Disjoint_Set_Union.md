@@ -21,9 +21,9 @@ Nó được lựa chọn trong mỗi tập hợp bởi chính cấu trúc dữ 
 `a` và `b` nằm trong cùng một tập hợp, nếu `find_set(a) == find_set(b)`.
 Nếu không, chúng thuộc các tập hợp khác nhau.
 
-As described in more detail later, the data structure allows you to do each of these operations in almost $O(1)$ time on average.
+As described in more detail later - Cụm từ này ám chỉ rằng thông tin hoặc giải thích sẽ được mở rộng và làm rõ hơn ở các phần tiếp theo của bài viết hoặc tài liệu, cấu trúc dữ liệu này cho phép thực hiện mỗi thao tác trong thời gian gần như trung bình là $O(1)$.
 
-Also in one of the subsections an alternative structure of a DSU is explained, which achieves a slower average complexity of $O(\log n)$, but can be more powerful than the regular DSU structure.
+Ngoài ra, trong một phần phụ, một cấu trúc thay thế của DSU cũng được giải thích, đạt được độ phức tạp trung bình chậm hơn là $O(\log n)$, nhưng có thể mạnh mẽ hơn cấu trúc DSU thông thường.
 
 ## Build an efficient data structure
 
