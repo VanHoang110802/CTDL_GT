@@ -86,25 +86,25 @@ Time complexity for a Range Sum Query is $O(K) = O(\log \text{MAXN})$.
 
 ## Range Minimum Queries (RMQ)
 
-These are the queries where the Sparse Table shines.
-When computing the minimum of a range, it doesn't matter if we process a value in the range once or twice.
-Therefore instead of splitting a range into multiple ranges, we can also split the range into only two overlapping ranges with power of two length.
-E.g. we can split the range $[1, 6]$ into the ranges $[1, 4]$ and $[3, 6]$.
-The range minimum of $[1, 6]$ is clearly the same as the minimum of the range minimum of $[1, 4]$ and the range minimum of $[3, 6]$.
-So we can compute the minimum of the range $[L, R]$ with:
+Đây là các truy vấn mà Sparse Table tỏ ra hiệu quả.
+Khi tính toán giá trị nhỏ nhất trong một khoảng, không quan trọng là chúng ta xử lý một giá trị trong khoảng đó một lần hay hai lần.
+Do đó, thay vì chia một khoảng thành nhiều khoảng con, chúng ta cũng có thể chia khoảng đó thành chỉ hai khoảng chồng lên nhau với độ dài là các lũy thừa của hai.
+Ví dụ, chúng ta có thể chia khoảng $[1, 6]$ thành các khoảng $[1, 4]$ and $[3, 6]$.
+Giá trị nhỏ nhất trong khoảng $[1, 6]$ rõ ràng là giống như giá trị nhỏ nhất của giá trị nhỏ nhất trong khoảng $[1, 4]$ và giá trị nhỏ nhất trong khoảng $[3, 6]$.
+Vậy chúng ta có thể tính toán giá trị nhỏ nhất trong khoảng $[L, R]$ với:
 
 $$\min(\text{st}[i][L], \text{st}[i][R - 2^i + 1]) \quad \text{ where } i = \log_2(R - L + 1)$$
 
-This requires that we are able to compute $\log_2(R - L + 1)$ fast.
-You can accomplish that by precomputing all logarithms:
+Điều này yêu cầu chúng ta phải tính toán nhanh $\log_2(R - L + 1)$.
+Bạn có thể đạt được điều này bằng cách tính toán trước tất cả các logarithm:
 
-```{.cpp file=sparse_table_log_table}
+```cpp
 int lg[MAXN+1];
 lg[1] = 0;
 for (int i = 2; i <= MAXN; i++)
     lg[i] = lg[i/2] + 1;
 ```
-Alternatively, log can be computed on the fly in constant space and time:
+Hoặc, log có thể được tính toán ngay lập tức trong không gian và thời gian hằng số:
 ```c++
 // C++20
 #include <bit>
@@ -119,9 +119,9 @@ int log2_floor(unsigned long long i) {
 ```
 [This benchmark](https://quick-bench.com/q/Zghbdj_TEkmw4XG2nqOpD3tsJ8U) shows that using `lg` array is slower because of cache misses.
 
-Afterwards we need to precompute the Sparse Table structure. This time we define $f$ with $f(x, y) = \min(x, y)$.
+Sau đó, chúng ta cần tính toán trước cấu trúc Sparse Table. Lần này, chúng ta định nghĩa $f$ với $f(x, y) = \min(x, y)$.
 
-```{.cpp file=sparse_table_minimum_generation}
+```cpp
 int st[K + 1][MAXN];
 
 std::copy(array.begin(), array.end(), st[0]);
@@ -131,14 +131,14 @@ for (int i = 1; i <= K; i++)
         st[i][j] = min(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
 ```
 
-And the minimum of a range $[L, R]$ can be computed with:
+Và giá trị nhỏ nhất trong một khoảng $[L, R]$ có thể được tính toán với:
 
-```{.cpp file=sparse_table_minimum_query}
+```cpp 
 int i = lg[R - L + 1];
 int minimum = min(st[i][L], st[i][R - (1 << i) + 1]);
 ```
 
-Time complexity for a Range Minimum Query is $O(1)$.
+Độ phức tạp thời gian cho một truy vấn tìm giá trị nhỏ nhất trong phạm vi là $O(1)$.
 
 ## Các cấu trúc dữ liệu tương tự hỗ trợ nhiều loại truy vấn hơn (Similar data structures supporting more types of queries)
 
