@@ -25,21 +25,21 @@ As described in more detail later - Cụm từ này ám chỉ rằng thông tin 
 
 Ngoài ra, trong một phần phụ, một cấu trúc thay thế của DSU cũng được giải thích, đạt được độ phức tạp trung bình chậm hơn là $O(\log n)$, nhưng có thể mạnh mẽ hơn cấu trúc DSU thông thường.
 
-## Build an efficient data structure
+## Xây dựng một cấu trúc dữ liệu hiệu quả (Build an efficient data structure)
 
-We will store the sets in the form of **trees**: each tree will correspond to one set.
-And the root of the tree will be the representative/leader of the set.
+Chúng ta sẽ lưu trữ các tập hợp dưới dạng **trees**: mỗi cây sẽ tương ứng với một tập hợp.
+Và nút gốc của cây sẽ là đại diện/người lãnh đạo của tập hợp.
 
-In the following image you can see the representation of such trees.
+Trong hình dưới đây, bạn có thể thấy sự biểu diễn của các cây như vậy.
 
 ![DSU_example](https://github.com/user-attachments/assets/51c77278-cd13-4394-bf6f-8537e68b3fc1)
 
-In the beginning, every element starts as a single set, therefore each vertex is its own tree.
-Then we combine the set containing the element 1 and the set containing the element 2.
-Then we combine the set containing the element 3 and the set containing the element 4.
-And in the last step, we combine the set containing the element 1 and the set containing the element 3.
+Ban đầu, mỗi phần tử bắt đầu như một tập hợp riêng biệt, do đó mỗi đỉnh là một cây riêng biệt.
+Sau đó, chúng ta kết hợp tập hợp chứa phần tử 1 và tập hợp chứa phần tử 2.
+Tiếp theo, chúng ta kết hợp tập hợp chứa phần tử 3 và tập hợp chứa phần tử 4.
+Và trong bước cuối cùng, chúng ta kết hợp tập hợp chứa phần tử 1 và tập hợp chứa phần tử 3.
 
-For the implementation this means that we will have to maintain an array `parent` that stores a reference to its immediate ancestor in the tree.
+Đối với việc triển khai, điều này có nghĩa là chúng ta sẽ phải duy trì một mảng `parent` để lưu trữ tham chiếu đến tổ tiên trực tiếp của mỗi đỉnh trong cây.
 
 ### Naive implementation
 
