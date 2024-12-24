@@ -41,7 +41,7 @@ Và trong bước cuối cùng, chúng ta kết hợp tập hợp chứa phần 
 
 Đối với việc triển khai, điều này có nghĩa là chúng ta sẽ phải duy trì một mảng `parent` để lưu trữ tham chiếu đến tổ tiên trực tiếp của mỗi đỉnh trong cây.
 
-### Naive implementation
+### Triển khai ngây thơ (Naive implementation)
 
 We can already write the first implementation of the Disjoint Set Union data structure.
 It will be pretty inefficient at first, but later we can improve it using two optimizations, so that it will take nearly constant time for each function call.
