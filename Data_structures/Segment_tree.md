@@ -149,25 +149,25 @@ Các đỉnh màu xanh lá cây là các đỉnh mà chúng ta thăm và cập n
 ![sum-segment-tree-update](https://github.com/user-attachments/assets/9f4b0f09-6c34-4dbc-a72b-eed3b14252d7)
 
 
-### Implementation ### { #implementation}
+### Implementation
 
-The main consideration is how to store the Segment Tree.
-Of course we can define a $\text{Vertex}$ struct and create objects, that store the boundaries of the segment, its sum and additionally also pointers to its child vertices.
-However, this requires storing a lot of redundant information in the form of pointers.
-We will use a simple trick to make this a lot more efficient by using an _implicit data structure_: Only storing the sums in an array.
-(A similar method is used for binary heaps).
-The sum of the root vertex at index 1, the sums of its two child vertices at indices 2 and 3, the sums of the children of those two vertices at indices 4 to 7, and so on. 
-With 1-indexing, conveniently the left child of a vertex at index $i$ is stored at index $2i$, and the right one at index $2i + 1$. 
-Equivalently, the parent of a vertex at index $i$ is stored at $i/2$ (integer division).
+Điều quan trọng chính là cách lưu trữ Cây Phân Đoạn.
+Tất nhiên, chúng ta có thể định nghĩa một cấu trúc $\text{Vertex}$ và tạo ra các đối tượng lưu trữ biên giới của đoạn, tổng của nó và thêm vào đó là các con trỏ đến các đỉnh con của nó.
+Tuy nhiên, cách này yêu cầu lưu trữ rất nhiều thông tin thừa dưới dạng con trỏ.
+Chúng ta sẽ sử dụng một mẹo đơn giản để làm điều này hiệu quả hơn nhiều bằng cách sử dụng một _implicit data structure_: chỉ lưu trữ các tổng trong một mảng.
+(Một phương pháp tương tự được sử dụng cho các đống nhị phân).
+Tổng của đỉnh gốc ở chỉ số 1, tổng của hai đỉnh con của nó ở các chỉ số 2 và 3, tổng của các đỉnh con của hai đỉnh này ở các chỉ số từ 4 đến 7, và cứ như vậy.
+Với chỉ số bắt đầu từ 1, một cách thuận tiện là đỉnh trái của một đỉnh ở chỉ số $i$ được lưu trữ tại chỉ số $2i$, và đỉnh phải ở chỉ số $2i + 1$. 
+Tương tự, đỉnh cha của một đỉnh ở chỉ số $i$ được lưu trữ tại chỉ số $i/2$ (phép chia nguyên).
 
-This simplifies the implementation a lot. 
-We don't need to store the structure of the tree in memory. 
-It is defined implicitly. 
-We only need one array which contains the sums of all segments. 
+Điều này giúp đơn giản hóa việc triển khai rất nhiều.
+Chúng ta không cần phải lưu trữ cấu trúc của cây trong bộ nhớ.
+Cấu trúc này được định nghĩa ngầm.
+Chúng ta chỉ cần một mảng duy nhất chứa tổng của tất cả các đoạn.
 
-As noted before, we need to store at most $4n$ vertices.
-It might be less, but for convenience we always allocate an array of size $4n$.
-There will be some elements in the sum array, that will not correspond to any vertices in the actual tree, but this doesn't complicate the implementation.
+Như đã đề cập trước đó, chúng ta cần lưu trữ tối đa $4n$ đỉnh.
+Có thể ít hơn, nhưng để thuận tiện, chúng ta luôn cấp phát một mảng có kích thước $4n$.
+Sẽ có một số phần tử trong mảng tổng mà không tương ứng với bất kỳ đỉnh nào trong cây thực tế, nhưng điều này không làm phức tạp hóa việc triển khai.
 
 So, we store the Segment Tree simply as an array $t[]$ with a size of four times the input size $n$:
 
