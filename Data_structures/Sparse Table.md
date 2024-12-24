@@ -29,7 +29,7 @@ Sau đó, một truy vấn phạm vi khác có thể được trả lời bằng
 Chúng ta sẽ sử dụng một mảng 2 chiều để lưu trữ các câu trả lời cho các truy vấn đã được tính toán trước.
 $\text{st}[i][j]$ sẽ lưu trữ câu trả lời cho khoảng $[j, j + 2^i - 1]$ có độ dài $2^i$.
 Kích thước của mảng 2 chiều sẽ là $(K + 1) \times \text{MAXN}$, trong đó $\text{MAXN}$ là độ dài mảng lớn nhất có thể.
-$\text{K}$ phải thỏa mãn $\text{K} \ge \lfloor \log_2 \text{MAXN} \rfloor$, because $2^{\lfloor \log_2 \text{MAXN} \rfloor}$ là lũy thừa của hai lớn nhất mà chúng ta phải hỗ trợ.
+$\text{K}$ phải thỏa mãn $\text{K} \ge \lfloor \log_2 \text{MAXN} \rfloor$, bởi vì $2^{\lfloor \log_2 \text{MAXN} \rfloor}$ là lũy thừa của hai lớn nhất mà chúng ta phải hỗ trợ.
 Đối với các mảng có độ dài hợp lý ($\le 10^7$ phần tử), giá trị $K = 25$ là một lựa chọn tốt.
 
 Kích thước $\text{MAXN}$ được đặt ở chiều thứ hai để cho phép truy cập bộ nhớ liên tiếp (cache friendly).
