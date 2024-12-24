@@ -1,5 +1,12 @@
 > Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/sparse-table.html)
 
+---
+tags:
+  - Original
+---
+
+# Sparse Table
+
 Sparse Table is a data structure, that allows answering range queries.
 It can answer most range queries in $O(\log n)$, but its true power is answering range minimum queries (or equivalent range maximum queries).
 For those queries it can compute the answer in $O(1)$ time.
