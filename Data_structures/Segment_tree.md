@@ -51,26 +51,26 @@ Chiều cao của Cây Segment là $O(\log n)$, vì khi di chuyển từ gốc �
 
 ### Construction
 
-Before constructing the segment tree, we need to decide:
+Trước khi xây dựng cây đoạn, chúng ta cần quyết định rằng:
 
-1. the *value* that gets stored at each node of the segment tree.
-   For example, in a sum segment tree, a node would store the sum of the elements in its range $[l, r]$.
-2. the *merge* operation that merges two siblings in a segment tree.
-   For example, in a sum segment tree, the two nodes corresponding to the ranges $a[l_1 \dots r_1]$ and $a[l_2 \dots r_2]$ would be merged into a node corresponding to the range $a[l_1 \dots r_2]$ by adding the values of the two nodes.
+1. the *value* được lưu trữ tại mỗi nút của cây phân đoạn.
+   Ví dụ, trong cây phân đoạn tổng, một nút sẽ lưu trữ tổng của các phần tử trong phạm vi $[l, r]$ của nó.
+2. the *merge* operation dùng để hợp nhất hai nút con trong cây đoạn.
+   Ví dụ, trong cây đoạn tổng, hai nút tương ứng với các phạm vi $a[l_1 \dots r_1]$ và $a[l_2 \dots r_2]$ sẽ được hợp nhất thành một nút tương ứng với phạm vi $a[l_1 \dots r_2]$ bằng cách cộng giá trị của hai nút này lại với nhau.
 
-Note that a vertex is a "leaf vertex", if its corresponding segment covers only one value in the original array. It is present at the lowermost level of a segment tree. Its value would be equal to the (corresponding) element $a[i]$. 
+Lưu ý rằng một đỉnh là "đỉnh lá" (leaf vertex) nếu đoạn tương ứng của nó chỉ bao phủ một giá trị trong mảng gốc. Nó xuất hiện ở cấp thấp nhất của cây đoạn. Giá trị của nó sẽ bằng với phần tử (tương ứng) $a[i]$.
 
-Now, for construction of the segment tree, we start at the bottom level (the leaf vertices) and assign them their respective values. On the basis of these values, we can compute the values of the previous level, using the `merge` function.
-And on the basis of those, we can compute the values of the previous, and repeat the procedure until we reach the root vertex. 
+Bây giờ, để xây dựng cây đoạn, chúng ta bắt đầu từ cấp thấp nhất (các đỉnh lá) và gán cho chúng các giá trị tương ứng. Dựa trên các giá trị này, chúng ta có thể tính toán giá trị của cấp trước đó, sử dụng hàm `merge` .
+Và dựa trên các giá trị đó, chúng ta có thể tính toán giá trị của cấp trước đó, và lặp lại quy trình cho đến khi đạt đến đỉnh gốc.
 
-It is convenient to describe this operation recursively in the other direction, i.e., from the root vertex to the leaf vertices. The construction procedure, if called on a non-leaf vertex, does the following:
+Thật tiện lợi khi mô tả phép toán này một cách đệ quy theo hướng ngược lại, tức là từ đỉnh gốc đến các đỉnh lá. Quy trình xây dựng, nếu được gọi trên một đỉnh không phải lá, sẽ thực hiện các bước sau:
 
-1. recursively construct the values of the two child vertices
-2. merge the computed values of these children.
+1. Đệ quy xây dựng các giá trị của hai đỉnh con.
+2. Hợp nhất các giá trị đã tính toán của các đỉnh con này.
 
-We start the construction at the root vertex, and hence, we are able to compute the entire segment tree.
+Chúng ta bắt đầu xây dựng từ đỉnh gốc, và do đó, có thể tính toán toàn bộ cây phân đoạn.
 
-The time complexity of this construction is $O(n)$, assuming that the merge operation is constant time (the merge operation gets called $n$ times, which is equal to the number of internal nodes in the segment tree).
+Độ phức tạp thời gian của quá trình xây dựng này là $O(n)$, giả sử rằng phép hợp nhất có độ phức tạp thời gian hằng số (phép hợp nhất được gọi $n$ lần, tương đương với số lượng các nút nội tại trong cây đoạn).
 
 ### Sum queries
 
