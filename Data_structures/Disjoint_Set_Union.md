@@ -43,20 +43,20 @@ Và trong bước cuối cùng, chúng ta kết hợp tập hợp chứa phần 
 
 ### Triển khai ngây thơ (Naive implementation)
 
-We can already write the first implementation of the Disjoint Set Union data structure.
-It will be pretty inefficient at first, but later we can improve it using two optimizations, so that it will take nearly constant time for each function call.
+Chúng ta có thể viết triển khai đầu tiên của cấu trúc dữ liệu Disjoint Set Union (DSU).
+Lúc đầu, nó sẽ khá kém hiệu quả, nhưng sau đó chúng ta có thể cải thiện nó bằng hai tối ưu hóa, sao cho thời gian thực hiện mỗi lần gọi hàm gần như hằng số.
 
-As we said, all the information about the sets of elements will be kept in an array `parent`.
+Như chúng tôi đã nói, tất cả thông tin về các tập hợp phần tử sẽ được lưu trữ trong một mảng `parent`.
 
-To create a new set (operation `make_set(v)`), we simply create a tree with root in the vertex `v`, meaning that it is its own ancestor.
+Để tạo một tập hợp mới (phép toán `make_set(v)`), chúng ta chỉ cần tạo một cây có gốc là đỉnh `v`, nghĩa là nó là tổ tiên của chính nó.
 
-To combine two sets (operation `union_sets(a, b)`), we first find the representative of the set in which `a` is located, and the representative of the set in which `b` is located.
-If the representatives are identical, that we have nothing to do, the sets are already merged.
-Otherwise, we can simply specify that one of the representatives is the parent of the other representative - thereby combining the two trees.
+Để hợp nhất hai tập hợp (phép toán `union_sets(a, b)`), trước tiên chúng ta tìm đại diện của tập hợp chứa `a` và đại diện của tập hợp chứa `b`.
+Nếu hai đại diện này giống nhau, thì không cần làm gì thêm vì các tập hợp đã được hợp nhất.
+Ngược lại, chúng ta chỉ cần chỉ định một trong hai đại diện làm cha của đại diện còn lại - qua đó kết hợp hai cây.
 
-Finally the implementation of the find representative function (operation `find_set(v)`):
-we simply climb the ancestors of the vertex `v` until we reach the root, i.e. a vertex such that the reference to the ancestor leads to itself.
-This operation is easily implemented recursively.
+Cuối cùng, việc triển khai hàm tìm đại diện (phép toán `find_set(v)`):
+Chúng ta đơn giản leo lên các tổ tiên của đỉnh `v` cho đến khi đạt đến gốc, tức là một đỉnh mà tham chiếu đến tổ tiên của nó dẫn đến chính nó.
+Phép toán này có thể dễ dàng được triển khai theo cách đệ quy.
 
 ```cpp
 void make_set(int v) {
@@ -77,12 +77,12 @@ void union_sets(int a, int b) {
 }
 ```
 
-However this implementation is inefficient.
-It is easy to construct an example, so that the trees degenerate into long chains.
-In that case each call `find_set(v)` can take $O(n)$ time.
+Tuy nhiên, cách triển khai này không hiệu quả.
+Rất dễ để xây dựng một ví dụ trong đó các cây thoái hóa thành những chuỗi dài.
+Trong trường hợp đó, mỗi lần gọi `find_set(v)` có thể mất thời gian $O(n)$.
 
-This is far away from the complexity that we want to have (nearly constant time).
-Therefore we will consider two optimizations that will allow to significantly accelerate the work.
+Đây là mức độ phức tạp cách xa so với mức chúng ta mong muốn (gần như thời gian hằng số).
+Do đó, chúng ta sẽ xem xét hai phương pháp tối ưu hóa nhằm tăng tốc đáng kể quá trình thực hiện.
 
 ### Path compression optimization
 
