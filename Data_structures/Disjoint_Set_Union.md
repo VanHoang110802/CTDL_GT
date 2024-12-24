@@ -558,7 +558,7 @@ Indeed, for rooting a tree at vertex $v$ we must go from the vertex to the old r
 
 However in reality it isn't so bad, we can just re-root the smaller of the two trees similar to the ideas in the previous sections, and get $O(\log n)$ on average.
 
-More details (including proof of the time complexity) can be found in the article [Finding Bridges Online](../graph/bridge-searching-online.md).
+More details (including proof of the time complexity) can be found in the article [Finding Bridges Online](https://cp-algorithms.com/graph/bridge-searching-online.html).
 
 ## Historical retrospective
 
