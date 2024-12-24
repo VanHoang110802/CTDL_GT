@@ -842,12 +842,12 @@ int query(int v, int tl, int tr, int l, int r) {
 }
 ```
 
-### <a name="generalization-to-higher-dimensions"></a>Generalization to higher dimensions
+### Mở rộng lên các chiều cao hơn (Generalization to higher dimensions)
 
-A Segment Tree can be generalized quite natural to higher dimensions.
-If in the one-dimensional case we split the indices of the array into segments, then in the two-dimensional we make an ordinary Segment Tree with respect to the first indices, and for each segment we build an ordinary Segment Tree with respect to the second indices.
+Một cây Segment có thể được mở rộng một cách tự nhiên lên các chiều cao hơn.
+Nếu trong trường hợp một chiều, chúng ta chia các chỉ số của mảng thành các đoạn, thì trong trường hợp hai chiều, chúng ta xây dựng một cây Segment thông thường đối với các chỉ số đầu tiên, và cho mỗi đoạn, chúng ta xây dựng một cây Segment thông thường đối với các chỉ số thứ hai.
 
-#### Simple 2D Segment Tree
+#### Cây Segment 2D đơn giản (Simple 2D Segment Tree)
 
 A matrix $a[0 \dots n-1, 0 \dots m-1]$ is given, and we have to find the sum (or minimum/maximum) on some submatrix $a[x_1 \dots x_2, y_1 \dots y_2]$, as well as perform modifications of individual matrix elements (i.e. queries of the form $a[x][y] = p$).
 
@@ -858,11 +858,11 @@ We will construct an ordinary one-dimensional Segment Tree using only the first 
 But instead of storing a number in a segment, we store an entire Segment Tree: 
 i.e. at this moment we remember that we also have a second coordinate; but because at this moment the first coordinate is already fixed to some interval $[l \dots r]$, we actually work with such a strip $a[l \dots r, 0 \dots m-1]$ and for it we build a Segment Tree.
 
-Here is the implementation of the construction of a 2D Segment Tree.
-It actually represents two separate blocks: 
-the construction of a Segment Tree along the $x$ coordinate ($\text{build}_x$), and the $y$ coordinate ($\text{build}_y$).
-For the leaf nodes in $\text{build}_y$ we have to separate two cases: 
-when the current segment of the first coordinate $[tlx \dots trx]$ has length 1, and when it has a length greater than one. In the first case, we just take the corresponding value from the matrix, and in the second case we can combine the values of two Segment Trees from the left and the right son in the coordinate $x$.
+Dưới đây là cách triển khai xây dựng Cây Segment 2D.
+Trên thực tế, nó đại diện cho hai khối chức năng riêng biệt:
+Việc xây dựng một Cây Segment theo tọa độ $x$ (${build}_x$), và theo tọa độ $y$ (${build}_y$).
+Đối với các nút lá trong ${build}_y$ chúng ta cần phân tách thành hai trường hợp: 
+khi đoạn hiện tại của tọa độ thứ nhất $[tlx \dots trx]$ có độ dài bằng 1, và khi nó có độ dài lớn hơn 1. Trong trường hợp đầu tiên, chúng ta chỉ cần lấy giá trị tương ứng từ ma trận, và trong trường hợp thứ hai, chúng ta có thể kết hợp các giá trị từ hai cây Segment con bên trái và bên phải theo tọa độ $x$.
 
 ```cpp
 void build_y(int vx, int lx, int rx, int vy, int ly, int ry) {
@@ -889,11 +889,11 @@ void build_x(int vx, int lx, int rx) {
 }
 ```
 
-Such a Segment Tree still uses a linear amount of memory, but with a larger constant: $16 n m$.
-It is clear that the described procedure $\text{build}_x$ also works in linear time. 
+Cây Segment như vậy vẫn sử dụng một lượng bộ nhớ tuyến tính, nhưng với một hằng số lớn hơn: $16 n m$.
+Rõ ràng, thủ tục được mô tả ${build}_x$ cũng hoạt động trong thời gian tuyến tính. 
 
-Now we turn to processing of queries. We will answer to the two-dimensional query using the same principle: 
-first break the query on the first coordinate, and then for every reached vertex, we call the corresponding Segment Tree of the second coordinate.
+Bây giờ chúng ta chuyển sang việc xử lý các truy vấn. Chúng ta sẽ trả lời cho truy vấn hai chiều bằng cách sử dụng cùng một nguyên lý: 
+đầu tiên phân tách truy vấn theo chỉ số đầu tiên, và sau đó đối với mỗi đỉnh đã đi qua, chúng ta gọi Cây Segment tương ứng theo chỉ số thứ hai.
 
 ```cpp
 int sum_y(int vx, int vy, int tly, int try_, int ly, int ry) {
@@ -915,12 +915,12 @@ int sum_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry) {
 }
 ```
 
-This function works in $O(\log n \log m)$ time, since it first descends the tree in the first coordinate, and for each traversed vertex in the tree it makes a query in the corresponding Segment Tree along the second coordinate.
+Hàm này hoạt động trong thời gian $O(\log n \log m)$ vì nó đầu tiên đi xuống cây theo chỉ số đầu tiên, và đối với mỗi đỉnh đã đi qua trong cây, nó thực hiện một truy vấn trong Cây Segment tương ứng theo chỉ số thứ hai.
 
-Finally we consider the modification query. 
-We want to learn how to modify the Segment Tree in accordance with the change in the value of some element $a[x][y] = p$.
-It is clear, that the changes will occur only in those vertices of the first Segment Tree that cover the coordinate $x$ (and such will be $O(\log n)$), and for Segment Trees corresponding to them the changes will only occurs at those vertices that covers the coordinate $y$ (and such will be $O(\log m)$).
-Therefore the implementation will be not very different form the one-dimensional case, only now we first descend the first coordinate, and then the second.
+Cuối cùng, chúng ta xem xét truy vấn sửa đổi. 
+Chúng ta muốn biết cách sửa đổi Cây Segment theo sự thay đổi giá trị của một phần tử nào đó $a[x][y] = p$.
+Rõ ràng, các thay đổi chỉ xảy ra tại những đỉnh của Cây Segment đầu tiên bao phủ chỉ số $x$ (và số lượng này là $O(\log n)$), và đối với các Cây Segment tương ứng với chúng, các thay đổi chỉ xảy ra tại những đỉnh bao phủ chỉ số $y$ (và số lượng này là $O(\log m)$).
+Vì vậy, việc triển khai sẽ không khác nhiều so với trường hợp một chiều, chỉ khác là bây giờ chúng ta đầu tiên đi xuống theo chỉ số đầu tiên, rồi sau đó theo chỉ số thứ hai.
 
 ```cpp
 void update_y(int vx, int lx, int rx, int vy, int ly, int ry, int x, int y, int new_val) {
