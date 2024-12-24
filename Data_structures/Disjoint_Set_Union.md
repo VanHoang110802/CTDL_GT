@@ -242,8 +242,8 @@ We have to add vertices and undirected edges, and answer queries of the form $(a
 
 Here we can directly apply the data structure, and get a solution that handles an addition of a vertex or an edge and a query in nearly constant time on average.
 
-This application is quite important, because nearly the same problem appears in [Kruskal's algorithm for finding a minimum spanning tree](../graph/mst_kruskal.md).
-Using DSU we can [improve](../graph/mst_kruskal_with_dsu.md) the $O(m \log n + n^2)$ complexity to $O(m \log n)$.
+This application is quite important, because nearly the same problem appears in [Kruskal's algorithm for finding a minimum spanning tree](https://cp-algorithms.com/graph/mst_kruskal.html).
+Using DSU we can [improve](https://cp-algorithms.com/graph/mst_kruskal_with_dsu.html) the $O(m \log n + n^2)$ complexity to $O(m \log n)$.
 
 ### Search for connected components in an image
 
@@ -256,7 +256,7 @@ For the solution we simply iterate over all white pixels in the image, for each 
 Thus we will have a DSU with $n m$ nodes corresponding to image pixels.
 The resulting trees in the DSU are the desired connected components.
 
-The problem can also be solved by [DFS](../graph/depth-first-search.md) or [BFS](../graph/breadth-first-search.md), but the method described here has an advantage:
+The problem can also be solved by [DFS](https://cp-algorithms.com/graph/depth-first-search.html) or [BFS](https://cp-algorithms.com/graph/breadth-first-search.html), but the method described here has an advantage:
 it can process the matrix row by row (i.e. to process a row we only need the previous and the current row, and only need a DSU built for the elements of one row) in $O(\min(n, m))$ memory.
 
 ### Store additional information for each set
@@ -470,8 +470,8 @@ Although this algorithm existed already before his discovery.
 
 ### Offline LCA (lowest common ancestor in a tree) in $O(\alpha(n))$ on average {data-toc-label="Offline LCA"}
 
-The algorithm for finding the LCA is discussed in the article [Lowest Common Ancestor - Tarjan's off-line algorithm](../graph/lca_tarjan.md).
-This algorithm compares favorable with other algorithms for finding the LCA due to its simplicity (especially compared to an optimal algorithm like the one from [Farach-Colton and Bender](../graph/lca_farachcoltonbender.md)).
+The algorithm for finding the LCA is discussed in the article [Lowest Common Ancestor - Tarjan's off-line algorithm](https://cp-algorithms.com/graph/lca_tarjan.html).
+This algorithm compares favorable with other algorithms for finding the LCA due to its simplicity (especially compared to an optimal algorithm like the one from [Farach-Colton and Bender](https://cp-algorithms.com/graph/lca_farachcoltonbender.html)).
 
 ### Storing the DSU explicitly in a set list / Applications of this idea when merging various data structures
 
