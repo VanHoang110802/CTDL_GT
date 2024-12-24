@@ -646,7 +646,7 @@ Và chúng ta có thể lặp lại điều này cho đến khi thăm tất cả
 Tóm lại, như thường lệ, chúng ta sẽ chạm vào $O(\log n)$ nút trong một truy vấn. Ở nút gốc, chúng ta thực hiện một tìm kiếm nhị phân, và ở tất cả các nút khác, chúng ta chỉ làm công việc hằng số.
 Điều này có nghĩa là độ phức tạp để trả lời một truy vấn là $O(\log n)$.
 
-Nhưng lưu ý rằng, điều này sử dụng bộ nhớ gấp ba lần so với Merge Sort Tree bình thường, vốn đã sử dụng rất nhiều bộ nhớ ($O(n \log n)$).
+Nhưng lưu ý rằng, điều này sử dụng bộ nhớ gấp ba lần so với Merge Sort Tree bình thường, vốn đã sử dụng rất nhiều bộ nhớ $O(n \log n)$.
 
 Kỹ thuật này dễ dàng áp dụng cho một bài toán không yêu cầu truy vấn sửa đổi. 
 Hai chỉ số này chỉ là các số nguyên và có thể dễ dàng tính toán khi hợp nhất hai dãy đã sắp xếp.
