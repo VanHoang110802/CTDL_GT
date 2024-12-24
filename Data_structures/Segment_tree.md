@@ -539,15 +539,15 @@ void build(int a[], int v, int tl, int tr) {
 Chúng ta đã biết rằng Cây Phân Đoạn được xây dựng theo cách này sẽ yêu cầu bộ nhớ là $O(n \log n)$.
 Và nhờ vào triển khai này, việc xây dựng cây cũng mất $O(n \log n)$ thời gian, vì mỗi danh sách được xây dựng trong thời gian tuyến tính theo kích thước của nó. 
 
-Now consider the answer to the query. 
-We will go down the tree, like in the regular Segment Tree, breaking our segment $a[l \dots r]$ into several subsegments (into at most $O(\log n)$ pieces). 
-It is clear that the answer of the whole answer is the minimum of each of the subqueries.
-So now we only need to understand, how to respond to a query on one such subsegment that corresponds with some vertex of the tree.
+Bây giờ, hãy xét đến việc trả lời truy vấn.
+Chúng ta sẽ đi xuống cây, giống như trong Cây Phân Đoạn thông thường, chia đoạn $a[l \dots r]$ thành nhiều đoạn con (tối đa là $O(\log n)$ đoạn). 
+Rõ ràng, câu trả lời cho truy vấn tổng thể chính là giá trị nhỏ nhất trong các truy vấn con.
+Vậy bây giờ, chúng ta chỉ cần hiểu cách trả lời một truy vấn trên một đoạn con tương ứng với một đỉnh của cây.
 
-We are at some vertex of the Segment Tree and we want to compute the answer to the query, i.e. find the minimum number greater that or equal to a given number $x$. 
-Since the vertex contains the list of elements in sorted order, we can simply perform a binary search on this list and return the first number, greater than or equal to $x$.
+Chúng ta đang ở một đỉnh của Cây Phân Đoạn và muốn tính câu trả lời cho truy vấn, tức là tìm giá trị nhỏ nhất lớn hơn hoặc bằng một số $x$. 
+Vì đỉnh này chứa danh sách các phần tử theo thứ tự sắp xếp, chúng ta có thể đơn giản thực hiện tìm kiếm nhị phân trên danh sách này và trả về số đầu tiên lớn hơn hoặc bằng $x$.
 
-Thus the answer to the query in one segment of the tree takes $O(\log n)$ time, and the entire query is processed in $O(\log^2 n)$.
+Do đó, câu trả lời cho truy vấn trên một đoạn con của cây mất $O(\log n)$ thời gian, và toàn bộ truy vấn được xử lý trong $O(\log^2 n)$.
 
 ```cpp
 int query(int v, int tl, int tr, int l, int r, int x) {
@@ -564,27 +564,27 @@ int query(int v, int tl, int tr, int l, int r, int x) {
 }
 ```
 
-The constant $\text{INF}$ is equal to some large number that is bigger than all numbers in the array. 
-Its usage means, that there is no number greater than or equal to $x$ in the segment. 
-It has the meaning of "there is no answer in the given interval".
+Hằng số ${INF}$ bằng một số lớn hơn tất cả các số trong mảng.
+Ý nghĩa của việc sử dụng nó là, không có số nào lớn hơn hoặc bằng $x$ trong đoạn. 
+Nó mang ý nghĩa là "không có câu trả lời trong khoảng cho trước" (there is no answer in the given interval).
 
-#### Find the smallest number greater or equal to a specified number. With modification queries.
+#### Tìm số nhỏ nhất lớn hơn hoặc bằng một số đã chỉ định. Với các truy vấn sửa đổi. (Find the smallest number greater or equal to a specified number. With modification queries.)
 
-This task is similar to the previous.
-The last approach has a disadvantage, it was not possible to modify the array between answering queries.
-Now we want to do exactly this: a modification query will do the assignment $a[i] = y$.
+Vấn đề này tương tự như vấn đề trước.
+Phương pháp cuối cùng có một nhược điểm, đó là không thể sửa đổi mảng giữa các truy vấn.
+Giờ đây, chúng ta muốn thực hiện chính điều này: một truy vấn sửa đổi sẽ thực hiện phép gán $a[i] = y$.
 
-The solution is similar to the solution of the previous problem, but instead of lists at each vertex of the Segment Tree, we will store a balanced list that allows you to quickly search for numbers, delete numbers, and insert new numbers. 
-Since the array can contain a number repeated, the optimal choice is the data structure $\text{multiset}$. 
+Giải pháp tương tự như giải pháp của vấn đề trước, nhưng thay vì lưu trữ các danh sách ở mỗi đỉnh của Cây Phân Đoạn, chúng ta sẽ lưu trữ một danh sách cân bằng cho phép tìm kiếm số nhanh chóng, xóa số, và chèn số mới.
+Vì mảng có thể chứa các số lặp lại, lựa chọn tối ưu là cấu trúc dữ liệu ${multiset}$. 
 
-The construction of such a Segment Tree is done in pretty much the same way as in the previous problem, only now we need to combine $\text{multiset}$s and not sorted lists.
-This leads to a construction time of $O(n \log^2 n)$ (in general merging two red-black trees can be done in linear time, but the C++ STL doesn't guarantee this time complexity).
+Việc xây dựng Segment Tree như vậy thực hiện khá giống với bài toán trước, chỉ khác là giờ đây chúng ta cần kết hợp các ${multiset}$s thay vì các danh sách đã sắp xếp.
+Điều này dẫn đến thời gian xây dựng là $O(n \log^2 n)$ (vì về lý thuyết, việc hợp nhất hai cây red-black có thể được thực hiện trong thời gian tuyến tính, nhưng STL của C++ không đảm bảo độ phức tạp thời gian này).
 
-The $\text{query}$ function is also almost equivalent, only now the $\text{lower_bound}$ function of the $\text{multiset}$ function should be called instead ($\text{std::lower_bound}$ only works in $O(\log n)$ time if used with random-access iterators).
+Hàm ${query}$ cũng gần giống như trước, nhưng bây giờ cần gọi hàm ${lower_bound}$ của ${multiset}$ thay vì sử dụng (Vì ${std::lower_bound}$ chỉ hoạt động trong $O(\log n)$ khi sử dụng với iterators có thể truy cập ngẫu nhiên).
 
-Finally the modification request. 
-To process it, we must go down the tree, and modify all $\text{multiset}$ from the corresponding segments that contain the affected element.
-We simply delete the old value of this element (but only one occurrence), and insert the new value.
+Cuối cùng, với yêu cầu sửa đổi. 
+Để xử lý yêu cầu này, chúng ta phải đi xuống cây và sửa đổi tất cả các ${multiset}$ từ các đoạn tương ứng chứa phần tử bị ảnh hưởng. 
+Cách đơn giản là xóa giá trị cũ của phần tử này (chỉ xóa một lần xuất hiện) và chèn giá trị mới vào.
 
 ```cpp
 void update(int v, int tl, int tr, int pos, int new_val) {
@@ -602,9 +602,9 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 }
 ```
 
-Processing of this modification query also takes $O(\log^2 n)$ time.
+Việc xử lý yêu cầu sửa đổi này cũng mất $O(\log^2 n)$ thời gian.
 
-#### Find the smallest number greater or equal to a specified number. Acceleration with "fractional cascading".
+#### Tìm số nhỏ nhất lớn hơn hoặc bằng một số chỉ định. Tăng tốc với "fractional cascading" (Find the smallest number greater or equal to a specified number. Acceleration with "fractional cascading".)
 
 We have the same problem statement, we want to find the minimal number greater than or equal to $x$ in a segment, but this time in $O(\log n)$ time.
 We will improve the time complexity using the technique "fractional cascading".
