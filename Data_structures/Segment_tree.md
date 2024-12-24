@@ -919,7 +919,7 @@ Hàm này hoạt động trong thời gian $O(\log n \log m)$ vì nó đầu ti�
 
 Cuối cùng, chúng ta xem xét truy vấn sửa đổi. 
 Chúng ta muốn biết cách sửa đổi Cây Segment theo sự thay đổi giá trị của một phần tử nào đó $a[x][y] = p$.
-Rõ ràng, các thay đổi chỉ xảy ra tại những đỉnh của Cây Segment đầu tiên bao phủ chỉ số $x$ (và số lượng này là $O(\log n)$), và đối với các Cây Segment tương ứng với chúng, các thay đổi chỉ xảy ra tại những đỉnh bao phủ chỉ số $y$ (và số lượng này là $O(\log m)$).
+Rõ ràng, các thay đổi chỉ xảy ra tại những đỉnh của Cây Segment đầu tiên bao phủ chỉ số $x$ (và số lượng này là $O(\log n)$, và đối với các Cây Segment tương ứng với chúng, các thay đổi chỉ xảy ra tại những đỉnh bao phủ chỉ số $y$ (và số lượng này là $O(\log m)$.
 Vì vậy, việc triển khai sẽ không khác nhiều so với trường hợp một chiều, chỉ khác là bây giờ chúng ta đầu tiên đi xuống theo chỉ số đầu tiên, rồi sau đó theo chỉ số thứ hai.
 
 ```cpp
