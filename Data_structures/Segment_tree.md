@@ -740,7 +740,7 @@ Sau đó, chúng ta có thể gán giá trị mới cho đỉnh con trái mà kh
 
 Tóm lại, chúng ta có:
 Đối với bất kỳ truy vấn nào (cả truy vấn sửa đổi hay truy vấn đọc) trong quá trình đi xuống cây, chúng ta luôn phải đẩy thông tin từ đỉnh hiện tại xuống cả hai đỉnh con của nó. 
-Chúng ta có thể hiểu điều này theo cách, khi đi xuống cây, chúng ta áp dụng các sửa đổi bị hoãn lại, nhưng chỉ áp dụng đúng mức cần thiết (để không làm giảm độ phức tạp của thuật toán xuống $O(\log n)$). 
+Chúng ta có thể hiểu điều này theo cách, khi đi xuống cây, chúng ta áp dụng các sửa đổi bị hoãn lại, nhưng chỉ áp dụng đúng mức cần thiết (để không làm giảm độ phức tạp của thuật toán xuống $O(\log n)$. 
 
 Để triển khai, chúng ta cần tạo một hàm ${push}$, hàm này sẽ nhận vào đỉnh hiện tại và đẩy thông tin của đỉnh đó xuống cả hai đỉnh con của nó. 
 Chúng ta sẽ gọi hàm này ở đầu các hàm truy vấn (nhưng không gọi nó từ các lá, vì không cần phải đẩy thông tin từ các lá nữa).
