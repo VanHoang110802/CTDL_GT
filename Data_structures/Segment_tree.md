@@ -577,7 +577,7 @@ Giờ đây, chúng ta muốn thực hiện chính điều này: một truy vấ
 Giải pháp tương tự như giải pháp của vấn đề trước, nhưng thay vì lưu trữ các danh sách ở mỗi đỉnh của Cây Phân Đoạn, chúng ta sẽ lưu trữ một danh sách cân bằng cho phép tìm kiếm số nhanh chóng, xóa số, và chèn số mới.
 Vì mảng có thể chứa các số lặp lại, lựa chọn tối ưu là cấu trúc dữ liệu ${multiset}$. 
 
-Việc xây dựng Segment Tree như vậy thực hiện khá giống với bài toán trước, chỉ khác là giờ đây chúng ta cần kết hợp các ${multiset}$s thay vì các danh sách đã sắp xếp.
+Việc xây dựng Segment Tree như vậy thực hiện khá giống với bài toán trước, chỉ khác là giờ đây chúng ta cần kết hợp các ${multiset}$ thay vì các danh sách đã sắp xếp.
 Điều này dẫn đến thời gian xây dựng là $O(n \log^2 n)$ (vì về lý thuyết, việc hợp nhất hai cây red-black có thể được thực hiện trong thời gian tuyến tính, nhưng STL của C++ không đảm bảo độ phức tạp thời gian này).
 
 Hàm ${query}$ cũng gần giống như trước, nhưng bây giờ cần gọi hàm ${lower_bound}$ của ${multiset}$ thay vì sử dụng (Vì ${std::lower_bound}$ chỉ hoạt động trong $O(\log n)$ khi sử dụng với iterators có thể truy cập ngẫu nhiên).
@@ -655,11 +655,11 @@ Tuy nhiên, vẫn có thể cho phép truy vấn sửa đổi, nhưng điều n�
 Thay vì các số nguyên, bạn cần lưu trữ mảng đã sắp xếp dưới dạng `multiset`, và thay vì các chỉ số, bạn cần lưu trữ các iterator.
 Và bạn cần làm việc rất cẩn thận, để đảm bảo rằng bạn tăng hoặc giảm đúng iterator trong một truy vấn sửa đổi.
 
-#### Other possible variations
+#### Các biến thể khả thi khác (Other possible variations)
 
-This technique implies a whole new class of possible applications. 
-Instead of storing a $\text{vector}$ or a $\text{multiset}$ in each vertex, other data structures can be used:
-other Segment Trees (somewhat discussed in [Generalization to higher dimensions](segment_tree.md#generalization-to-higher-dimensions)), Fenwick Trees, Cartesian trees, etc.
+Kỹ thuật này mở ra một lớp ứng dụng mới hoàn toàn. 
+Thay vì lưu trữ một ${vector}$ hoặc một ${multiset}$ trong mỗi đỉnh, có thể sử dụng các cấu trúc dữ liệu khác:
+other Segment Trees, Fenwick Trees, Cartesian trees, etc.
 
 ### Range updates (Lazy Propagation)
 
@@ -974,18 +974,18 @@ It follows, that if you gave to abandon a two-dimensional Segment Tree due to th
 
 ### Preserving the history of its values (Persistent Segment Tree)
 
-A persistent data structure is a data structure that remembers it previous state for each modification.
-This allows to access any version of this data structure that interest us and execute a query on it.
+Cấu trúc dữ liệu bền vững (persistent data structure) là một cấu trúc dữ liệu nhớ lại trạng thái trước của nó sau mỗi lần sửa đổi.
+Điều này cho phép truy cập bất kỳ phiên bản nào của cấu trúc dữ liệu mà chúng ta quan tâm và thực hiện một truy vấn trên nó.
 
-Segment Tree is a data structure that can be turned into a persistent data structure efficiently (both in time and memory consumption).
-We want to avoid copying the complete tree before each modification, and we don't want to loose the $O(\log n)$ time behavior for answering range queries.
+Segment Tree là một cấu trúc dữ liệu có thể được chuyển thành một cấu trúc dữ liệu bền vững một cách hiệu quả (cả về thời gian và mức độ tiêu thụ bộ nhớ).
+Chúng ta muốn tránh việc sao chép toàn bộ cây trước mỗi lần sửa đổi, và không muốn mất đi thời gian $O(\log n)$ khi trả lời các truy vấn phạm vi.
 
-In fact, any change request in the Segment Tree leads to a change in the data of only $O(\log n)$ vertices along the path starting from the root. 
-So if we store the Segment Tree using pointers (i.e. a vertex stores pointers to the left and the right child vertices), then when performing the modification query, we simply need to create new vertices instead of changing the available vertices.
-Vertices that are not affected by the modification query can still be used by pointing the pointers to the old vertices.
-Thus for a modification query $O(\log n)$ new vertices will be created, including a new root vertex of the Segment Tree, and the entire previous version of the tree rooted at the old root vertex will remain unchanged.
+Thực tế, bất kỳ yêu cầu thay đổi nào trong Segment Tree sẽ dẫn đến thay đổi dữ liệu chỉ ở $O(\log n)$ đỉnh dọc theo đường đi bắt đầu từ gốc. 
+Vì vậy, nếu chúng ta lưu trữ Segment Tree bằng con trỏ (tức là mỗi đỉnh lưu trữ con trỏ tới các đỉnh con trái và phải), thì khi thực hiện truy vấn sửa đổi, chúng ta chỉ cần tạo các đỉnh mới thay vì thay đổi các đỉnh đã có.
+Những đỉnh không bị ảnh hưởng bởi truy vấn sửa đổi vẫn có thể được sử dụng bằng cách trỏ các con trỏ đến các đỉnh cũ.
+Do đó, đối với một truy vấn sửa đổi, sẽ có $O(\log n)$ đỉnh mới được tạo ra, bao gồm một đỉnh gốc mới của Segment Tree, và toàn bộ phiên bản trước của cây với đỉnh gốc cũ sẽ vẫn không thay đổi.
 
-Let's give an example implementation for the simplest Segment Tree: when there is only a query asking for sums, and modification queries of single elements. 
+Hãy lấy một ví dụ về cách triển khai cho Segment Tree đơn giản nhất: khi chỉ có một truy vấn yêu cầu tính tổng, và các truy vấn sửa đổi các phần tử đơn.
 
 ```cpp
 struct Vertex {
@@ -1026,17 +1026,17 @@ Vertex* update(Vertex* v, int tl, int tr, int pos, int new_val) {
 }
 ```
 
-For each modification of the Segment Tree we will receive a new root vertex.
-To quickly jump between two different versions of the Segment Tree, we need to store this roots in an array.
-To use a specific version of the Segment Tree we simply call the query using the appropriate root vertex.
+Mỗi khi sửa đổi Segment Tree, chúng ta sẽ nhận được một đỉnh gốc mới.
+Để nhanh chóng chuyển giữa các phiên bản khác nhau của Segment Tree, chúng ta cần lưu trữ các đỉnh gốc này trong một mảng.
+Để sử dụng một phiên bản cụ thể của Segment Tree, chúng ta chỉ cần gọi truy vấn bằng cách sử dụng đỉnh gốc tương ứng.
 
-With the approach described above almost any Segment Tree can be turned into a persistent data structure.
+Với cách tiếp cận được mô tả ở trên, gần như bất kỳ Segment Tree nào cũng có thể được chuyển thành một cấu trúc dữ liệu bền vững (persistent data structure).
 
-#### Finding the $k$-th smallest number in a range {data-toc-label="Finding the k-th smallest number in a range"}
+#### Tìm phần tử nhỏ thứ k trong một khoảng (Finding the k-th smallest number in a range)
 
-This time we have to answer queries of the form "What is the $k$-th smallest element in the range $a[l \dots r]$. 
-This query can be answered using a binary search and a Merge Sort Tree, but the time complexity for a single query would be $O(\log^3 n)$.
-We will accomplish the same task using a persistent Segment Tree in $O(\log n)$.
+Lần này, chúng ta phải trả lời các câu hỏi dạng "Phần tử nhỏ thứ $k$ trong khoảng $a[l \dots r]$ là gì?". 
+Câu hỏi này có thể được trả lời bằng cách sử dụng tìm kiếm nhị phân và Merge Sort Tree, nhưng độ phức tạp thời gian cho một câu hỏi đơn lẻ sẽ là $O(\log^3 n)$.
+Chúng ta sẽ thực hiện cùng một nhiệm vụ này bằng cách sử dụng Persistent Segment Tree trong $O(\log n)$.
 
 Đầu tiên, chúng ta sẽ thảo luận về một giải pháp cho một bài toán đơn giản hơn:
 Chúng ta chỉ xét các mảng trong đó các phần tử bị ràng buộc bởi $0 \le a[i] \lt n$.
