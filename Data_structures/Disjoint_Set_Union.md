@@ -2,24 +2,24 @@
 
 # Disjoint Set Union
 
-This article discusses the data structure **Disjoint Set Union** or **DSU**.
-Often it is also called **Union Find** because of its two main operations.
+Bài viết này bàn về cấu trúc dữ liệu **Disjoint Set Union** hoặc **DSU**.
+Thường thì nó cũng được gọi là **Union Find** vì hai thao tác chính của nó.
 
-This data structure provides the following capabilities.
-We are given several elements, each of which is a separate set.
-A DSU will have an operation to combine any two sets, and it will be able to tell in which set a specific element is.
-The classical version also introduces a third operation, it can create a set from a new element.
+Cấu trúc dữ liệu này cung cấp các khả năng sau.
+Chúng ta có nhiều phần tử, mỗi phần tử là một tập hợp riêng biệt.
+Một DSU sẽ có thao tác để kết hợp hai tập hợp bất kỳ, và nó sẽ có khả năng xác định phần tử cụ thể thuộc tập hợp nào.
+Phiên bản cổ điển cũng giới thiệu một thao tác thứ ba, đó là tạo một tập hợp từ một phần tử mới.
 
-Thus the basic interface of this data structure consists of only three operations:
+Do đó, giao diện cơ bản của cấu trúc dữ liệu này chỉ gồm ba thao tác:
 
-- `make_set(v)` - creates a new set consisting of the new element `v`
+- `make_set(v)` - tạo một tập hợp mới bao gồm `v` phần tử mới
 - `union_sets(a, b)` - merges the two specified sets (the set in which the element `a` is located, and the set in which the element `b` is located)
 - `find_set(v)` - returns the representative (also called leader) of the set that contains the element `v`.
-This representative is an element of its corresponding set.
-It is selected in each set by the data structure itself (and can change over time, namely after `union_sets` calls).
-This representative can be used to check if two elements are part of the same set or not.
-`a` and `b` are exactly in the same set, if `find_set(a) == find_set(b)`.
-Otherwise they are in different sets.
+Đại diện này là một phần tử của tập hợp tương ứng.
+Nó được lựa chọn trong mỗi tập hợp bởi chính cấu trúc dữ liệu (và có thể thay đổi theo thời gian, cụ thể là sau các lần gọi `union_sets` ).
+Đại diện này có thể được dùng để kiểm tra xem hai phần tử có thuộc cùng một tập hợp hay không.
+`a` và `b` nằm trong cùng một tập hợp, nếu `find_set(a) == find_set(b)`.
+Nếu không, chúng thuộc các tập hợp khác nhau.
 
 As described in more detail later, the data structure allows you to do each of these operations in almost $O(1)$ time on average.
 
