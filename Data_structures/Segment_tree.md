@@ -398,27 +398,27 @@ int get_first(int v, int tl, int tr, int l, int r, int x) {
 
 #### Tìm các đoạn con với tổng lớn nhất (Finding subsegments with the maximal sum)
 
-Here again we receive a range $a[l \dots r]$ for each query, this time we have to find a subsegment $a[l^\prime \dots r^\prime]$ such that $l \le l^\prime$ and $r^\prime \le r$ and the sum of the elements of this segment is maximal. 
-As before we also want to be able to modify individual elements of the array. 
-The elements of the array can be negative, and the optimal subsegment can be empty (e.g. if all elements are negative).
+Ở đây, mỗi truy vấn lại nhận một khoảng $a[l \dots r]$ , lần này chúng ta phải tìm một dãy con $a[l^\prime \dots r^\prime]$ sao cho $l \le l^\prime$ and $r^\prime \le r$ và tổng các phần tử trong dãy con này là lớn nhất. 
+Như trước, chúng ta cũng muốn có khả năng sửa đổi các phần tử riêng lẻ trong mảng. 
+Các phần tử của mảng có thể là số âm, và dãy con tối ưu có thể là rỗng (ví dụ nếu tất cả các phần tử đều là số âm).
 
-This problem is a non-trivial usage of a Segment Tree.
-This time we will store four values for each vertex: 
-the sum of the segment, the maximum prefix sum, the maximum suffix sum, and the sum of the maximal subsegment in it.
-In other words for each segment of the Segment Tree the answer is already precomputed as well as the answers for segments touching the left and the right boundaries of the segment.
+Vấn đề này là một ứng dụng không đơn giản của Cây Phân Đoạn.
+Lần này, chúng ta sẽ lưu trữ bốn giá trị cho mỗi đỉnh:
+tổng của đoạn, tổng tiền tố tối đa, tổng hậu tố tối đa, và tổng của dãy con tối đa trong đoạn đó.
+Nói cách khác, đối với mỗi đoạn trong Cây Phân Đoạn, kết quả đã được tính trước, cũng như kết quả cho các đoạn chạm vào biên trái và biên phải của đoạn đó.
 
-How to build a tree with such data?
-Again we compute it in a recursive fashion: 
-we first compute all four values for the left and the right child, and then combine those to archive the four values for the current vertex.
-Note the answer for the current vertex is either:
+Làm thế nào để xây dựng một cây với dữ liệu như vậy?
+Lại một lần nữa, chúng ta tính toán nó theo cách đệ quy:
+chúng ta đầu tiên tính toán tất cả bốn giá trị cho con trái và con phải, và sau đó kết hợp chúng để có được bốn giá trị cho đỉnh hiện tại.
+Lưu ý rằng kết quả cho đỉnh hiện tại là một trong các giá trị sau:
 
  * the answer of the left child, which means that the optimal subsegment is entirely placed in the segment of the left child
  * the answer of the right child, which means that the optimal subsegment is entirely placed in the segment of the right child
  * the sum of the maximum suffix sum of the left child and the maximum prefix sum of the right child, which means that the optimal subsegment intersects with both children.
 
-Hence the answer to the current vertex is the maximum of these three values. 
-Computing the maximum prefix / suffix sum is even easier. 
-Here is the implementation of the $\text{combine}$ function, which receives only data from the left and right child, and returns the data of the current vertex. 
+Vì vậy, câu trả lời cho đỉnh hiện tại là giá trị lớn nhất trong ba giá trị này. 
+Việc tính toán tổng tiền tố (prefix sum) / tổng hậu tố (suffix sum) tối đa còn dễ dàng hơn. 
+Dưới đây là phần triển khai hàm $\text{combine}$, hàm này chỉ nhận dữ liệu từ con trái và con phải, và trả về dữ liệu của đỉnh hiện tại. 
 
 ```cpp
 struct data {
