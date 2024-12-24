@@ -472,9 +472,9 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 }
 ```
 
-It only remains, how to compute the answer to a query. 
-To answer it, we go down the tree as before, breaking the query into several subsegments that coincide with the segments of the Segment Tree, and combine the answers in them into a single answer for the query.
-Then it should be clear, that the work is exactly the same as in the simple Segment Tree, but instead of summing / minimizing / maximizing the values, we use the $\text{combine}$ function.
+Chỉ còn lại cách tính toán câu trả lời cho một truy vấn. 
+Để trả lời truy vấn, chúng ta di chuyển xuống cây phân đoạn như trước, chia truy vấn thành nhiều đoạn con khớp với các đoạn của cây phân đoạn, và kết hợp các câu trả lời trong các đoạn đó thành một câu trả lời duy nhất cho truy vấn.
+Sau đó, có thể thấy rằng công việc này hoàn toàn giống như trong cây phân đoạn đơn giản, nhưng thay vì cộng / tìm giá trị tối thiểu / tối đa các giá trị, chúng ta sử dụng hàm ${combine}$.
 
 ```cpp
 data query(int v, int tl, int tr, int l, int r) {
@@ -487,39 +487,39 @@ data query(int v, int tl, int tr, int l, int r) {
 }
 ```
 
-### <a name="saving-the-entire-subarrays-in-each-vertex"></a>Saving the entire subarrays in each vertex
+### Đưa toàn bộ dãy con vào mỗi đỉnh (Saving the entire subarrays in each vertex)
 
-This is a separate subsection that stands apart from the others, because at each vertex of the Segment Tree we don't store information about the corresponding segment in compressed form (sum, minimum, maximum, ...), but store all elements of the segment.
-Thus the root of the Segment Tree will store all elements of the array, the left child vertex will store the first half of the array, the right vertex the second half, and so on.
+Đây là một phần phụ riêng biệt, tách biệt so với các phần khác, vì tại mỗi đỉnh của Cây Phân Đoạn, chúng ta không lưu trữ thông tin về đoạn tương ứng dưới dạng nén (tổng, giá trị nhỏ nhất, giá trị lớn nhất, ...), mà lưu trữ tất cả các phần tử của đoạn đó.
+Do đó, gốc của Cây Phân Đoạn sẽ lưu tất cả các phần tử của mảng, đỉnh con trái sẽ lưu nửa đầu của mảng, đỉnh con phải sẽ lưu nửa sau, và cứ như vậy.
 
-In its simplest application of this technique we store the elements in sorted order.
-In more complex versions the elements are not stored in lists, but more advanced data structures (sets, maps, ...). 
-But all these methods have the common factor, that each vertex requires linear memory (i.e. proportional to the length of the corresponding segment).
+Trong ứng dụng đơn giản nhất của kỹ thuật này, chúng ta lưu các phần tử theo thứ tự đã sắp xếp.
+Trong các phiên bản phức tạp hơn, các phần tử không được lưu trong danh sách mà trong các cấu trúc dữ liệu tiên tiến hơn (sets, maps, ...). 
+Tuy nhiên, tất cả những phương pháp này có một yếu tố chung là mỗi đỉnh yêu cầu bộ nhớ tuyến tính (tức là tỷ lệ thuận với độ dài của đoạn tương ứng).
 
-The first natural question, when considering these Segment Trees, is about memory consumption.
-Intuitively this might look like $O(n^2)$ memory, but it turns out that the complete tree will only need $O(n \log n)$ memory.
-Why is this so?
-Quite simply, because each element of the array falls into $O(\log n)$ segments (remember the height of the tree is $O(\log n)$). 
+Câu hỏi tự nhiên đầu tiên khi xem xét các Cây Phân Đoạn này là về việc tiêu thụ bộ nhớ.
+Về trực quan, điều này có vẻ như sẽ tiêu tốn $O(n^2)$ bộ nhớ, nhưng thực tế, cây hoàn chỉnh chỉ cần $O(n \log n)$ bộ nhớ.
+Tại sao lại như vậy?
+Rất đơn giản, vì mỗi phần tử của mảng rơi vào $O(\log n)$ đoạn (nhớ rằng chiều cao của cây là $O(\log n)$). 
 
-So in spite of the apparent extravagance of such a Segment Tree, it consumes only slightly more memory than the usual Segment Tree. 
+Vì vậy, mặc dù có vẻ tốn kém về bộ nhớ, nhưng Cây Phân Đoạn này chỉ tiêu tốn một chút bộ nhớ hơn so với Cây Phân Đoạn thông thường.
 
-Several typical applications of this data structure are described below.
-It is worth noting the similarity of these Segment Trees with 2D data structures (in fact this is a 2D data structure, but with rather limited capabilities).
+Dưới đây là một số ứng dụng điển hình của cấu trúc dữ liệu này.
+Cần lưu ý sự tương đồng của những Cây Phân Đoạn này với các cấu trúc dữ liệu 2D (thực tế đây là một cấu trúc dữ liệu 2D, nhưng với các khả năng khá hạn chế).
 
-#### Find the smallest number greater or equal to a specified number. No modification queries.
+#### Tìm số nhỏ nhất lớn hơn hoặc bằng một số đã cho. Không có truy vấn thay đổi. (Find the smallest number greater or equal to a specified number. No modification queries.)
 
-We want to answer queries of the following form: 
-for three given numbers $(l, r, x)$ we have to find the minimal number in the segment $a[l \dots r]$ which is greater than or equal to $x$.
+Chúng ta muốn trả lời các truy vấn có dạng sau: 
+Với ba số cho trước $(l, r, x)$ ta phải tìm số nhỏ nhất trong đoạn $a[l \dots r]$ mà lớn hơn hoặc bằng $x$.
 
-We construct a Segment Tree. 
-In each vertex we store a sorted list of all numbers occurring in the corresponding segment, like described above. 
-How to build such a Segment Tree as effectively as possible?
-As always we approach this problem recursively: let the lists of the left and right children already be constructed, and we want to build the list for the current vertex.
-From this view the operation is now trivial and can be accomplished in linear time:
-We only need to combine the two sorted lists into one, which can be done by iterating over them using two pointers. 
-The C++ STL already has an implementation of this algorithm.
+Chúng ta xây dựng một Cây Phân Đoạn. 
+Trong mỗi đỉnh, ta lưu một danh sách đã được sắp xếp của tất cả các số xuất hiện trong đoạn tương ứng, như đã mô tả ở trên. 
+Làm thế nào để xây dựng một Cây Phân Mảnh như vậy một cách hiệu quả nhất?
+Như thường lệ, ta tiếp cận bài toán này theo cách đệ quy: giả sử danh sách của các đỉnh con trái và phải đã được xây dựng, và ta muốn xây dựng danh sách cho đỉnh hiện tại.
+Từ góc độ này, thao tác trở nên đơn giản và có thể hoàn thành trong thời gian tuyến tính:
+Chúng ta chỉ cần kết hợp hai danh sách đã sắp xếp thành một danh sách duy nhất, điều này có thể thực hiện được bằng cách duyệt qua chúng bằng hai con trỏ. 
+C++ STL đã có một triển khai thuật toán này.
 
-Because this structure of the Segment Tree and the similarities to the merge sort algorithm, the data structure is also often called "Merge Sort Tree".
+Vì cấu trúc của Cây Phân Mảnh này và sự tương đồng với thuật toán sắp xếp hợp nhất (merge sort),cấu trúc dữ liệu này cũng thường được gọi là Cây Sắp Xếp Hợp Nhất (Merge Sort Tree).
 
 ```cpp
 vector<int> t[4*MAXN];
@@ -536,8 +536,8 @@ void build(int a[], int v, int tl, int tr) {
 }
 ```
 
-We already know that the Segment Tree constructed in this way will require $O(n \log n)$ memory.
-And thanks to this implementation its construction also takes $O(n \log n)$ time, after all each list is constructed in linear time in respect to its size. 
+Chúng ta đã biết rằng Cây Phân Đoạn được xây dựng theo cách này sẽ yêu cầu bộ nhớ là $O(n \log n)$.
+Và nhờ vào triển khai này, việc xây dựng cây cũng mất $O(n \log n)$ thời gian, vì mỗi danh sách được xây dựng trong thời gian tuyến tính theo kích thước của nó. 
 
 Now consider the answer to the query. 
 We will go down the tree, like in the regular Segment Tree, breaking our segment $a[l \dots r]$ into several subsegments (into at most $O(\log n)$ pieces). 
