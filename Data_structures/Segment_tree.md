@@ -1,3 +1,5 @@
+> Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/segment_tree.html)
+
 # Segment Tree
 
 Cây Segment (Segment Tree) là một cấu trúc dữ liệu lưu trữ thông tin về các khoảng (intervals) trong mảng dưới dạng một cây. Điều này cho phép trả lời các truy vấn theo khoảng trên mảng một cách hiệu quả, đồng thời vẫn đủ linh hoạt để cho phép thay đổi nhanh chóng mảng.
