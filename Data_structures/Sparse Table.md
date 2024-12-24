@@ -1,10 +1,5 @@
 > Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/sparse-table.html)
 
----
-tags:
-  - Original
----
-
 # Sparse Table
 
 Sparse Table is a data structure, that allows answering range queries.
