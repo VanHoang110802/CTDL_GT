@@ -319,32 +319,32 @@ void update(int v, int tl, int tr, int pos, int new_val) {
     }
 }
 ```
-#### Compute the greatest common divisor / least common multiple
+#### Tính toán ước chung lớn nhất / bội chung nhỏ nhất (Compute the greatest common divisor / least common multiple)
 
-In this problem we want to compute the GCD / LCM of all numbers of given ranges of the array. 
+Trong bài toán này, chúng ta muốn tính toán ước chung lớn nhất (GCD) / bội chung nhỏ nhất (LCM) của tất cả các số trong các phạm vi cho trước của mảng.
 
-This interesting variation of the Segment Tree can be solved in exactly the same way as the Segment Trees we derived for sum / minimum / maximum queries:
-it is enough to store the GCD / LCM of the corresponding vertex in each vertex of the tree. 
-Combining two vertices can be done by computing the GCD / LCM of both vertices.
+Phiên bản thú vị này của Cây Đoạn có thể được giải quyết theo cách giống hệt như các Cây Đoạn mà chúng ta đã xây dựng cho các truy vấn tổng / giá trị nhỏ nhất / giá trị lớn nhất:
+chỉ cần lưu trữ GCD / LCM của đoạn tương ứng trong mỗi đỉnh của cây.
+Việc kết hợp hai đỉnh có thể được thực hiện bằng cách tính toán GCD / LCM của cả hai đỉnh.
 
-#### Counting the number of zeros, searching for the $k$-th zero { #counting-zero-search-kth data-toc-label="Counting the number of zeros, searching for the k-th zero"}
+#### Đếm số lượng số không, tìm kiếm số không thứ k (Counting the number of zeros, searching for the $k$-th zero)
 
-In this problem we want to find the number of zeros in a given range, and additionally find the index of the $k$-th zero using a second function.
+ITrong bài toán này, chúng ta muốn tìm số lượng số không trong một phạm vi cho trước, và thêm vào đó là tìm chỉ số của số không thứ $k$ bằng cách sử dụng một hàm thứ hai.
 
-Again we have to change the store values of the tree a bit:
-This time we will store the number of zeros in each segment in $t[]$. 
-It is pretty clear, how to implement the $\text{build}$, $\text{update}$ and $\text{count_zero}$ functions, we can simply use the ideas from the sum query problem.
-Thus we solved the first part of the problem.
+Một lần nữa, chúng ta cần thay đổi một chút cách lưu trữ giá trị trong cây:
+Lần này, chúng ta sẽ lưu trữ số lượng số không trong mỗi đoạn trong $t[]$. 
+Rất rõ ràng, cách triển khai các hàm ${build}$, ${update}$ và ${count_zero}$, có thể được thực hiện bằng cách sử dụng những ý tưởng từ bài toán truy vấn tổng.
+Vậy là chúng ta đã giải quyết xong phần đầu tiên của bài toán.
 
-Now we learn how to solve the problem of finding the $k$-th zero in the array $a[]$. 
-To do this task, we will descend the Segment Tree, starting at the root vertex, and moving each time to either the left or the right child, depending on which segment contains the $k$-th zero.
-In order to decide to which child we need to go, it is enough to look at the number of zeros appearing in the segment corresponding to the left vertex.
-If this precomputed count is greater or equal to $k$, it is necessary to descend to the left child, and otherwise descent to the right child.
-Notice, if we chose the right child, we have to subtract the number of zeros of the left child from $k$.
+Bây giờ chúng ta học cách giải quyết bài toán tìm số không thứ $k$ trong mảng $a[]$. 
+Để làm được điều này, chúng ta sẽ di chuyển xuống Cây Đoạn, bắt đầu từ đỉnh gốc, và mỗi lần di chuyển đến con trái hoặc con phải, tùy thuộc vào đoạn nào chứa số không thứ $k$.
+Để quyết định cần đi đến con nào, chỉ cần nhìn vào số lượng số không xuất hiện trong đoạn tương ứng với đỉnh con trái.
+Nếu số lượng số không đã tính trước này lớn hơn hoặc bằng $k$, chúng ta cần đi xuống con trái, nếu không thì đi xuống con phải.
+Lưu ý, nếu chọn con phải, chúng ta phải trừ số lượng số không của con trái khỏi $k$.
 
-In the implementation we can handle the special case, $a[]$ containing less than $k$ zeros, by returning -1.
+Trong triển khai, chúng ta có thể xử lý trường hợp đặc biệt, khi mảng, $a[]$ chứa ít hơn $k$ số không, bằng cách trả về -1.
 
-```{.cpp file=segment_tree_kth_zero}
+```cpp
 int find_kth(int v, int tl, int tr, int k) {
     if (k > t[v])
         return -1;
