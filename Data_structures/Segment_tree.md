@@ -26,7 +26,7 @@ Cây Segment phải có khả năng xử lý cả hai truy vấn trong thời gi
 Một cách triển khai mảng ngây thơ - chỉ sử dụng một mảng đơn giản - có thể cập nhật các phần tử trong thời gian $O(1)$, nhưng yêu cầu $O(n)$ để tính mỗi truy vấn tổng.
 Còn việc tính tổng truy vấn bằng cách sử dụng mảng tổng tiền tố đã được tính trước có thể thực hiện trong $O(1)$, nhưng việc cập nhật một phần tử trong mảng lại yêu cầu phải thay đổi $O(n)$ giá trị trong mảng tổng tiền tố.
 
-### Structure of the Segment Tree
+### Cấu trúc của Cây Đoạn (Structure of the Segment Tree)
 
 Chúng ta có thể áp dụng phương pháp chia để trị (divide-and-conquer) khi làm việc với các đoạn mảng.
 Chúng ta tính toán và lưu trữ tổng của tất cả các phần tử trong mảng, tức là tổng của đoạn $a[0 \dots n-1]$. 
@@ -51,7 +51,7 @@ Hiện tại, chúng ta có thể bỏ qua thực tế này, nhưng nó sẽ tr�
 
 Chiều cao của Cây Segment là $O(\log n)$, vì khi di chuyển từ gốc đến các lá, kích thước của các đoạn mảng giảm dần một cách gần như gấp đôi.
 
-### Construction
+### Xây dựng (Construction)
 
 Trước khi xây dựng cây đoạn, chúng ta cần quyết định rằng:
 
@@ -74,7 +74,7 @@ Chúng ta bắt đầu xây dựng từ đỉnh gốc, và do đó, có thể t�
 
 Độ phức tạp thời gian của quá trình xây dựng này là $O(n)$, giả sử rằng phép hợp nhất có độ phức tạp thời gian hằng số (phép hợp nhất được gọi $n$ lần, tương đương với số lượng các nút nội tại trong cây đoạn).
 
-### Sum queries
+### Truy vấn tổng (Sum queries)
 
 Hiện tại, chúng ta sẽ trả lời các truy vấn tổng. Như một đầu vào, chúng ta nhận hai số nguyên $l$ và $r$, và chúng ta phải tính tổng của đoạn $a[l \dots r]$ trong thời gian $O(\log n)$. 
 
@@ -131,7 +131,7 @@ Do đó, chúng ta thăm tối đa $4 \log n$ đỉnh tổng cộng, và điều
 Tóm lại, truy vấn hoạt động bằng cách chia đoạn đầu vào thành nhiều đoạn con, với tất cả các tổng đã được tính toán trước và lưu trữ trong cây.
 Và nếu chúng ta dừng việc phân chia khi đoạn truy vấn trùng với đoạn của đỉnh, thì chúng ta chỉ cần tối đa $O(\log n)$ đoạn như vậy, điều này giải thích hiệu quả của Cây Phân Đoạn.
 
-### Update queries
+### Truy vấn cập nhật (Update queries)
 
 Bây giờ, chúng ta muốn sửa đổi một phần tử cụ thể trong mảng, giả sử chúng ta muốn thực hiện phép gán $a[i] = x$. 
 Và chúng ta phải xây dựng lại Cây Đoạn, sao cho nó tương ứng với mảng đã được sửa đổi mới.
@@ -151,7 +151,7 @@ Các đỉnh màu xanh lá cây là các đỉnh mà chúng ta thăm và cập n
 ![sum-segment-tree-update](https://github.com/user-attachments/assets/9f4b0f09-6c34-4dbc-a72b-eed3b14252d7)
 
 
-### Implementation
+### Triển khai (Implementation)
 
 Điều quan trọng chính là cách lưu trữ Cây Phân Đoạn.
 Tất nhiên, chúng ta có thể định nghĩa một cấu trúc $\text{Vertex}$ và tạo ra các đối tượng lưu trữ biên giới của đoạn, tổng của nó và thêm vào đó là các con trỏ đến các đỉnh con của nó.
