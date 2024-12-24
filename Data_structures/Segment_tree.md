@@ -661,22 +661,22 @@ Kỹ thuật này mở ra một lớp ứng dụng mới hoàn toàn.
 Thay vì lưu trữ một ${vector}$ hoặc một ${multiset}$ trong mỗi đỉnh, có thể sử dụng các cấu trúc dữ liệu khác:
 other Segment Trees, Fenwick Trees, Cartesian trees, etc.
 
-### Range updates (Lazy Propagation)
+### Cập nhật đoạn (Range updates (Lazy Propagation))
 
-All problems in the above sections discussed modification queries that only affected a single element of the array each.
-However the Segment Tree allows applying modification queries to an entire segment of contiguous elements, and perform the query in the same time $O(\log n)$. 
+Tất cả các bài toán trong các phần trên đều bàn về các truy vấn sửa đổi chỉ ảnh hưởng đến một phần tử duy nhất trong mảng.
+Tuy nhiên, Segment Tree cho phép áp dụng các truy vấn sửa đổi đối với một dải các phần tử liên tiếp trong mảng, và thực hiện truy vấn trong cùng một thời gian $O(\log n)$. 
 
-#### Addition on segments
+#### Phép cộng trên các đoạn (Addition on segments)
 
-We begin by considering problems of the simplest form: the modification query should add a number $x$ to all numbers in the segment $a[l \dots r]$.
-The second query, that we are supposed to answer, asked simply for the value of $a[i]$.
+Chúng ta bắt đầu xem xét các vấn đề đơn giản nhất: truy vấn thay đổi giá trị nên cộng một số $x$ vào tất cả các số trong đoạn $a[l \dots r]$.
+Truy vấn thứ hai mà chúng ta cần trả lời chỉ đơn giản là yêu cầu giá trị của $a[i]$.
 
-To make the addition query efficient, we store at each vertex in the Segment Tree how many we should add to all numbers in the corresponding segment. 
-For example, if the query "add 3 to the whole array $a[0 \dots n-1]$" comes, then we place the number 3 in the root of the tree.
-In general we have to place this number to multiple segments, which form a partition of the query segment. 
-Thus we don't have to change all $O(n)$ values, but only $O(\log n)$ many.
+Để làm cho truy vấn cộng trở nên hiệu quả, chúng ta lưu trữ tại mỗi đỉnh trong Segment Tree số lượng mà chúng ta cần cộng vào tất cả các số trong dải tương ứng.
+Ví dụ, nếu truy vấn "cộng 3 vào toàn bộ mảng $a[0 \dots n-1]$" đến, thì chúng ta sẽ đặt số 3 vào gốc của cây.
+Thông thường, chúng ta phải đặt số này vào nhiều dải, tạo thành một phân hoạch của dải truy vấn. 
+Vì vậy, chúng ta không phải thay đổi tất cả $O(n)$ giá trị, mà chỉ thay đổi $O(\log n)$ giá trị.
 
-If now there comes a query that asks the current value of a particular array entry, it is enough to go down the tree and add up all values found along the way.
+Nếu bây giờ có một truy vấn yêu cầu giá trị hiện tại của một phần tử cụ thể trong mảng, chỉ cần đi xuống cây và cộng tất cả các giá trị tìm thấy dọc theo đường đi.
 
 ```cpp
 void build(int a[], int v, int tl, int tr) {
@@ -713,19 +713,19 @@ int get(int v, int tl, int tr, int pos) {
 }
 ```
 
-#### Assignment on segments
+#### Gán giá trị trên các đoạn (Assignment on segments)
 
-Suppose now that the modification query asks to assign each element of a certain segment $a[l \dots r]$ to some value $p$.
-As a second query we will again consider reading the value of the array $a[i]$.
+Giả sử bây giờ truy vấn thay đổi yêu cầu gán mỗi phần tử của một đoạn nhất định $a[l \dots r]$ với một giá trị $p$.
+Với truy vấn thứ hai, chúng ta sẽ lại xem xét việc đọc giá trị của một phần tử trong mảng $a[i]$.
 
-To perform this modification query on a whole segment, you have to store at each vertex of the Segment Tree whether the corresponding segment is covered entirely with the same value or not.
-This allows us to make a "lazy" update: 
-instead of changing all segments in the tree that cover the query segment, we only change some, and leave others unchanged.
-A marked vertex will mean, that every element of the corresponding segment is assigned to that value, and actually also the complete subtree should only contain this value.
-In a sense we are lazy and delay writing the new value to all those vertices.
-We can do this tedious task later, if this is necessary.
+Để thực hiện truy vấn thay đổi trên toàn bộ đoạn, bạn phải lưu tại mỗi đỉnh của Segment Tree xem liệu đoạn tương ứng có bị bao phủ hoàn toàn với cùng một giá trị hay không.
+Điều này cho phép chúng ta thực hiện một cập nhật "lười biếng" (lazy update): 
+thay vì thay đổi tất cả các đoạn trong cây bao phủ đoạn truy vấn, chúng ta chỉ thay đổi một số đoạn và để các đoạn khác không thay đổi.
+Một đỉnh đã đánh dấu có nghĩa là mỗi phần tử của đoạn tương ứng được gán với giá trị đó, và thực tế là toàn bộ cây con cũng chỉ chứa giá trị này.
+Ở một chừng mực nào đó, chúng ta đang làm việc một cách lười biếng và trì hoãn việc ghi giá trị mới vào tất cả các đỉnh đó.
+Chúng ta có thể thực hiện công việc tẻ nhạt này sau, nếu cần thiết.
 
-So after the modification query is executed, some parts of the tree become irrelevant - some modifications remain unfulfilled in it.
+Vì vậy, sau khi truy vấn thay đổi được thực hiện, một số phần của cây trở nên không liên quan - một số thay đổi vẫn chưa được thực hiện trong đó.
 
 For example if a modification query "assign a number to the whole array $a[0 \dots n-1]$" gets executed, in the Segment Tree only a single change is made - the number is placed in the root of the tree and this vertex gets marked.
 The remaining segments remain unchanged, although in fact the number should be placed in the whole tree.
@@ -1095,7 +1095,7 @@ int find_kth(Vertex* vl, Vertex *vr, int tl, int tr, int k) {
 Như đã đề cập ở trên, chúng ta cần lưu trữ gốc của Cây Segment ban đầu, cũng như tất cả các gốc sau mỗi lần cập nhật.
 Dưới đây là đoạn mã để xây dựng một Cây Segment bền vững (persistent Segment Tree) trên một vector `a` với các phần tử có giá trị trong khoảng `[0, MAX_VALUE]`.
 
-```{.cpp file=kth_smallest_persistent_segment_tree_build}
+```cpp
 int tl = 0, tr = MAX_VALUE + 1;
 std::vector<Vertex*> roots;
 roots.push_back(build(tl, tr));
