@@ -1036,11 +1036,11 @@ This time we have to answer queries of the form "What is the $k$-th smallest ele
 This query can be answered using a binary search and a Merge Sort Tree, but the time complexity for a single query would be $O(\log^3 n)$.
 We will accomplish the same task using a persistent Segment Tree in $O(\log n)$.
 
-First we will discuss a solution for a simpler problem:
-We will only consider arrays in which the elements are bound by $0 \le a[i] \lt n$.
-And we only want to find the $k$-th smallest element in some prefix of the array $a$.
-It will be very easy to extent the developed ideas later for not restricted arrays and not restricted range queries.
-Note that we will be using 1 based indexing for $a$.
+Đầu tiên, chúng ta sẽ thảo luận về một giải pháp cho một bài toán đơn giản hơn:
+Chúng ta chỉ xét các mảng trong đó các phần tử bị ràng buộc bởi $0 \le a[i] \lt n$.
+Và chúng ta chỉ muốn tìm phần tử nhỏ thứ $k$ trong một tiền tố của mảng $a$.
+Việc mở rộng các ý tưởng đã phát triển sau này cho các mảng không bị ràng buộc và các truy vấn phạm vi không bị ràng buộc sẽ rất dễ dàng.
+Lưu ý rằng chúng ta sẽ sử dụng chỉ số bắt đầu từ 1 cho mảng $a$.
 
 Chúng ta sẽ sử dụng một Cây Segment để đếm tất cả các số xuất hiện, tức là trong Cây Segment, chúng ta sẽ lưu trữ biểu đồ tần suất của mảng.
 Vì vậy, các đỉnh lá sẽ lưu trữ tần suất xuất hiện của các giá trị $0$, $1$, $\dots$, $n-1$ trong mảng, và các đỉnh khác sẽ lưu trữ số lượng các số trong một phạm vi nhất định có mặt trong mảng.
