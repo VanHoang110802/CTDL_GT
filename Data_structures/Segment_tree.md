@@ -227,7 +227,7 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 }
 ```
 
-### Memory efficient implementation
+### Triển khai tiết kiệm bộ nhớ (Memory efficient implementation)
 
 Hầu hết mọi người sử dụng triển khai từ phần trước. Nếu bạn nhìn vào mảng `t` bạn sẽ thấy rằng nó theo thứ tự đánh số các đỉnh của cây theo cách duyệt theo chiều rộng (duyệt theo thứ tự cấp).
 Sử dụng duyệt này, các đỉnh con của đỉnh $v$ là $2v$ và $2v + 1$ tương ứng.
@@ -727,23 +727,23 @@ Chúng ta có thể thực hiện công việc tẻ nhạt này sau, nếu cần
 
 Vì vậy, sau khi truy vấn thay đổi được thực hiện, một số phần của cây trở nên không liên quan - một số thay đổi vẫn chưa được thực hiện trong đó.
 
-For example if a modification query "assign a number to the whole array $a[0 \dots n-1]$" gets executed, in the Segment Tree only a single change is made - the number is placed in the root of the tree and this vertex gets marked.
-The remaining segments remain unchanged, although in fact the number should be placed in the whole tree.
+Ví dụ, nếu một truy vấn sửa đổi yêu cầu 'gán một giá trị cho toàn bộ mảng $a[0 \dots n-1]$" trong Cây Segment chỉ cần thực hiện một thay đổi duy nhất - số đó được đặt vào gốc của cây và đỉnh này được đánh dấu. 
+Các đoạn còn lại không thay đổi, mặc dù thực tế giá trị đó nên được gán cho toàn bộ cây.
 
-Suppose now that the second modification query says, that the first half of the array $a[0 \dots n/2]$ should be assigned with some other number. 
-To process this query we must assign each element in the whole left child of the root vertex with that number. 
-But before we do this, we must first sort out the root vertex first. 
-The subtlety here is that the right half of the array should still be assigned to the value of the first query, and at the moment there is no information for the right half stored.
+Giả sử bây giờ truy vấn sửa đổi thứ hai yêu cầu rằng nửa đầu của mảng $a[0 \dots n/2]$ nên được gán một giá trị khác. 
+Để xử lý truy vấn này, chúng ta phải gán mỗi phần tử trong nửa trái của cây con gốc với giá trị đó. 
+Tuy nhiên, trước khi làm điều này, chúng ta phải giải quyết gốc của cây trước. 
+Sự tinh tế ở đây là nửa phải của mảng vẫn nên được gán với giá trị của truy vấn đầu tiên, và hiện tại không có thông tin nào về nửa phải được lưu trữ.
 
-The way to solve this is to push the information of the root to its children, i.e. if the root of the tree was assigned with any number, then we assign the left and the right child vertices with this number and remove the mark of the root.
-After that, we can assign the left child with the new value, without losing any necessary information.
+Cách giải quyết vấn đề này là đẩy thông tin của gốc xuống các con của nó, tức là nếu gốc của cây đã được gán một giá trị nào đó, thì chúng ta sẽ gán các đỉnh con trái và con phải với giá trị này và xóa dấu hiệu của gốc.
+Sau đó, chúng ta có thể gán giá trị mới cho đỉnh con trái mà không mất đi bất kỳ thông tin cần thiết nào.
 
-Summarizing we get:
-for any queries (a modification or reading query) during the descent along the tree we should always push information from the current vertex into both of its children. 
-We can understand this in such a way, that when we descent the tree we apply delayed modifications, but exactly as much as necessary (so not to degrade the complexity of $O(\log n)$). 
+Tóm lại, chúng ta có:
+Đối với bất kỳ truy vấn nào (cả truy vấn sửa đổi hay truy vấn đọc) trong quá trình đi xuống cây, chúng ta luôn phải đẩy thông tin từ đỉnh hiện tại xuống cả hai đỉnh con của nó. 
+Chúng ta có thể hiểu điều này theo cách, khi đi xuống cây, chúng ta áp dụng các sửa đổi bị hoãn lại, nhưng chỉ áp dụng đúng mức cần thiết (để không làm giảm độ phức tạp của thuật toán xuống $O(\log n)$). 
 
-For the implementation we need to make a $\text{push}$ function, which will receive the current vertex, and it will push the information for its vertex to both its children. 
-We will call this function at the beginning of the query functions (but we will not call it from the leaves, because there is no need to push information from them any further).
+Để triển khai, chúng ta cần tạo một hàm ${push}$, hàm này sẽ nhận vào đỉnh hiện tại và đẩy thông tin của đỉnh đó xuống cả hai đỉnh con của nó. 
+Chúng ta sẽ gọi hàm này ở đầu các hàm truy vấn (nhưng không gọi nó từ các lá, vì không cần phải đẩy thông tin từ các lá nữa).
 
 ```cpp
 void push(int v) {
@@ -781,20 +781,20 @@ int get(int v, int tl, int tr, int pos) {
 }
 ```
 
-Notice: the function $\text{get}$ can also be implemented in a different way: 
-do not make delayed updates, but immediately return the value $t[v]$ if $marked[v]$ is true.
+Lưu ý: hàm ${get}$ cũng có thể được triển khai theo một cách khác:
+không thực hiện cập nhật trễ, mà ngay lập tức trả về giá trị $t[v]$ nếu $marked[v]$ là đúng.
 
-#### Adding on segments, querying for maximum
+#### Thêm vào các đoạn, truy vấn giá trị lớn nhất (Adding on segments, querying for maximum)
 
-Now the modification query is to add a number to all elements in a range, and the reading query is to find the maximum in a range.
+Bây giờ, truy vấn sửa đổi là thêm một số vào tất cả các phần tử trong một đoạn, và truy vấn đọc là tìm giá trị lớn nhất trong một đoạn.
 
-So for each vertex of the Segment Tree we have to store the maximum of the corresponding subsegment. 
-The interesting part is how to recompute these values during a modification request.
+Vì vậy, với mỗi đỉnh của Cây Phân Đoạn, chúng ta phải lưu trữ giá trị lớn nhất của đoạn con tương ứng. 
+Phần thú vị là làm thế nào để tính lại các giá trị này trong quá trình yêu cầu sửa đổi.
 
-For this purpose we keep store an additional value for each vertex. 
-In this value we store the addends we haven't propagated to the child vertices.
-Before traversing to a child vertex, we call $\text{push}$ and propagate the value to both children.
-We have to do this in both the $\text{update}$ function and the $\text{query}$ function.
+Để làm điều này, chúng ta lưu trữ thêm một giá trị cho mỗi đỉnh. 
+Trong giá trị này, chúng ta lưu trữ các giá trị cộng thêm mà chúng ta chưa truyền tới các đỉnh con.
+Trước khi di chuyển tới một đỉnh con, chúng ta gọi hàm ${push}$ và truyền giá trị này xuống cả hai đỉnh con.
+Chúng ta phải làm điều này trong cả hàm ${update}$ và hàm ${query}$.
 
 ```cpp
 void build(int a[], int v, int tl, int tr) {
