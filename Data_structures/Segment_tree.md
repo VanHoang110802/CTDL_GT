@@ -42,7 +42,7 @@ Dưới đây là một biểu diễn trực quan của Cây Segment như vậy 
 ![sum-segment-tree](https://github.com/user-attachments/assets/aa6b7220-b0d0-4ef0-9b67-63084d43ef0e)
 
 Từ mô tả ngắn gọn về cấu trúc dữ liệu này, chúng ta có thể kết luận rằng một Cây Segment chỉ yêu cầu một số lượng đỉnh tuyến tính.
-TCấp đầu tiên của cây chứa một đỉnh duy nhất (gốc), cấp thứ hai sẽ chứa hai đỉnh, cấp thứ ba sẽ chứa bốn đỉnh, và cứ tiếp tục như vậy cho đến khi số lượng đỉnh đạt $n$. 
+Cấp đầu tiên của cây chứa một đỉnh duy nhất (gốc), cấp thứ hai sẽ chứa hai đỉnh, cấp thứ ba sẽ chứa bốn đỉnh, và cứ tiếp tục như vậy cho đến khi số lượng đỉnh đạt $n$. 
 Do đó, số lượng đỉnh trong trường hợp xấu nhất có thể được ước tính bằng tổng $1 + 2 + 4 + \dots + 2^{\lceil\log_2 n\rceil} \lt 2^{\lceil\log_2 n\rceil + 1} \lt 4n$.
 
 Cần lưu ý rằng khi $n$ không phải là một số mũ của hai, không phải tất cả các cấp của Cây Segment sẽ được điền đầy đủ.
