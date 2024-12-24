@@ -35,7 +35,7 @@ Mỗi phần trong số hai phần này lại tiếp tục được chia đôi, 
 
 Chúng ta có thể coi các đoạn mảng này tạo thành một cây nhị phân:
 Gốc của cây này là đoạn $a[0 \dots n-1]$, và mỗi đỉnh (ngoại trừ các đỉnh lá) có chính xác hai đỉnh con. 
-Đây là lý do tại sao cấu trúc dữ liệu này được gọi là "Cây Segment", mặc dù trong hầu hết các triển khai, cây không được xây dựng một cách rõ ràng. (see [Implementation](segment_tree.md#implementation)).
+Đây là lý do tại sao cấu trúc dữ liệu này được gọi là "Cây Segment", mặc dù trong hầu hết các triển khai, cây không được xây dựng một cách rõ ràng. 
 
 Dưới đây là một biểu diễn trực quan của Cây Segment như vậy trên mảng $a = [1, 3, -2, 8, -7]$:
 
