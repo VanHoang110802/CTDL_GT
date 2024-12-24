@@ -74,22 +74,22 @@ Chúng ta bắt đầu xây dựng từ đỉnh gốc, và do đó, có thể t�
 
 ### Sum queries
 
-For now we are going to answer sum queries. As an input we receive two integers $l$ and $r$, and we have to compute the sum of the segment $a[l \dots r]$ in $O(\log n)$ time. 
+Hiện tại, chúng ta sẽ trả lời các truy vấn tổng. Như một đầu vào, chúng ta nhận hai số nguyên $l$ và $r$, và chúng ta phải tính tổng của đoạn $a[l \dots r]$ trong thời gian $O(\log n)$. 
 
-To do this, we will traverse the Segment Tree and use the precomputed sums of the segments.
-Let's assume that we are currently at the vertex that covers the segment $a[tl \dots tr]$.
-There are three possible cases. 
+Để làm điều này, chúng ta sẽ duyệt qua Cây Phân Đoạn và sử dụng các tổng đã được tính toán trước của các đoạn.
+Giả sử rằng chúng ta hiện đang ở đỉnh bao phủ đoạn $a[tl \dots tr]$.
+Có ba trường hợp khả thi.
 
-The easiest case is when the segment $a[l \dots r]$ is equal to the corresponding segment of the current vertex (i.e. $a[l \dots r] = a[tl \dots tr]$), then we are finished and can return the precomputed sum that is stored in the vertex.
+Trường hợp dễ nhất là khi đoạn $a[l \dots r]$ bằng với đoạn tương ứng của đỉnh hiện tại (tức là $a[l \dots r] = a[tl \dots tr]$), khi đó chúng ta đã hoàn thành và có thể trả về tổng đã được tính toán trước và lưu trữ trong đỉnh.
 
-Alternatively the segment of the query can fall completely into the domain of either the left or the right child.
-Recall that the left child covers the segment $a[tl \dots tm]$ and the right vertex covers the segment $a[tm + 1 \dots tr]$ with $tm = (tl + tr) / 2$. 
-In this case we can simply go to the child vertex, which corresponding segment covers the query segment, and execute the algorithm described here with that vertex. 
+Ngoài ra, đoạn của truy vấn có thể rơi hoàn toàn vào miền của một trong hai đỉnh con.
+Nhớ rằng đỉnh trái bao phủ đoạn $a[tl \dots tm]$ và đỉnh phải bao phủ đoạn $a[tm + 1 \dots tr]$ với $tm = (tl + tr) / 2$. 
+Trong trường hợp này, chúng ta có thể đơn giản di chuyển đến đỉnh con mà đoạn tương ứng của nó bao phủ đoạn truy vấn, và thực hiện thuật toán đã được mô tả ở đây với đỉnh đó. 
 
-And then there is the last case, the query segment intersects with both children. 
-In this case we have no other option as to make two recursive calls, one for each child.
-First we go to the left child, compute a partial answer for this vertex (i.e. the sum of values of the intersection between the segment of the query and the segment of the left child), then go to the right child, compute the partial answer using that vertex, and then combine the answers by adding them. 
-In other words, since the left child represents the segment $a[tl \dots tm]$ and the right child the segment $a[tm+1 \dots tr]$, we compute the sum query $a[l \dots tm]$ using the left child, and the sum query $a[tm+1 \dots r]$ using the right child. 
+Và sau đó là trường hợp cuối cùng, khi đoạn truy vấn giao với cả hai đỉnh con.
+Trong trường hợp này, chúng ta không có lựa chọn nào khác ngoài việc thực hiện hai cuộc gọi đệ quy, mỗi cuộc gọi cho một đỉnh con.
+Trước tiên, chúng ta đi đến đỉnh trái, tính toán một phần kết quả cho đỉnh này (tức là tổng các giá trị của phần giao nhau giữa đoạn truy vấn và đoạn của đỉnh trái), sau đó đi đến đỉnh phải, tính toán kết quả phần của nó, và cuối cùng kết hợp các kết quả bằng cách cộng chúng lại.
+Nói cách khác, vì đỉnh trái đại diện cho đoạn $a[tl \dots tm]$ và đỉnh phải đại diện cho đoạn $a[tm+1 \dots tr]$, chúng ta tính tổng truy vấn $a[l \dots tm]$ sử dụng đỉnh trái, và tổng truy vấn $a[tm+1 \dots r]$ sử dụng đỉnh phải. 
 
 So processing a sum query is a function that recursively calls itself once with either the left or the right child (without changing the query boundaries), or twice, once for the left and once for the right child (by splitting the query into two subqueries). 
 And the recursion ends, whenever the boundaries of the current query segment coincides with the boundaries of the segment of the current vertex. 
