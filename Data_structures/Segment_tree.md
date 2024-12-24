@@ -953,24 +953,24 @@ void update_x(int vx, int lx, int rx, int x, int y, int new_val) {
 
 #### Compression of 2D Segment Tree
 
-Let the problem be the following: there are $n$ points on the plane given by their coordinates $(x_i, y_i)$ and queries of the form "count the number of points lying in the rectangle $((x_1, y_1), (x_2, y_2))$".
-It is clear that in the case of such a problem it becomes unreasonably wasteful to construct a two-dimensional Segment Tree with $O(n^2)$ elements.
-Most on this memory will be wasted, since each single point can only get into $O(\log n)$ segments of the tree along the first coordinate, and therefore the total "useful" size of all tree segments on the second coordinate is $O(n \log n)$.
+Giả sử bài toán như sau: có $n$ điểm trên mặt phẳng với tọa độ $(x_i, y_i)$ và các truy vấn có dạng "đếm số điểm nằm trong hình chữ nhật $((x_1, y_1), (x_2, y_2))$".
+Rõ ràng trong trường hợp như vậy, việc xây dựng một Segment Tree hai chiều với $O(n^2)$ phần tử là không hợp lý, vì sẽ lãng phí bộ nhớ.
+Phần lớn bộ nhớ này sẽ bị lãng phí, vì mỗi điểm đơn có thể chỉ vào được $O(\log n)$ đoạn của cây trên tọa độ thứ nhất, và vì vậy kích cỡ "hữu ích" ("useful") tổng cộng của tất cả các đoạn cây trên tọa độ thứ hai là $O(n \log n)$.
 
-So we proceed as follows:
-at each vertex of the Segment Tree with respect to the first coordinate we store a Segment Tree constructed only by those second coordinates that occur in the current segment of the first coordinates. 
-In other words, when constructing a Segment Tree inside some vertex with index $vx$ and the boundaries $tlx$ and $trx$, we only consider those points that fall into this interval $x \in [tlx, trx]$, and build a Segment Tree just using them.
+Vì vậy, chúng ta thực hiện như sau:
+Tại mỗi đỉnh của cây phân đoạn liên quan đến tọa độ thứ nhất, chúng ta sẽ lưu trữ một cây phân đoạn chỉ bao gồm các tọa độ thứ hai xuất hiện trong đoạn của tọa độ thứ nhất. 
+Nói cách khác, khi xây dựng một cây phân đoạn trong một đỉnh có chỉ số $vx$ và các biên độ $tlx$ và $trx$, chúng ta chỉ xem xét những điểm nằm trong khoảng $x \in [tlx, trx]$, và xây dựng một cây phân đoạn chỉ với những điểm này.
 
-Thus we will achieve that each Segment Tree on the second coordinate will occupy exactly as much memory as it should.
-As a result, the total amount of memory will decrease to $O(n \log n)$.
-We still can answer the queries in $O(\log^2 n)$ time, we just have to make a binary search on the second coordinate, but this will not worsen the complexity.
+Với cách tiếp cận này, chúng ta sẽ đảm bảo rằng mỗi cây phân đoạn trên tọa độ thứ hai chỉ chiếm đúng lượng bộ nhớ cần thiết.
+Kết quả là tổng lượng bộ nhớ sẽ giảm xuống còn $O(n \log n)$.
+Chúng ta vẫn có thể trả lời các truy vấn trong thời gian $O(\log^2 n)$, chỉ cần thực hiện một tìm kiếm nhị phân trên tọa độ thứ hai, nhưng điều này sẽ không làm giảm độ phức tạp.
 
-But modification queries will be impossible with this structure:
-in fact if a new point appears, we have to add a new element in the middle of some Segment Tree along the second coordinate, which cannot be effectively done.
+Tuy nhiên, các truy vấn thay đổi sẽ không thể thực hiện được với cấu trúc này:
+thực tế, nếu một điểm mới xuất hiện, chúng ta phải thêm một phần tử mới vào giữa một cây phân đoạn nào đó theo tọa độ thứ hai, điều này không thể thực hiện hiệu quả.
 
-In conclusion we note that the two-dimensional Segment Tree contracted in the described way becomes practically equivalent to the modification of the one-dimensional Segment Tree (see [Saving the entire subarrays in each vertex](segment_tree.md#saving-the-entire-subarrays-in-each-vertex)).
-In particular the two-dimensional Segment Tree is just a special case of storing a subarray in each vertex of the tree.
-It follows, that if you gave to abandon a two-dimensional Segment Tree due to the impossibility of executing a query, it makes sense to try to replace the nested Segment Tree with some more powerful data structure, for example a Cartesian tree.
+Tóm lại, chúng ta lưu ý rằng Cây Phân Đoạn hai chiều được xây dựng theo cách mô tả ở trên thực chất tương đương với việc thay đổi Cây Phân Đoạn một chiều (see [Saving the entire subarrays in each vertex](segment_tree.md#saving-the-entire-subarrays-in-each-vertex)).
+Cụ thể, Cây Phân Đoạn hai chiều chỉ là một trường hợp đặc biệt của việc lưu trữ một mảng con trong mỗi đỉnh của cây.
+Do đó, nếu bạn phải bỏ qua việc sử dụng Cây Phân Đoạn hai chiều do không thể thực thi một truy vấn, thì có thể cân nhắc thay thế Cây Phân Đoạn lồng vào nhau bằng một cấu trúc dữ liệu mạnh mẽ hơn, ví dụ như cây Cartesian.
 
 ### Preserving the history of its values (Persistent Segment Tree)
 
