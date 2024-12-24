@@ -358,31 +358,31 @@ int find_kth(int v, int tl, int tr, int k) {
 }
 ```
 
-#### Searching for an array prefix with a given amount
+#### Tìm kiếm một tiền tố mảng với một số lượng cho trước (Searching for an array prefix with a given amount)
 
-The task is as follows: 
-for a given value $x$ we have to quickly find smallest index $i$ such that the sum of the first $i$ elements of the array $a[]$ is greater or equal to $x$ (assuming that the array $a[]$ only contains non-negative values).
+Bài toán như sau:
+Với một giá trị $x$ cho trước, chúng ta cần nhanh chóng tìm chỉ số nhỏ nhất $i$ sao cho tổng của $i$ phần tử đầu tiên trong mảng $a[]$ lớn hơn hoặc bằng $x$ (giả sử mảng $a[]$ chỉ chứa các giá trị không âm).
 
-This task can be solved using binary search, computing the sum of the prefixes with the Segment Tree.
-However this will lead to a $O(\log^2 n)$ solution.
+Bài toán này có thể được giải quyết bằng cách sử dụng tìm kiếm nhị phân, tính tổng của các tiền tố mảng bằng Cây Đoạn.
+Tuy nhiên, điều này sẽ dẫn đến giải pháp có độ phức tạp thời gian $O(\log^2 n)$.
 
-Instead we can use the same idea as in the previous section, and find the position by descending the tree:
-by moving each time to the left or the right, depending on the sum of the left child.
-Thus finding the answer in $O(\log n)$ time.
+Thay vào đó, chúng ta có thể sử dụng ý tưởng giống như trong phần trước, và tìm vị trí bằng cách di chuyển xuống cây:
+mỗi lần di chuyển đến con trái hoặc con phải, tùy thuộc vào tổng của con trái.
+Như vậy, ta có thể tìm được câu trả lời trong thời gian $O(\log n)$.
 
-#### Searching for the first element greater than a given amount
+#### Tìm kiếm phần tử đầu tiên lớn hơn một giá trị cho trước (Searching for the first element greater than a given amount)
 
-The task is as follows: 
-for a given value $x$ and a range $a[l \dots r]$ find the smallest $i$  in the range $a[l \dots r]$, such that $a[i]$ is greater than $x$.
+Bài toán như sau:
+Với một giá trị $x$ và một dải $a[l \dots r]$ tìm chỉ số nhỏ nhất $i$ trong dải $a[l \dots r]$, sao cho $a[i]$ lớn hơn $x$.
 
-This task can be solved using binary search over max prefix queries with the Segment Tree.
-However, this will lead to a $O(\log^2 n)$ solution.
+Bài toán này có thể được giải quyết bằng cách sử dụng tìm kiếm nhị phân trên các truy vấn tiền tố cực đại với Cây Đoạn.
+Tuy nhiên, điều này sẽ dẫn đến một giải pháp có độ phức tạp thời gian $O(\log^2 n)$.
 
-Instead, we can use the same idea as in the previous sections, and find the position by descending the tree:
-by moving each time to the left or the right, depending on the maximum value of the left child.
-Thus finding the answer in $O(\log n)$ time. 
+Thay vào đó, chúng ta có thể sử dụng ý tưởng giống như trong các phần trước và tìm vị trí bằng cách di chuyển xuống cây:
+mỗi lần di chuyển đến con trái hoặc con phải, tùy thuộc vào giá trị cực đại của con trái.
+Như vậy, ta có thể tìm câu trả lời trong thời gian $O(\log n)$. 
 
-```{.cpp file=segment_tree_first_greater}
+```cpp
 int get_first(int v, int tl, int tr, int l, int r, int x) {
     if(tl > r || tr < l) return -1;
     if(t[v] <= x) return -1;
@@ -396,7 +396,7 @@ int get_first(int v, int tl, int tr, int l, int r, int x) {
 }
 ```
 
-#### Finding subsegments with the maximal sum
+#### Tìm các đoạn con với tổng lớn nhất (Finding subsegments with the maximal sum)
 
 Here again we receive a range $a[l \dots r]$ for each query, this time we have to find a subsegment $a[l^\prime \dots r^\prime]$ such that $l \le l^\prime$ and $r^\prime \le r$ and the sum of the elements of this segment is maximal. 
 As before we also want to be able to modify individual elements of the array. 
@@ -420,7 +420,7 @@ Hence the answer to the current vertex is the maximum of these three values.
 Computing the maximum prefix / suffix sum is even easier. 
 Here is the implementation of the $\text{combine}$ function, which receives only data from the left and right child, and returns the data of the current vertex. 
 
-```{.cpp file=segment_tree_maximal_sum_subsegments1}
+```cpp
 struct data {
     int sum, pref, suff, ans;
 };
@@ -439,7 +439,7 @@ Using the $\text{combine}$ function it is easy to build the Segment Tree.
 We can implement it in exactly the same way as in the previous implementations.
 To initialize the leaf vertices, we additionally create the auxiliary function $\text{make_data}$, which will return a $\text{data}$ object holding the information of a single value.
 
-```{.cpp file=segment_tree_maximal_sum_subsegments2}
+```cpp
 data make_data(int val) {
     data res;
     res.sum = val;
@@ -476,7 +476,7 @@ It only remains, how to compute the answer to a query.
 To answer it, we go down the tree as before, breaking the query into several subsegments that coincide with the segments of the Segment Tree, and combine the answers in them into a single answer for the query.
 Then it should be clear, that the work is exactly the same as in the simple Segment Tree, but instead of summing / minimizing / maximizing the values, we use the $\text{combine}$ function.
 
-```{.cpp file=segment_tree_maximal_sum_subsegments3}
+```cpp
 data query(int v, int tl, int tr, int l, int r) {
     if (l > r) 
         return make_data(0);
@@ -521,7 +521,7 @@ The C++ STL already has an implementation of this algorithm.
 
 Because this structure of the Segment Tree and the similarities to the merge sort algorithm, the data structure is also often called "Merge Sort Tree".
 
-```{.cpp file=segment_tree_smallest_number_greater1}
+```cpp
 vector<int> t[4*MAXN];
 
 void build(int a[], int v, int tl, int tr) {
@@ -549,7 +549,7 @@ Since the vertex contains the list of elements in sorted order, we can simply pe
 
 Thus the answer to the query in one segment of the tree takes $O(\log n)$ time, and the entire query is processed in $O(\log^2 n)$.
 
-```{.cpp file=segment_tree_smallest_number_greater2}
+```cpp
 int query(int v, int tl, int tr, int l, int r, int x) {
     if (l > r)
         return INF;
