@@ -107,9 +107,9 @@ long long binpow(long long a, long long b, long long m) {
 ```
 
 **Lưu ý:**
-It's possible to speed this algorithm for large $b >> m$.
-If $m$ is a prime number $x^n \equiv x^{n \bmod (m-1)} \pmod{m}$ for prime $m$, and $x^n \equiv x^{n \bmod{\phi(m)}} \pmod{m}$ for composite $m$.
-This follows directly from Fermat's little theorem and Euler's theorem, see the article about [Modular Inverses](https://cp-algorithms.com/algebra/module-inverse.html#fermat-euler) for more details.
+Chúng ta có thể tăng tốc thuật toán này cho các giá trị lớn của $b >> m$.
+Nếu $m$ là một số nguyên tố, ta có $x^n \equiv x^{n \bmod (m-1)} \pmod{m}$ đối với số nguyên tố $m$, và $x^n \equiv x^{n \bmod{\phi(m)}} \pmod{m}$ đối với số $m$ là hợp số.
+Điều này được suy ra trực tiếp từ định lý nhỏ của Fermat và định lý Euler, xem bài viết về [Modular Inverses](https://cp-algorithms.com/algebra/module-inverse.html#fermat-euler) để biết thêm chi tiết.
 
 ### Effective computation of Fibonacci numbers
 
@@ -232,7 +232,7 @@ Thay vì sử dụng phép nhân hai ma trận thông thường, một phép to�
 **Giải pháp:** Chúng ta chỉ cần áp dụng thuật toán xây dựng nhị phân đã được mô tả ở trên, chỉ thực hiện phép cộng thay vì phép nhân. Nói cách khác, chúng ta đã "mở rộng"("expanded") phép nhân của hai số thành $O (\log m)$ phép cộng và phép nhân với hai (mà về bản chất là một phép cộng).
 
 $$a \cdot b = \begin{cases}
-0 &\text{if }a = 0 \\
+0 &\text{nếu }a = 0 \\
 2 \cdot \frac{a}{2} \cdot b &\text{nếu }a > 0 \text{ và }a \text{ chẵn} \\
 2 \cdot \frac{a-1}{2} \cdot b + b &\text{nếu }a > 0 \text{ và }a \text{ lẻ}
 \end{cases}$$
