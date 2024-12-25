@@ -154,15 +154,15 @@ vector<int> permute(vector<int> sequence, vector<int> permutation, long long k) 
 
 ### Fast application of a set of geometric operations to a set of points
 
-**Problem:** Given $n$ points $p_i$, apply $m$ transformations to each of these points. Each transformation can be a shift, a scaling or a rotation around a given axis by a given angle. There is also a "loop" operation which applies a given list of transformations $k$ times ("loop" operations can be nested). You should apply all transformations faster than $O(n \cdot length)$, where $length$ is the total number of transformations to be applied (after unrolling "loop" operations).
+**Bài toán:** Cho $n$ điểm $p_i$, áp dụng $m$ phép biến đổi lên mỗi điểm trong số này. Mỗi phép biến đổi có thể là một phép dịch chuyển, một phép thay đổi tỉ lệ hoặc một phép quay quanh một trục nhất định với một góc nhất định. Cũng có một phép biến đổi "vòng lặp" áp dụng một danh sách các phép biến đổi nhất định $k$ lần (các phép biến đổi "vòng lặp" có thể lồng nhau). Bạn cần áp dụng tất cả các phép biến đổi nhanh hơn $O(n \cdot length)$, trong đó $length$ là tổng số phép biến đổi cần áp dụng (sau khi giải nén các phép biến đổi "vòng lặp").
 
-**Solution:** Let's look at how the different types of transformations change the coordinates:
+**Giải pháp:** Hãy xem xét cách các loại phép biến đổi khác nhau thay đổi tọa độ:
 
-* Shift operation: adds a different constant to each of the coordinates.
-* Scaling operation: multiplies each of the coordinates by a different constant.
-* Rotation operation: the transformation is more complicated (we won't go in details here), but each of the new coordinates still can be represented as a linear combination of the old ones.
+* Phép dịch chuyển: cộng một hằng số khác nhau vào mỗi tọa độ.
+* Phép thay đổi tỉ lệ: nhân mỗi tọa độ với một hằng số khác nhau.
+* Phép quay: phép biến đổi này phức tạp hơn (chúng ta sẽ không đi vào chi tiết ở đây), nhưng mỗi tọa độ mới vẫn có thể được biểu diễn dưới dạng một kết hợp tuyến tính của các tọa độ cũ.
 
-As you can see, each of the transformations can be represented as a linear operation on the coordinates. Thus, a transformation can be written as a $4 \times 4$ matrix of the form:
+Như bạn thấy, mỗi phép biến đổi có thể được biểu diễn dưới dạng một phép biến đổi tuyến tính trên các tọa độ. Do đó, một phép biến đổi có thể được viết dưới dạng ma trận $4 \times 4$ theo dạng sau:
 
 $$\begin{pmatrix}
 a_{11} & a_ {12} & a_ {13} & a_ {14} \\
