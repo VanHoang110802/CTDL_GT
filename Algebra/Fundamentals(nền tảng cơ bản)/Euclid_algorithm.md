@@ -86,19 +86,17 @@ int lcm (int a, int b) {
 
 ## Binary GCD
 
-The Binary GCD algorithm is an optimization to the normal Euclidean algorithm.
+Thuật toán GCD nhị phân là một tối ưu hóa của thuật toán Euclid thông thường.
 
-The slow part of the normal algorithm are the modulo operations. Modulo operations, although we see them as $O(1)$, are a lot slower than simpler operations like addition, subtraction or bitwise operations.
-So it would be better to avoid those.
+Phần chậm trong thuật toán thông thường là các phép toán modulo. Mặc dù các phép toán modulo được xem là $O(1)$, nhưng chúng chậm hơn rất nhiều so với các phép toán đơn giản như cộng, trừ hoặc các phép toán bitwise. Vì vậy, tốt hơn là nên tránh sử dụng chúng.
 
-It turns out, that you can design a fast GCD algorithm that avoids modulo operations.
-It's based on a few properties:
+Thật ra, bạn có thể thiết kế một thuật toán GCD nhanh mà không sử dụng phép toán modulo. Thuật toán này dựa trên một số đặc tính:
 
-  - If both numbers are even, then we can factor out a two of both and compute the GCD of the remaining numbers: $\gcd(2a, 2b) = 2 \gcd(a, b)$.
-  - If one of the numbers is even and the other one is odd, then we can remove the factor 2 from the even one: $\gcd(2a, b) = \gcd(a, b)$ if $b$ is odd.
-  - If both numbers are odd, then subtracting one number of the other one will not change the GCD: $\gcd(a, b) = \gcd(b, a-b)$
+  - Nếu cả hai số đều chẵn, thì ta có thể lấy ra một yếu tố hai từ cả hai và tính GCD của các số còn lại: $\gcd(2a, 2b) = 2 \gcd(a, b)$.
+  - Nếu một số là chẵn và số còn lại là lẻ, ta có thể loại bỏ yếu tố 2 từ số chẵn: $\gcd(2a, b) = \gcd(a, b)$ nếu $b$ là lẻ.
+  - Nếu cả hai số đều lẻ, thì phép trừ một số với số còn lại sẽ không thay đổi GCD: $\gcd(a, b) = \gcd(b, a-b)$
 
-Using only these properties, and some fast bitwise functions from GCC, we can implement a fast version:
+Chỉ sử dụng những đặc tính này, cùng với một số hàm bitwise nhanh từ GCC, chúng ta có thể triển khai một phiên bản nhanh.
 
 ```cpp
 int gcd(int a, int b) {
@@ -116,5 +114,4 @@ int gcd(int a, int b) {
 }
 ```
 
-Notice, that such an optimization is usually not necessary, and most programming languages already have a GCD function in their standard libraries.
-E.g. C++17 has such a function `std::gcd` in the `numeric` header.
+Lưu ý rằng, tối ưu hóa như vậy thường không cần thiết, và hầu hết các ngôn ngữ lập trình đã có sẵn hàm GCD trong thư viện chuẩn của chúng. Ví dụ, C++17 có hàm `std::gcd` trong thư viện `numeric`.
