@@ -182,7 +182,7 @@ a_{41} & a_ {42} & a_ {43} & a_ {44}
 \end{pmatrix}
  = \begin{pmatrix} x' & y' & z' & 1 \end{pmatrix}$$
 
-(Tại sao lại giới thiệu một tọa độ giả tưởng thứ tư, bạn hỏi? Đó là vẻ đẹp của [tọa độ đồng nhất](https://en.wikipedia.org/wiki/Homogeneous_coordinates), được ứng dụng rộng rãi trong đồ họa máy tính. Nếu không có điều này, chúng ta sẽ không thể thực hiện các phép biến đổi affine như phép dịch chuyển dưới dạng một phép nhân ma trận duy nhất, vì nó yêu cầu chúng ta cộng một hằng số vào các tọa độ. Phép biến đổi affine trở thành một phép biến đổi tuyến tính trong không gian chiều cao hơn!)
+(Bạn sẽ tự hỏi rằng: Tại sao lại giới thiệu một tọa độ giả tưởng thứ tư? Đó là vẻ đẹp của [tọa độ đồng nhất](https://en.wikipedia.org/wiki/Homogeneous_coordinates), được ứng dụng rộng rãi trong đồ họa máy tính. Nếu không có điều này, chúng ta sẽ không thể thực hiện các phép biến đổi affine như phép dịch chuyển dưới dạng một phép nhân ma trận duy nhất, vì nó yêu cầu chúng ta cộng một hằng số vào các tọa độ. Phép biến đổi affine trở thành một phép biến đổi tuyến tính trong không gian chiều cao hơn!)
 
 Dưới đây là một số ví dụ về cách các phép biến đổi được biểu diễn dưới dạng ma trận:
 
