@@ -3,21 +3,21 @@
 # Fenwick Tree
 
 Giả sử $f$ là một phép toán nhóm (một hàm nhị phân kết hợp trên một tập với phần tử đơn vị và các phần tử nghịch đảo) và $A$ là một mảng các số nguyên có độ dài $N$.
-Ký hiệu theo cách ghi chú trung tố của ${f}$ là ${*}$; tức là, ${ f(x,y) = x*y }$ đối với các số nguyên tùy ý ${x,y}$.
+Ký hiệu theo cách ghi chú trung tố của ${f}$ là dấu sao ${*}$; tức là, ${ f(x, y) = x * y }$ đối với các số nguyên tùy ý ${x,y}$.
 (Vì phép toán này kết hợp, chúng ta sẽ bỏ qua dấu ngoặc khi biểu thị thứ tự áp dụng $f$ trong cách ghi chú trung tố.)
 
-The Fenwick tree is a data structure which:
+Cây Fenwick là một cấu trúc dữ liệu có các tính năng:
 
-* calculates the value of function $f$ in the given range $[l, r]$ (i.e. $A_l * A_{l+1} * \dots * A_r$) in $O(\log N)$ time
-* updates the value of an element of $A$ in $O(\log N)$ time
-* requires $O(N)$ memory (the same amount required for $A$)
-* is easy to use and code, especially in the case of multidimensional arrays
+* Tính giá trị của hàm $f$ trong khoảng đã cho $[l, r]$ (tức là $A_l * A_{l+1} * \dots * A_r$) trong thời gian $O(\log N)$
+* Cập nhật giá trị của một phần tử trong mảng $A$ trong thời gian $O(\log N)$
+* Cần $O(N)$ bộ nhớ (bằng với lượng bộ nhớ yêu cầu cho $A$)
+* Dễ sử dụng và lập trình, đặc biệt trong trường hợp mảng nhiều chiều
 
-The most common application of a Fenwick tree is _calculating the sum of a range_.
-For example, using addition over the set of integers as the group operation, i.e. $f(x,y) = x + y$: the binary operation, $*$, is $+$ in this case, so $A_l * A_{l+1} * \dots * A_r = A_l + A_{l+1} + \dots + A_{r}$.
+Ứng dụng phổ biến nhất của cây Fenwick là _tính tổng của một khoảng (calculating the sum of a range)_.
+Ví dụ, sử dụng phép cộng trên tập hợp các số nguyên làm phép toán nhóm, tức là $f(x,y) = x + y$: phép toán nhị phân, $*$, là $+$ trong trường hợp này, vì vậy $A_l * A_{l+1} * \dots * A_r = A_l + A_{l+1} + \dots + A_{r}$.
 
-The Fenwick tree is also called a **Binary Indexed Tree** (BIT).
-It was first described in a paper titled "A new data structure for cumulative frequency tables" (Peter M. Fenwick, 1994).
+Cây Fenwick còn được gọi là Cây chỉ số nhị phân (BIT).
+Nó lần đầu tiên được mô tả trong một bài báo có tiêu đề "A new data structure for cumulative frequency tables" (Peter M. Fenwick, 1994).
 
 ## Description
 
