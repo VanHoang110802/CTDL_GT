@@ -106,28 +106,28 @@ long long binpow(long long a, long long b, long long m) {
 }
 ```
 
-**Note:**
+**Lưu ý:**
 It's possible to speed this algorithm for large $b >> m$.
 If $m$ is a prime number $x^n \equiv x^{n \bmod (m-1)} \pmod{m}$ for prime $m$, and $x^n \equiv x^{n \bmod{\phi(m)}} \pmod{m}$ for composite $m$.
-This follows directly from Fermat's little theorem and Euler's theorem, see the article about [Modular Inverses](module-inverse.md#fermat-euler) for more details.
+This follows directly from Fermat's little theorem and Euler's theorem, see the article about [Modular Inverses](https://cp-algorithms.com/algebra/module-inverse.html#fermat-euler) for more details.
 
 ### Effective computation of Fibonacci numbers
 
-**Problem:** Compute $n$-th Fibonacci number $F_n$.
+**Bài toán:** Tính số Fibonacci thứ $n$ $F_n$.
 
-**Solution:** For more details, see the [Fibonacci Number article](fibonacci-numbers.md).
-We will only go through an overview of the algorithm.
-To compute the next Fibonacci number, only the two previous ones are needed, as $F_n = F_{n-1} + F_{n-2}$.
-We can build a $2 \times 2$ matrix that describes this transformation:
-the transition from $F_i$ and $F_{i+1}$ to $F_{i+1}$ and $F_{i+2}$.
-For example, applying this transformation to the pair $F_0$ and $F_1$ would change it into $F_1$ and $F_2$.
-Therefore, we can raise this transformation matrix to the $n$-th power to find $F_n$ in time complexity $O(\log n)$.
+**Giải quyết:** Để biết thêm chi tiết, xem bài viết [Fibonacci Number article](https://cp-algorithms.com/algebra/fibonacci-numbers.html).
+Chúng ta chỉ đi qua một cái nhìn tổng quan về thuật toán.
+Để tính số Fibonacci tiếp theo, chỉ cần hai số trước đó, vì $F_n = F_{n-1} + F_{n-2}$.
+Chúng ta có thể xây dựng một ma trận $2 \times 2$ mô tả phép biến đổi này:
+chuyển từ $F_i$ và $F_{i+1}$ sang tới $F_{i+1}$ và $F_{i+2}$.
+Ví dụ, áp dụng phép biến đổi này lên cặp số $F_0$ và $F_1$ sẽ chuyển nó thành $F_1$ và $F_2$.
+Do đó, chúng ta có thể nâng ma trận biến đổi này lên lũy thừa $n$ để tìm $F_n$ với độ phức tạp thời gian là $O(\log n)$.
 
-### Applying a permutation $k$ times { data-toc-label='Applying a permutation <script type="math/tex">k</script> times' }
+### Applying a permutation $k$ times
 
-**Problem:** You are given a sequence of length $n$. Apply to it a given permutation $k$ times.
+**Bài toán:** Bạn được cho một dãy có độ dài là $n$. Áp dụng một hoán vị đã cho lên dãy này $k$ lần.
 
-**Solution:** Simply raise the permutation to $k$-th power using binary exponentiation, and then apply it to the sequence. This will give you a time complexity of $O(n \log k)$.
+**Giải quyết:** Chỉ cần nâng hoán vị lên lũy thừa $k$ bằng cách sử dụng phép nâng lũy thừa nhị phân, sau đó áp dụng nó lên dãy. Điều này sẽ cho bạn độ phức tạp thời gian là $O(n \log k)$.
 
 ```cpp
 vector<int> applyPermutation(vector<int> sequence, vector<int> permutation) {
@@ -150,7 +150,7 @@ vector<int> permute(vector<int> sequence, vector<int> permutation, long long k) 
 }
 ```
 
-**Note:** This task can be solved more efficiently in linear time by building the permutation graph and considering each cycle independently. You could then compute $k$ modulo the size of the cycle and find the final position for each number which is part of this cycle.
+**Lưu ý:** Bài toán này có thể được giải quyết hiệu quả hơn trong thời gian tuyến tính bằng cách xây dựng đồ thị hoán vị và xem xét mỗi chu trình một cách độc lập. Sau đó, bạn có thể tính $k$ modulo kích thước của chu trình và tìm vị trí cuối cùng cho mỗi số thuộc chu trình này.
 
 ### Fast application of a set of geometric operations to a set of points
 
@@ -171,7 +171,7 @@ a_{31} & a_ {32} & a_ {33} & a_ {34} \\
 a_{41} & a_ {42} & a_ {43} & a_ {44}
 \end{pmatrix}$$
 
-that, when multiplied by a vector with the old coordinates and an unit gives a new vector with the new coordinates and an unit:
+Điều này, khi nhân với một vectơ có tọa độ cũ và một đơn vị, sẽ cho ra một vectơ mới với tọa độ mới và một đơn vị:
 
 $$\begin{pmatrix} x & y & z & 1 \end{pmatrix} \cdot
 \begin{pmatrix}
