@@ -58,25 +58,25 @@ Note that since C++17, `gcd` is implemented as a [standard function](https://en.
 
 ## Time Complexity
 
-The running time of the algorithm is estimated by Lamé's theorem, which establishes a surprising connection between the Euclidean algorithm and the Fibonacci sequence:
+Thời gian chạy của thuật toán được ước tính bởi định lý Lamé's, định lý này thiết lập một mối liên hệ bất ngờ giữa thuật toán Euclid và dãy số Fibonacci:
 
-If $a > b \geq 1$ and $b < F_n$ for some $n$, the Euclidean algorithm performs at most $n-2$ recursive calls.
+Nếu $a > b \geq 1$ và $b < F_n$ với một số $n$, thuật toán Euclid sẽ thực hiện tối đa $n-2$ lần gọi đệ quy.
 
-Moreover, it is possible to show that the upper bound of this theorem is optimal. When $a = F_n$ and $b = F_{n-1}$, $gcd(a, b)$ will perform exactly $n-2$ recursive calls. In other words, consecutive Fibonacci numbers are the worst case input for Euclid's algorithm.
+Hơn nữa, có thể chứng minh rằng giới hạn trên của định lý này là tối ưu. Khi $a = F_n$ và $b = F_{n-1}$, $gcd(a, b)$ sẽ thực hiện chính xác $n-2$ lần gọi đệ quy. Nói cách khác, các số Fibonacci liên tiếp là đầu vào xấu nhất cho thuật toán Euclid.
 
-Given that Fibonacci numbers grow exponentially, we get that the Euclidean algorithm works in $O(\log \min(a, b))$.
+Vì các số Fibonacci tăng theo cấp số mũ, ta có thể kết luận rằng thuật toán Euclid hoạt động trong thời gian $O(\log \min(a, b))$.
 
-Another way to estimate the complexity is to notice that $a \bmod b$ for the case $a \geq b$ is at least $2$ times smaller than $a$, so the larger number is reduced at least in half on each iteration of the algorithm. Applying this reasoning to the case when we compute the GCD of the set of numbers $a_1,\dots,a_n \leq C$, this also allows us to estimate the total runtime as $O(n + \log C)$, rather than $O(n \log C)$, since every non-trivial iteration of the algorithm reduces the current GCD candidate by at least a factor of $2$.
+Một cách khác để ước tính độ phức tạp là nhận thấy rằng $a \bmod b$ đối với trường hợp $a \geq b$ sẽ ít nhất nhỏ hơn $a$ gấp 2 lần, do đó số lớn hơn sẽ bị giảm ít nhất một nửa trong mỗi lần lặp của thuật toán. Áp dụng lý luận này vào trường hợp khi ta tính GCD của tập hợp các số $a_1,\dots,a_n \leq C$, điều này cũng cho phép ước tính tổng thời gian chạy là $O(n + \log C)$, thay vì $O(n \log C)$, vì mỗi lần lặp không tầm thường của thuật toán sẽ giảm ứng viên GCD hiện tại ít nhất một yếu tố $2$.
 
 ## Least common multiple
 
-Calculating the least common multiple (commonly denoted **LCM**) can be reduced to calculating the GCD with the following simple formula:
+Việc tính toán bội chung nhỏ nhất (thường được ký hiệu là **LCM**) có thể được rút gọn thành việc tính GCD với công thức đơn giản sau:
 
 $$\text{lcm}(a, b) = \frac{a \cdot b}{\gcd(a, b)}$$
 
-Thus, LCM can be calculated using the Euclidean algorithm with the same time complexity:
+Do đó, LCM (Bội chung nhỏ nhất) có thể được tính bằng thuật toán Euclid với độ phức tạp thời gian giống như vậy:
 
-A possible implementation, that cleverly avoids integer overflows by first dividing $a$ with the GCD, is given here:
+Một cách triển khai có thể, khéo léo tránh tràn số nguyên bằng cách chia $a$ cho GCD trước, được đưa ra dưới đây:
 
 ```cpp
 int lcm (int a, int b) {
