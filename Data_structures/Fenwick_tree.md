@@ -76,15 +76,15 @@ Chúng ta cũng có thể chọn hàm $g(i) = 0$.
 Điều này sẽ tương ứng với mảng tổng tiền tố (trong trường hợp này, việc tìm tổng trong khoảng $[0, i]$ chỉ mất thời gian hằng số; tuy nhiên, việc cập nhật sẽ chậm).
 Điểm thông minh trong thuật toán của cây Fenwick là cách nó sử dụng một định nghĩa đặc biệt của hàm $g$ giúp xử lý cả hai phép toán trong thời gian $O(\log N)$.
 
-### Definition of $g(i)$ { data-toc-label='Definition of <script type="math/tex">g(i)</script>' }
+### Definition of $g(i)$
 
-The computation of $g(i)$ is defined using the following simple operation:
-we replace all trailing $1$ bits in the binary representation of $i$ with $0$ bits.
+Việc tính toán $g(i)$ được định nghĩa bằng cách sử dụng phép toán đơn giản sau:
+chúng ta thay thế tất cả các bit $1$ ở cuối trong biểu diễn nhị phân của $i$ bằng các bit $0$.
 
-In other words, if the least significant digit of $i$ in binary is $0$, then $g(i) = i$.
-And otherwise the least significant digit is a $1$, and we take this $1$ and all other trailing $1$s and flip them.
+Nói cách khác, nếu chữ số ít quan trọng nhất của $i$ trong hệ nhị phân là $0$, thì $g(i) = i$.
+Ngược lại, nếu chữ số ít quan trọng nhất là $1$, thì chúng ta lấy chữ số $1$ này và tất cả các chữ số $1$ tiếp theo ở cuối và đảo ngược chúng.
 
-For instance we get
+Ví dụ, chúng ta có:
 
 $$\begin{align}
 g(11) = g(1011_2) = 1000_2 &= 8 \\\\
@@ -94,17 +94,16 @@ g(14) = g(1110_2) = 1110_2 &= 14 \\\\
 g(15) = g(1111_2) = 0000_2 &= 0 \\\\
 \end{align}$$
 
-There exists a simple implementation using bitwise operations for the non-trivial operation described above:
+Có một triển khai đơn giản sử dụng các phép toán theo bit cho phép toán không tầm thường được mô tả ở trên:
+${g(i) = i}$ & ${(i + 1),}$
 
-$$g(i) = i ~\&~ (i+1),$$
+Trong đó & là toán tử AND theo bit. Không khó để thuyết phục bản thân rằng giải pháp này thực hiện cùng một phép toán như mô tả ở trên.
 
-where $\&$ is the bitwise AND operator. It is not hard to convince yourself that this solution does the same thing as the operation described above.
+Bây giờ, chúng ta chỉ cần tìm một cách để lặp qua tất cả các giá trị $j$, sao cho $g(j) \le i \le j$.
 
-Now, we just need to find a way to iterate over all $j$'s, such that $g(j) \le i \le j$.
-
-It is easy to see that we can find all such $j$'s by starting with $i$ and flipping the last unset bit.
-We will call this operation $h(j)$.
-For example, for $i = 10$ we have:
+Dễ dàng nhận thấy rằng chúng ta có thể tìm tất cả các $j$ như vậy bằng cách bắt đầu từ $i$ và đảo ngược bit chưa được thiết lập cuối cùng.
+Chúng ta sẽ gọi phép toán này là $h(j)$.
+Ví dụ, đối với $i = 10$ ta có:
 
 $$\begin{align}
 10 &= 0001010_2 \\\\
