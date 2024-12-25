@@ -5,7 +5,7 @@
 In this article we list several algorithms for the factorization of integers, each of which can be either fast or varying levels of slow depending on their input.
 
 Notice, if the number that you want to factorize is actually a prime number, most of the algorithms will run very slowly. This is especially true for Fermat's, Pollard's p-1 and Pollard's rho factorization algorithms.
-Therefore, it makes the most sense to perform a probabilistic (or a fast deterministic) [primality test](primality_tests.md) before trying to factorize the number.
+Therefore, it makes the most sense to perform a probabilistic (or a fast deterministic) [primality test](https://cp-algorithms.com/algebra/primality_tests.html) before trying to factorize the number.
 
 ## Trial division
 
@@ -102,7 +102,7 @@ If we continue exending this method to include even more primes, better percenta
 ### Precomputed primes
 
 Extending the wheel factorization method indefinitely, we will only be left with prime numbers to check. 
-A good way of checking this is to precompute all prime numbers with the [Sieve of Eratosthenes](sieve-of-eratosthenes.md) until $\sqrt{n}$, and test them individually.
+A good way of checking this is to precompute all prime numbers with the [Sieve of Eratosthenes](https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html) until $\sqrt{n}$, and test them individually.
 
 ```{.cpp file=factorization_trial_division4}
 vector<long long> primes;
@@ -162,7 +162,7 @@ E.g. the prime factorization of $4817191$ is $1303 \cdot 3697$.
 And the factors are $31$-powersmooth and $16$-powersmooth respectably, because $1303 - 1 = 2 \cdot 3 \cdot 7 \cdot 31$ and $3697 - 1 = 2^4 \cdot 3 \cdot 7 \cdot 11$.
 In 1974 John Pollard invented a method to extracts $B$-powersmooth factors from a composite number.
 
-The idea comes from [Fermat's little theorem](phi-function.md#application).
+The idea comes from [Fermat's little theorem](https://cp-algorithms.com/algebra/phi-function.html#application).
 Let a factorization of $n$ be $n = p \cdot q$.
 It says that if $a$ is coprime to $p$, the following statement holds:
 
@@ -175,7 +175,7 @@ $${\left(a^{(p - 1)}\right)}^k \equiv a^{k \cdot (p - 1)} \equiv 1 \pmod{p}.$$
 So for any $M$ with $p - 1 ~|~ M$ we know that $a^M \equiv 1$.
 This means that $a^M - 1 = p \cdot r$, and because of that also $p ~|~ \gcd(a^M - 1, n)$.
 
-Therefore, if $p - 1$ for a factor $p$ of $n$ divides $M$, we can extract a factor using [Euclid's algorithm](euclid-algorithm.md).
+Therefore, if $p - 1$ for a factor $p$ of $n$ divides $M$, we can extract a factor using [Euclid's algorithm](https://cp-algorithms.com/algebra/euclid-algorithm.html).
 
 It is clear, that the smallest $M$ that is a multiple of every $B$-powersmooth number is $\text{lcm}(1,~2~,3~,4~,~\dots,~B)$.
 Or alternatively:
@@ -265,7 +265,7 @@ During each iteration, the first pointer will advance one element over, while th
 Using this idea it is easy to observe that if there is a cycle, at some point the second pointer will come around to meet the first one during the loops. 
 If the cycle length is $\lambda$ and the $\mu$ is the first index at which the cycle starts, then the algorithm will run in $O(\lambda + \mu)$ time.
 
-This algorithm is also known as the [Tortoise and Hare algorithm](../others/tortoise_and_hare.md), based on the tale in which a tortoise (the slow pointer) and a hare (the faster pointer) have a race.
+This algorithm is also known as the [Tortoise and Hare algorithm](https://cp-algorithms.com/others/tortoise_and_hare.html), based on the tale in which a tortoise (the slow pointer) and a hare (the faster pointer) have a race.
 
 It is actually possible to determine the parameter $\lambda$ and $\mu$ using this algorithm (also in $O(\lambda + \mu)$ time and $O(1)$ space).
 When a cycle is detected, the algorithm will return 'True'. 
@@ -330,7 +330,7 @@ i & x_i \bmod n & x_{2i} \bmod n & x_i \bmod 317 & x_{2i} \bmod 317 & \gcd(x_i -
 \end{array}$$
 
 The implementation uses a function `mult`, that multiplies two integers $\le 10^{18}$ without overflow by using a GCC's type `__int128` for 128-bit integer.
-If GCC is not available, you can using a similar idea as [binary exponentiation](binary-exp.md).
+If GCC is not available, you can using a similar idea as [binary exponentiation](https://cp-algorithms.com/algebra/binary-exp.html).
 
 ```{.cpp file=pollard_rho_mult2}
 long long mult(long long a, long long b, long long mod) {
@@ -345,7 +345,7 @@ long long mult(long long a, long long b, long long mod) {
 }
 ```
 
-Alternatively you can also implement the [Montgomery multiplication](montgomery_multiplication.md).
+Alternatively you can also implement the [Montgomery multiplication](https://cp-algorithms.com/algebra/montgomery_multiplication.html).
 
 As stated previously, if $n$ is composite and the algorithm returns $n$ as factor, you have to repeat the procedure with different parameters $x_0$ and $c$.
 E.g. the choice $x_0 = c = 1$ will not factor $25 = 5 \cdot 5$.
