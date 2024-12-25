@@ -38,7 +38,7 @@ vector<long long> trial_division1(long long n) {
 
 Đây là một tối ưu hóa của phương pháp chia thử.
 Khi chúng ta biết rằng số đó không chia hết cho 2, chúng ta không cần phải kiểm tra các số chẵn khác.
-Điều này giúp giảm chỉ còn $50\%$ số cần kiểm tra.
+Điều này giúp giảm chỉ còn 50% số cần kiểm tra.
 Sau khi phân tích 2 và có được một số lẻ, chúng ta có thể bắt đầu từ 3 và chỉ kiểm tra các số lẻ khác.
 
 ```cpp
