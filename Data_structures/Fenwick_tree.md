@@ -114,16 +114,17 @@ h(31) = 63 &= 0111111_2 \\\\
 \vdots &
 \end{align}$$
 
-Unsurprisingly, there also exists a simple way to perform $h$ using bitwise operations:
+Không có gì ngạc nhiên khi cũng tồn tại một cách đơn giản để thực hiện $h$ bằng cách sử dụng các phép toán theo bit:
 
 $$h(j) = j ~|~ (j+1),$$
 
-where $|$ is the bitwise OR operator.
+Trong đó $|$ là toán tử OR theo bit.
 
-The following image shows a possible interpretation of the Fenwick tree as tree.
-The nodes of the tree show the ranges they cover.
+Hình ảnh dưới đây cho thấy một cách diễn giải có thể của cây Fenwick dưới dạng cây. 
+Các nút của cây biểu thị các khoảng mà chúng bao phủ.
 
-<center>![Binary Indexed Tree](binary_indexed_tree.png)</center>
+![binary_indexed_tree](https://github.com/user-attachments/assets/3d85ed04-f40a-4fdc-a9b1-1e428d573a68)
+
 
 ## Implementation
 
