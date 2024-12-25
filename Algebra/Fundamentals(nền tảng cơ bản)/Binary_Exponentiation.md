@@ -43,9 +43,9 @@ $3^{13} = 6561 \cdot 81 \cdot 3 = 1594323$
 Cách tiếp cận đệ quy sau đây diễn đạt cùng một ý tưởng:
 
 $$a^n = \begin{cases}
-1 &\text{if } n == 0 \\
-\left(a^{\frac{n}{2}}\right)^2 &\text{if } n > 0 \text{ and } n \text{ even}\\
-\left(a^{\frac{n - 1}{2}}\right)^2 \cdot a &\text{if } n > 0 \text{ and } n \text{ odd}\\
+1 &\text{nếu } n == 0 \\
+\left(a^{\frac{n}{2}}\right)^2 &\text{nếu } n > 0 \text{ và } n \text{ chẵn}\\
+\left(a^{\frac{n - 1}{2}}\right)^2 \cdot a &\text{nếu } n > 0 \text{ và } n \text{ lẻ}\\
 \end{cases}$$
 
 ## Implementation
