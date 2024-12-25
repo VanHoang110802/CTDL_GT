@@ -11,7 +11,7 @@ Lưu ý rằng, nếu số bạn muốn phân tích thực sự là một số n
 Đây là thuật toán cơ bản nhất để tìm phân tích thừa số nguyên tố.
 
 Chúng ta chia cho mỗi ước số khả dĩ là $d$.
-Có thể nhận thấy rằng không thể tất cả các thừa số nguyên tố của một số hợp composite $n$ đều lớn hơn $\sqrt{n}$.
+Có thể nhận thấy rằng không thể tất cả các thừa số nguyên tố của một hợp số $n$ đều lớn hơn $\sqrt{n}$.
 Do đó, chúng ta chỉ cần kiểm tra các ước số $2 \le d \le \sqrt{n}$, điều này giúp ta tìm được phân tích thừa số nguyên tố trong $O(\sqrt{n})$.
 (Đây là [thời gian giả đa thức](https://en.wikipedia.org/wiki/Pseudo-polynomial_time), tức là đa thức theo giá trị của đầu vào nhưng có độ phức tạp theo số bit của đầu vào.)
 
