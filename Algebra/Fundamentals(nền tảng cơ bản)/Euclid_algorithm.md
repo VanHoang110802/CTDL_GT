@@ -5,9 +5,9 @@
 Cho hai số nguyên không âm $a$ và $b$, chúng ta cần tìm **GCD** (greatest common divisor), tức là số lớn nhất là ước của cả hai số $a$ và $b$.
 Nó thường được ký hiệu là ${\gcd(a, b)}$. Về mặt toán học, nó được định nghĩa như sau:
 
-$$\gcd(a, b) = \max \{k > 0 : (k \mid a) \text{ and } (k \mid b) \}$$
+$$\gcd(a, b) = \max \{(k > 0 : (k \mid a) \text{ and } (k \mid b)) \}$$
 
-(Ở đây, ký hiệu "|" biểu thị tính chia hết, tức là "k | a" có nghĩa là "${k}$ chia hết ${a}$")
+(Ở đây, ký hiệu "|" biểu thị tính chia hết, tức là "k | a" có nghĩa là "k chia hết a")
 
 Khi một trong các số là zero, trong khi số còn lại là khác không, ước chung lớn nhất của chúng, theo định nghĩa, là số thứ hai. Khi cả hai số đều là zero, ước chung lớn nhất của chúng không xác định (nó có thể là bất kỳ số nào tùy ý), nhưng để bảo tồn tính kết hợp của $\gcd$ , ta định nghĩa nó là zero. Điều này cho ta một quy tắc đơn giản: nếu một trong các số là zero, ước chung lớn nhất là số còn lại.
 
