@@ -12,21 +12,21 @@ Rõ ràng nhất, điều này áp dụng cho phép nhân modulo, phép nhân ma
 
 ## Algorithm
 
-Raising $a$ to the power of $n$ is expressed naively as multiplication by $a$ done $n - 1$ times:
-$a^{n} = a \cdot a \cdot \ldots \cdot a$. However, this approach is not practical for large $a$ or $n$.
+Nâng $a$ lên lũy thừa $n$ được biểu diễn đơn giản như phép nhân $a$ thực hiện $n - 1$ lần:
+$a^{n} = a \cdot a \cdot \ldots \cdot a$. Tuy nhiên, phương pháp này không thực tế cho các giá trị lớn của $a$ hoặc $n$.
 
-$a^{b+c} = a^b \cdot a^c$ and $a^{2b} = a^b \cdot a^b = (a^b)^2$.
+$a^{b+c} = a^b \cdot a^c$ và $a^{2b} = a^b \cdot a^b = (a^b)^2$.
 
-The idea of binary exponentiation is, that we split the work using the binary representation of the exponent.
+Ý tưởng của phép nâng lũy thừa nhị phân là chúng ta chia công việc sử dụng biểu diễn nhị phân của số mũ.
 
-Let's write $n$ in base 2, for example:
+Hãy viết $n$ dưới dạng cơ số 2, ví dụ:
 
 $$3^{13} = 3^{1101_2} = 3^8 \cdot 3^4 \cdot 3^1$$
 
-Since the number $n$ has exactly $\lfloor \log_2 n \rfloor + 1$ digits in base 2, we only need to perform $O(\log n)$ multiplications, if we know the powers $a^1, a^2, a^4, a^8, \dots, a^{2^{\lfloor \log n \rfloor}}$.
+Vì số $n$ có chính xác $\lfloor \log_2 n \rfloor + 1$ chữ số trong hệ cơ số 2, chúng ta chỉ cần thực hiện $O(\log n)$ phép nhân, nếu chúng ta biết các lũy thừa của $a$ với các số mũ dạng $a^1, a^2, a^4, a^8, \dots, a^{2^{\lfloor \log n \rfloor}}$.
 
-So we only need to know a fast way to compute those.
-Luckily this is very easy, since an element in the sequence is just the square of the previous element.
+Vì vậy, chúng ta chỉ cần biết một cách nhanh chóng để tính toán các giá trị đó. 
+May mắn thay, điều này rất dễ dàng, vì một phần tử trong dãy này chỉ là bình phương của phần tử trước đó.
 
 $$\begin{align}
 3^1 &= 3 \\
@@ -50,7 +50,7 @@ $$a^n = \begin{cases}
 
 ## Implementation
 
-First the recursive approach, which is a direct translation of the recursive formula:
+Đầu tiên là cách tiếp cận đệ quy, đây là bản dịch trực tiếp của công thức đệ quy:
 
 ```cpp
 long long binpow(long long a, long long b) {
@@ -64,9 +64,9 @@ long long binpow(long long a, long long b) {
 }
 ```
 
-The second approach accomplishes the same task without recursion.
-It computes all the powers in a loop, and multiplies the ones with the corresponding set bit in $n$.
-Although the complexity of both approaches is identical, this approach will be faster in practice since we don't have the overhead of the recursive calls.
+Cách tiếp cận thứ hai thực hiện cùng một nhiệm vụ mà không cần đệ quy.
+Nó tính tất cả các lũy thừa trong một vòng lặp, và nhân các lũy thừa có bit tương ứng được đặt trong $n$.
+Mặc dù độ phức tạp của cả hai cách tiếp cận là giống nhau, nhưng cách tiếp cận này sẽ nhanh hơn trong thực tế vì chúng ta không phải chịu chi phí của các lời gọi đệ quy.
 
 ```cpp
 long long binpow(long long a, long long b) {
@@ -85,12 +85,12 @@ long long binpow(long long a, long long b) {
 
 ### Effective computation of large exponents modulo a number
 
-**Problem:**
-Compute $x^n \bmod m$.
-This is a very common operation. For instance it is used in computing the [modular multiplicative inverse](module-inverse.md).
+**Bài toán:**
+Tính $x^n \bmod m$.
+Đây là một phép toán rất phổ biến. Ví dụ, nó được sử dụng trong việc tính [modular multiplicative inverse](module-inverse.md).
 
-**Solution:**
-Since we know that the modulo operator doesn't interfere with multiplications ($a \cdot b \equiv (a \bmod m) \cdot (b \bmod m) \pmod m$), we can directly use the same code, and just replace every multiplication with a modular multiplication:
+**Giải quyết:**
+Vì chúng ta biết rằng toán tử modulo không làm ảnh hưởng đến phép nhân ($a \cdot b \equiv (a \bmod m) \cdot (b \bmod m) \pmod m$), chúng ta có thể trực tiếp sử dụng mã nguồn tương tự, và chỉ cần thay thế mỗi phép nhân bằng phép nhân modulo:
 
 ```cpp
 long long binpow(long long a, long long b, long long m) {
