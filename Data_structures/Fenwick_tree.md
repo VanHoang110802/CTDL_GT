@@ -23,27 +23,27 @@ Nó lần đầu tiên được mô tả trong một bài báo có tiêu đề "
 
 ### Overview
 
-For the sake of simplicity, we will assume that function $f$ is defined as $f(x,y) = x + y$ over the integers.
+Để cho đơn giản, chúng ta sẽ giả sử rằng hàm $f$ được định nghĩa là $f(x,y) = x + y$ trên các số nguyên.
 
-Suppose we are given an array of integers, $A[0 \dots N-1]$.
-(Note that we are using zero-based indexing.)
-A Fenwick tree is just an array, $T[0 \dots N-1]$, where each element is equal to the sum of elements of $A$ in some range, $[g(i), i]$:
+Giả sử chúng ta được cho một mảng các số nguyên, $A[0 \dots N-1]$.
+(Lưu ý rằng chúng ta đang sử dụng chỉ số bắt đầu từ 0.)
+Cây Fenwick chỉ là một mảng, $T[0 \dots N-1]$, trong đó mỗi phần tử bằng tổng các phần tử của $A$ trong một khoảng, $[g(i), i]$:
 
 $$T_i = \sum_{j = g(i)}^{i}{A_j}$$
 
-where $g$ is some function that satisfies $0 \le g(i) \le i$.
-We will define $g$ in the next few paragraphs.
+trong đó $g$ là một hàm thoả mãn $0 \le g(i) \le i$.
+Chúng ta sẽ định nghĩa $g$ trong các trang đoạn tiếp theo.
 
-The data structure is called a tree because there is a nice representation of it in the form of a tree, although we don't need to model an actual tree with nodes and edges.
-We only need to maintain the array $T$ to handle all queries.
+Cấu trúc dữ liệu này được gọi là cây vì có một cách biểu diễn đẹp mắt dưới dạng cây, mặc dù chúng ta không cần phải mô phỏng một cây thực sự với các nút và cạnh.
+Chúng ta chỉ cần duy trì mảng $T$ để xử lý tất cả các truy vấn.
 
-**Note:** The Fenwick tree presented here uses zero-based indexing.
-Many people use a version of the Fenwick tree that uses one-based indexing.
-As such, you will also find an alternative implementation which uses one-based indexing in the implementation section.
-Both versions are equivalent in terms of time and memory complexity.
+**Lưu ý:** Cây Fenwick được trình bày ở đây sử dụng chỉ số bắt đầu từ 0.
+Nhiều người sử dụng một phiên bản của cây Fenwick với chỉ số bắt đầu từ 1.
+Do đó, bạn cũng sẽ tìm thấy một triển khai thay thế sử dụng chỉ số bắt đầu từ 1 trong phần triển khai.
+Cả hai phiên bản đều tương đương về độ phức tạp thời gian và bộ nhớ.
 
-Now we can write some pseudo-code for the two operations mentioned above.
-Below, we get the sum of elements of $A$ in the range $[0, r]$ and update (increase) some element $A_i$:
+Bây giờ chúng ta có thể viết một số mã giả cho hai phép toán đã đề cập ở trên.
+Dưới đây, chúng ta tính tổng các phần tử của $A$ trong khoảng $[0, r]$ và cập nhật (tăng) một phần tử $A_i$:
 
 ```python
 def sum(int r):
@@ -58,11 +58,11 @@ def increase(int i, int delta):
         t[j] += delta
 ```
 
-The function `sum` works as follows:
+Hàm `sum` hoạt động như sau:
 
-1. First, it adds the sum of the range $[g(r), r]$ (i.e. $T[r]$) to the `result`.
-2. Then, it "jumps" to the range $[g(g(r)-1), g(r)-1]$ and adds this range's sum to the `result`.
-3. This continues until it "jumps" from $[0, g(g( \dots g(r)-1 \dots -1)-1)]$ to $[g(-1), -1]$; this is where the `sum` function stops jumping.
+1. Đầu tiên, nó cộng tổng của khoảng $[g(r), r]$ (tức là $T[r]$) vào biến `result`.
+2. Sau đó, nó "jumps" đến khoảng $[g(g(r)-1), g(r)-1]$ và cộng tổng của khoảng này vào `result`.
+3. Quá trình này tiếp tục cho đến khi nó "jumps" từ $[0, g(g( \dots g(r)-1 \dots -1)-1)]$ đến $[g(-1), -1]$; đây là điểm mà hàm `sum` dừng lại việc nhảy.
 
 The function `increase` works with the same analogy, but it "jumps" in the direction of increasing indices:
 
