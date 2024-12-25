@@ -130,16 +130,16 @@ Các nút của cây biểu thị các khoảng mà chúng bao phủ.
 
 ### Finding sum in one-dimensional array
 
-Here we present an implementation of the Fenwick tree for sum queries and single updates.
+Ở đây, chúng ta trình bày một triển khai của cây Fenwick cho các truy vấn tổng và cập nhật đơn.
 
-The normal Fenwick tree can only answer sum queries of the type $[0, r]$ using `sum(int r)`, however we can also answer other queries of the type $[l, r]$ by computing two sums $[0, r]$ and $[0, l-1]$ and subtract them.
-This is handled in the `sum(int l, int r)` method.
+Cây Fenwick thông thường chỉ có thể trả lời các truy vấn tổng kiểu $[0, r]$ thông qua hàm `sum(int r)`, tuy nhiên, chúng ta cũng có thể trả lời các truy vấn khác kiểu $[l, r]$ bằng cách tính hai tổng $[0, r]$ và $[0, l-1]$ sau đó trừ chúng đi.
+Điều này được xử lý trong phương thức `sum(int l, int r)` .
 
-Also this implementation supports two constructors.
-You can create a Fenwick tree initialized with zeros, or you can convert an existing array into the Fenwick form.
+Ngoài ra, triển khai này hỗ trợ hai hàm tạo. 
+Bạn có thể tạo một cây Fenwick được khởi tạo với giá trị bằng không, hoặc bạn có thể chuyển đổi một mảng hiện có thành dạng cây Fenwick.
 
 
-```{.cpp file=fenwick_sum}
+```cpp
 struct FenwickTree {
     vector<int> bit;  // binary indexed tree
     int n;
@@ -174,11 +174,11 @@ struct FenwickTree {
 
 ### Linear construction
 
-The above implementation requires $O(N \log N)$ time.
-It's possible to improve that to $O(N)$ time.
+Triển khai trên yêu cầu thời gian $O(N \log N)$.
+Tuy nhiên, có thể cải thiện điều này xuống còn thời gian $O(N)$.
 
-The idea is, that the number $a[i]$ at index $i$ will contribute to the range stored in $bit[i]$, and to all ranges that the index $i | (i + 1)$ contributes to.
-So by adding the numbers in order, you only have to push the current sum further to the next range, where it will then get pushed further to the next range, and so on.
+Ý tưởng là, số $a[i]$ tại chỉ số $i$ sẽ đóng góp vào khoảng lưu trữ trong $bit[i]$, và vào tất cả các khoảng mà chỉ số $i | (i + 1)$ đóng góp.
+Vì vậy, bằng cách cộng các số theo thứ tự, bạn chỉ cần đẩy tổng hiện tại vào khoảng tiếp theo, nơi nó sẽ tiếp tục được đẩy vào khoảng tiếp theo, và cứ như vậy.
 
 ```cpp
 FenwickTree(vector<int> const &a) : FenwickTree(a.size()){
@@ -190,13 +190,13 @@ FenwickTree(vector<int> const &a) : FenwickTree(a.size()){
 }
 ```
 
-### Finding minimum of $[0, r]$ in one-dimensional array { data-toc-label='Finding minimum of <script type="math/tex">[0, r]</script> in one-dimensional array' }
+### Finding minimum of $[0, r]$ in one-dimensional array
 
-It is obvious that there is no easy way of finding minimum of range $[l, r]$ using Fenwick tree, as Fenwick tree can only answer queries of type $[0, r]$.
-Additionally, each time a value is `update`'d, the new value has to be smaller than the current value.
-Both significant limitations are because the $min$ operation together with the set of integers doesn't form a group, as there are no inverse elements.
+Rõ ràng là không có cách dễ dàng để tìm giá trị nhỏ nhất trong khoảng $[l, r]$ bằng cách sử dụng cây Fenwick, vì cây Fenwick chỉ có thể trả lời các truy vấn kiểu $[0, r]$.
+Thêm vào đó, mỗi lần một giá trị được `update` , giá trị mới phải nhỏ hơn giá trị hiện tại.
+Cả hai hạn chế quan trọng này là do phép toán $min$ cùng với tập các số nguyên không tạo thành một nhóm, vì không có phần tử nghịch đảo..
 
-```{.cpp file=fenwick_min}
+```cpp
 struct FenwickTreeMin {
     vector<int> bit;
     int n;
@@ -298,7 +298,7 @@ As you can see, the main benefit of this approach is that the binary operations 
 
 The following implementation can be used like the other implementations, however it uses one-based indexing internally.
 
-```{.cpp file=fenwick_sum_onebased}
+```cpp
 struct FenwickTreeOneBasedIndexing {
     vector<int> bit;  // binary indexed tree
     int n;
