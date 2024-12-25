@@ -35,12 +35,12 @@ $$\begin{align}
 3^8 &= \left(3^4\right)^2 = 81^2 = 6561
 \end{align}$$
 
-So to get the final answer for $3^{13}$, we only need to multiply three of them (skipping $3^2$ because the corresponding bit in $n$ is not set):
+Vì vậy, để có được kết quả cuối cùng cho $3^{13}$, chúng ta chỉ cần nhân ba số trong đó (bỏ qua $3^2$ vì bit tương ứng trong $n$ không được bật):
 $3^{13} = 6561 \cdot 81 \cdot 3 = 1594323$
 
-The final complexity of this algorithm is $O(\log n)$: we have to compute $\log n$ powers of $a$, and then have to do at most $\log n$ multiplications to get the final answer from them.
+Độ phức tạp cuối cùng của thuật toán này là $O(\log n)$: chúng ta phải tính $\log n$ lũy thừa của $a$, và sau đó thực hiện tối đa $\log n$ phép nhân để có được kết quả cuối cùng.
 
-The following recursive approach expresses the same idea:
+Cách tiếp cận đệ quy sau đây diễn đạt cùng một ý tưởng:
 
 $$a^n = \begin{cases}
 1 &\text{if } n == 0 \\
