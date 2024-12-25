@@ -216,27 +216,25 @@ $$\begin{pmatrix}
 Now, once every transformation is described as a matrix, the sequence of transformations can be described as a product of these matrices, and a "loop" of $k$ repetitions can be described as the matrix raised to the power of $k$ (which can be calculated using binary exponentiation in $O(\log{k})$). This way, the matrix which represents all transformations can be calculated first in $O(m \log{k})$, and then it can be applied to each of the $n$ points in $O(n)$ for a total complexity of $O(n + m \log{k})$.
 
 
-### Number of paths of length $k$ in a graph { data-toc-label='Number of paths of length <script type="math/tex">k</script> in a graph' }
+### Number of paths of length $k$ in a graph
 
-**Problem:** Given a directed unweighted graph of $n$ vertices, find the number of paths of length $k$ from any vertex $u$ to any other vertex $v$.
+**Bài toán:** Cho đồ thị có hướng không trọng số với $n$ đỉnh, tìm số lượng các đoạn đường có độ dài $k$ từ bất kỳ đỉnh $u$ đến bất kỳ đỉnh $v$.
 
-**Solution:** This problem is considered in more detail in [a separate article](../graph/fixed_length_paths.md). The algorithm consists of raising the adjacency matrix $M$ of the graph (a matrix where $m_{ij} = 1$ if there is an edge from $i$ to $j$, or $0$ otherwise) to the $k$-th power. Now $m_{ij}$ will be the number of paths of length $k$ from $i$ to $j$. The time complexity of this solution is $O(n^3 \log k)$.
+**Giải pháp:** Bài toán này được xem xét chi tiết hơn trong [một bài viết riêng](https://cp-algorithms.com/graph/fixed_length_paths.html). Thuật toán bao gồm việc nâng ma trận kề $M$ của đồ thị (một ma trận mà trong đó $m_{ij} = 1$ nếu có một cạnh từ $i$ đến $j$, hoặc $0$ nếu không có cạnh) lên lũy thừa $k$. Bây giờ, $m_{ij}$ sẽ là số lượng các đoạn đường có độ dài $k$ từ $i$ đến $j$. Độ phức tạp thời gian của giải pháp này là $O(n^3 \log k)$.
 
-**Note:** In that same article, another variation of this problem is considered: when the edges are weighted and it is required to find the minimum weight path containing exactly $k$ edges. As shown in that article, this problem is also solved by exponentiation of the adjacency matrix. The matrix would have the weight of the edge from $i$ to $j$, or $\infty$ if there is no such edge.
-Instead of the usual operation of multiplying two matrices, a modified one should be used:
-instead of multiplication, both values are added, and instead of a summation, a minimum is taken.
-That is: $result_{ij} = \min\limits_{1\ \leq\ k\ \leq\ n}(a_{ik} + b_{kj})$.
+**Lưu ý:** Trong bài viết đó, một biến thể khác của bài toán này cũng được xem xét: khi các cạnh có trọng số và yêu cầu tìm đoạn đường có trọng số tối thiểu chứa chính xác $k$ cạnh. Như đã chỉ ra trong bài viết đó, bài toán này cũng được giải bằng cách nâng ma trận kề lên lũy thừa. Ma trận sẽ có trọng số của cạnh từ $i$ đến $j$, hoặc $\infty$ nếu không có cạnh nào như vậy.
+Thay vì sử dụng phép nhân hai ma trận thông thường, một phép toán đã được sửa đổi nên được sử dụng: thay vì phép nhân, hai giá trị được cộng lại, và thay vì phép tổng, lấy giá trị nhỏ nhất. Cụ thể là: $result_{ij} = \min\limits_{1\ \leq\ k\ \leq\ n}(a_{ik} + b_{kj})$.
 
-### Variation of binary exponentiation: multiplying two numbers modulo $m$ { data-toc-label='Variation of binary exponentiation: multiplying two numbers modulo <script type="math/tex">m</script>' }
+### Variation of binary exponentiation: multiplying two numbers modulo $m$
 
-**Problem:** Multiply two numbers $a$ and $b$ modulo $m$. $a$ and $b$ fit in the built-in data types, but their product is too big to fit in a 64-bit integer. The idea is to compute $a \cdot b \pmod m$ without using bignum arithmetics.
+**Bài toán:** Nhân hai số $a$ và $b$ modulo $m$. $a$ và $b$ vừa vặn trong các kiểu dữ liệu có sẵn, nhưng tích của chúng quá lớn để chứa trong một số nguyên 64-bit. Ý tưởng là tính $a \cdot b \pmod m$ mà không sử dụng phép toán số học bignum.
 
-**Solution:** We simply apply the binary construction algorithm described above, only performing additions instead of multiplications. In other words, we have "expanded" the multiplication of two numbers to $O (\log m)$ operations of addition and multiplication by two (which, in essence, is an addition).
+**Giải pháp:** Chúng ta chỉ cần áp dụng thuật toán xây dựng nhị phân đã được mô tả ở trên, chỉ thực hiện phép cộng thay vì phép nhân. Nói cách khác, chúng ta đã "mở rộng"("expanded") phép nhân của hai số thành $O (\log m)$ phép cộng và phép nhân với hai (mà về bản chất là một phép cộng).
 
 $$a \cdot b = \begin{cases}
 0 &\text{if }a = 0 \\
-2 \cdot \frac{a}{2} \cdot b &\text{if }a > 0 \text{ and }a \text{ even} \\
-2 \cdot \frac{a-1}{2} \cdot b + b &\text{if }a > 0 \text{ and }a \text{ odd}
+2 \cdot \frac{a}{2} \cdot b &\text{nếu }a > 0 \text{ và }a \text{ chẵn} \\
+2 \cdot \frac{a-1}{2} \cdot b + b &\text{nếu }a > 0 \text{ và }a \text{ lẻ}
 \end{cases}$$
 
 Lưu ý: Bạn có thể giải quyết bài toán này theo cách khác bằng cách sử dụng phép toán số thực. Đầu tiên, tính biểu thức $\frac{a \cdot b}{m}$ sử dụng số thực và chuyển nó thành một số nguyên không dấu $q$. Sau đó, trừ $q \cdot m$ ra khỏi $a \cdot b$ bằng phép toán số nguyên không dấu và lấy kết quả modulo $m$ để tìm đáp án. Giải pháp này có vẻ không đáng tin cậy, nhưng rất nhanh và rất dễ triển khai. Xem thêm thông tin tại [here](https://cs.stackexchange.com/questions/77016/modular-multiplication).
