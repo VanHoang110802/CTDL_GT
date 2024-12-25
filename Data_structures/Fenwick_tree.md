@@ -379,15 +379,15 @@ int point_query(int idx) {
 }
 ```
 
-Note: of course it is also possible to increase a single point $A[i]$ with `range_add(i, i, val)`.
+Lưu ý: tất nhiên, cũng có thể tăng một điểm duy nhất $A[i]$ với `range_add(i, i, val)`.
 
 ### 3. Range Update and Range Query
 
-To support both range updates and range queries we will use two BITs namely $B_1[]$ and $B_2[]$, initialized with zeros.
+TĐể hỗ trợ cả cập nhật khoảng và truy vấn khoảng, chúng ta sẽ sử dụng hai cây chỉ số nhị phân (BIT), đó là $B_1[]$ và $B_2[]$, được khởi tạo với giá trị bằng không.
 
-Suppose that we want to increment the interval $[l, r]$ by the value $x$.
-Similarly as in the previous method, we perform two point updates on $B_1$: `add(B1, l, x)` and `add(B1, r+1, -x)`.
-And we also update $B_2$. The details will be explained later.
+Giả sử chúng ta muốn tăng khoảng $[l, r]$ lên giá trị $x$.
+Tương tự như phương pháp trước, chúng ta thực hiện hai phép toán cập nhật điểm trên $B_1$: `add(B1, l, x)` và `add(B1, r+1, -x)`.
+Và chúng ta cũng cập nhật $B_2$. Chi tiết sẽ được giải thích sau.
 
 ```python
 def range_add(l, r, x):
@@ -396,7 +396,7 @@ def range_add(l, r, x):
     add(B2, l, x*(l-1))
     add(B2, r+1, -x*r))
 ```
-After the range update $(l, r, x)$ the range sum query should return the following values:
+Sau khi cập nhật khoảng $(l, r, x)$ truy vấn tổng khoảng nên trả về các giá trị sau:
 
 $$
 sum[0, i]=
@@ -407,8 +407,8 @@ x \cdot (r-l+1) & i > r \\\\
 \end{cases}
 $$
 
-We can write the range sum as difference of two terms, where we use $B_1$ for first term and $B_2$ for second term.
-The difference of the queries will give us prefix sum over $[0, i]$.
+Chúng ta có thể viết tổng khoảng như hiệu của hai hạng tử, trong đó chúng ta sử dụng $B_1$ cho hạng tử đầu tiên và $B_2$ cho hạng tử thứ hai.
+Hiệu của các truy vấn sẽ cho chúng ta tổng tiền tố trên $[0, i]$.
 
 $$\begin{align}
 sum[0, i] &= sum(B_1, i) \cdot i - sum(B_2, i) \\\\
@@ -420,10 +420,10 @@ x \cdot i - x \cdot (l-1) & l \le i \le r \\\\
 \end{align}
 $$
 
-The last expression is exactly equal to the required terms.
-Thus we can use $B_2$ for shaving off extra terms when we multiply $B_1[i]\times i$.
+Biểu thức cuối cùng hoàn toàn bằng với các hạng tử yêu cầu.
+Do đó, chúng ta có thể sử dụng $B_2$ để loại bỏ các hạng tử thừa khi nhân $B_1[i]\times i$.
 
-We can find arbitrary range sums by computing the prefix sums for $l-1$ and $r$ and taking the difference of them again.
+Chúng ta có thể tìm tổng khoảng bất kỳ bằng cách tính tổng tiền tố cho $l-1$ và $r$ sau đó lấy hiệu của chúng.
 
 ```python
 def add(b, idx, x):
