@@ -9,17 +9,17 @@ $$\gcd(a, b) = \max \{k > 0 : (k \mid a) \text{ and } (k \mid b) \}$$
 
 (here the symbol "$\mid$" denotes divisibility, i.e. "$k \mid a$" means "$k$ divides $a$")
 
-When one of the numbers is zero, while the other is non-zero, their greatest common divisor, by definition, is the second number. When both numbers are zero, their greatest common divisor is undefined (it can be any arbitrarily large number), but it is convenient to define it as zero as well to preserve the associativity of $\gcd$. Which gives us a simple rule: if one of the numbers is zero, the greatest common divisor is the other number.
+Khi một trong các số là zero, trong khi số còn lại là khác không, ước chung lớn nhất của chúng, theo định nghĩa, là số thứ hai. Khi cả hai số đều là zero, ước chung lớn nhất của chúng không xác định (nó có thể là bất kỳ số nào tùy ý), nhưng để bảo tồn tính kết hợp của $\gcd$ , ta định nghĩa nó là zero. Điều này cho ta một quy tắc đơn giản: nếu một trong các số là zero, ước chung lớn nhất là số còn lại.
 
-The Euclidean algorithm, discussed below, allows to find the greatest common divisor of two numbers $a$ and $b$ in $O(\log \min(a, b))$. Since the function is **associative**, to find the GCD of **more than two numbers**, we can do $\gcd(a, b, c) = \gcd(a, \gcd(b, c))$ and so forth.
+Thuật toán Euclid, được thảo luận dưới đây, cho phép tìm ước chung lớn nhất của hai số $a$ và $b$ trong thời gian $O(\log \min(a, b))$. Vì hàm này là **kết hợp (associative)**, để tìm ước chung lớn nhất của **hơn hai số (more than two numbers)**, ta có thể thực hiện $\gcd(a, b, c) = \gcd(a, \gcd(b, c))$ và tiếp tục như vậy.
 
-The algorithm was first described in Euclid's "Elements" (circa 300 BC), but it is possible that the algorithm has even earlier origins.
+Thuật toán này lần đầu tiên được mô tả trong "Elements" của Euclid (khoảng 300 TCN), nhưng có thể thuật toán này có nguồn gốc từ trước đó.
 
 ## Algorithm
 
-Originally, the Euclidean algorithm was formulated as follows: subtract the smaller number from the larger one until one of the numbers is zero. Indeed, if $g$ divides $a$ and $b$, it also divides $a-b$. On the other hand, if $g$ divides $a-b$ and $b$, then it also divides $a = b + (a-b)$, which means that the sets of the common divisors of $\{a, b\}$ and $\{b,a-b\}$ coincide.
+Thuật toán Euclid ban đầu được trình bày như sau: trừ số nhỏ hơn khỏi số lớn hơn cho đến khi một trong hai số trở thành số không. Thực vậy, nếu $g$ chia $a$ và $b$, thì nó cũng chia $a-b$. Mặt khác, nếu $g$ chia $a-b$ và $b$, thì nó cũng chia $a = b + (a-b)$, điều này có nghĩa là tập các ước chung của $\{a, b\}$ và $\{b,a-b\}$ là giống nhau.
 
-Note that $a$ remains the larger number until $b$ is subtracted from it at least $\left\lfloor\frac{a}{b}\right\rfloor$ times. Therefore, to speed things up, $a-b$ is substituted with $a-\left\lfloor\frac{a}{b}\right\rfloor b = a \bmod b$. Then the algorithm is formulated in an extremely simple way:
+Lưu ý rằng $a$ vẫn là số lớn hơn cho đến khi $b$ bị trừ khỏi nó ít nhất $\left\lfloor\frac{a}{b}\right\rfloor$ lần. Do đó, để tăng tốc, $a-b$ được thay thế bằng $a-\left\lfloor\frac{a}{b}\right\rfloor b = a \bmod b$. Sau đó, thuật toán được trình bày một cách vô cùng đơn giản:
 
 $$\gcd(a, b) = \begin{cases}a,&\text{if }b = 0 \\ \gcd(b, a \bmod b),&\text{otherwise.}\end{cases}$$
 
@@ -66,7 +66,7 @@ Hơn nữa, có thể chứng minh rằng giới hạn trên của định lý n
 
 Vì các số Fibonacci tăng theo cấp số mũ, ta có thể kết luận rằng thuật toán Euclid hoạt động trong thời gian $O(\log \min(a, b))$.
 
-Một cách khác để ước tính độ phức tạp là nhận thấy rằng $a \bmod b$ đối với trường hợp $a \geq b$ sẽ ít nhất nhỏ hơn $a$ gấp 2 lần, do đó số lớn hơn sẽ bị giảm ít nhất một nửa trong mỗi lần lặp của thuật toán. Áp dụng lý luận này vào trường hợp khi ta tính GCD của tập hợp các số $a_1,\dots,a_n \leq C$, điều này cũng cho phép ước tính tổng thời gian chạy là $O(n + \log C)$, thay vì $O(n \log C)$, vì mỗi lần lặp không tầm thường của thuật toán sẽ giảm ứng viên GCD hiện tại ít nhất một yếu tố $2$.
+Một cách khác để ước tính độ phức tạp là nhận thấy rằng $a \bmod b$ đối với trường hợp $a \geq b$ sẽ ít nhất nhỏ hơn $a$ gấp 2 lần, do đó số lớn hơn sẽ bị giảm ít nhất một nửa trong mỗi lần lặp của thuật toán. Áp dụng lý luận này vào trường hợp khi ta tính GCD của tập hợp các số $a_1,\dots,a_n \leq C$, điều này cũng cho phép ước tính tổng thời gian chạy là $O(n + \log C)$, thay vì $O(n \log C)$, vì mỗi lần lặp không tầm thường của thuật toán sẽ giảm ứng viên GCD hiện tại ít nhất một yếu tố hệ số là $2$.
 
 ## Least common multiple
 
