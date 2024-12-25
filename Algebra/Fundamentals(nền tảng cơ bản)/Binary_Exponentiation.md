@@ -213,7 +213,7 @@ $$\begin{pmatrix}
 0 & 0 & 0 & 1
 \end{pmatrix}$$
 
-Bây giờ, khi mỗi phép biến đổi được mô tả dưới dạng một ma trận, chuỗi các phép biến đổi có thể được mô tả dưới dạng tích của các ma trận này, và một "loop" với $k$ lần lặp có thể được mô tả dưới dạng ma trận nâng lên lũy thừa $k$ (có thể tính toán bằng phép lũy thừa nhị phân với độ phức tạp $O(\log{k})$). Bằng cách này, ma trận đại diện cho tất cả các phép biến đổi có thể được tính toán trước trong $O(m \log{k})$, và sau đó có thể được áp dụng cho mỗi điểm trong số $n$ điểm với độ phức tạp $O(n)$ tổng cộng có độ phức tạp là $O(n + m \log{k})$.
+Bây giờ, khi mỗi phép biến đổi được mô tả dưới dạng một ma trận, chuỗi các phép biến đổi có thể được mô tả dưới dạng tích của các ma trận này, và một "loop" với $k$ lần lặp có thể được mô tả dưới dạng ma trận nâng lên lũy thừa $k$ (có thể tính toán bằng phép lũy thừa nhị phân với độ phức tạp ${O(\log{k})}$. Bằng cách này, ma trận đại diện cho tất cả các phép biến đổi có thể được tính toán trước trong $O(m \log{k})$, và sau đó có thể được áp dụng cho mỗi điểm trong số $n$ điểm với độ phức tạp $O(n)$ tổng cộng có độ phức tạp là ${O(n + m \log{k})}$.
 
 
 ### Number of paths of length $k$ in a graph
