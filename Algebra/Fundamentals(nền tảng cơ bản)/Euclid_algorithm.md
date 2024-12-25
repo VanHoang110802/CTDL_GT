@@ -21,7 +21,7 @@ Thuật toán Euclid ban đầu được trình bày như sau: trừ số nhỏ 
 
 Lưu ý rằng $a$ vẫn là số lớn hơn cho đến khi $b$ bị trừ khỏi nó ít nhất $\left\lfloor\frac{a}{b}\right\rfloor$ lần. Do đó, để tăng tốc, $a-b$ được thay thế bằng $a-\left\lfloor\frac{a}{b}\right\rfloor b = a \bmod b$. Sau đó, thuật toán được trình bày một cách vô cùng đơn giản:
 
-$$\gcd(a, b) = \begin{cases}a,&\text{if }b = 0 \\ \gcd(b, a \bmod b),&\text{otherwise.}\end{cases}$$
+$$\gcd(a, b) = \begin{cases}a,&\text{nếu }b = 0 \\ \gcd(b, a \bmod b),&\text{ngược lại.}\end{cases}$$
 
 ## Implementation
 
