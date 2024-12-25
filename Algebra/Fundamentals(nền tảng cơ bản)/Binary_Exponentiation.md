@@ -1,3 +1,5 @@
+> Bài viết được dịch tại: [cp-algorithms](https://cp-algorithms.com/algebra/binary-exp.html)
+
 # Binary Exponentiation
 
 Phép lũy thừa nhị phân (còn được biết đến là phép lũy thừa bằng phương pháp bình phương) là một mẹo cho phép tính toán $a^n$ chỉ với $O(\log n)$ phép nhân (thay vì $O(n)$ phép nhân như phương pháp thông thường).
