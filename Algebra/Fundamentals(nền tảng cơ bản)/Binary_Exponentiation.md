@@ -182,11 +182,11 @@ a_{41} & a_ {42} & a_ {43} & a_ {44}
 \end{pmatrix}
  = \begin{pmatrix} x' & y' & z' & 1 \end{pmatrix}$$
 
-(Why introduce a fictitious fourth coordinate, you ask? That is the beauty of [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates), which find great application in computer graphics. Without this, it would not be possible to implement affine operations like the shift operation as a single matrix multiplication, as it requires us to _add_ a constant to the coordinates. The affine transformation becomes a linear transformation in the higher dimension!)
+(Tại sao lại giới thiệu một tọa độ giả tưởng thứ tư, bạn hỏi? Đó là vẻ đẹp của [tọa độ đồng nhất](https://en.wikipedia.org/wiki/Homogeneous_coordinates), được ứng dụng rộng rãi trong đồ họa máy tính. Nếu không có điều này, chúng ta sẽ không thể thực hiện các phép biến đổi affine như phép dịch chuyển dưới dạng một phép nhân ma trận duy nhất, vì nó yêu cầu chúng ta cộng một hằng số vào các tọa độ. Phép biến đổi affine trở thành một phép biến đổi tuyến tính trong không gian chiều cao hơn!)
 
-Here are some examples of how transformations are represented in matrix form:
+Dưới đây là một số ví dụ về cách các phép biến đổi được biểu diễn dưới dạng ma trận:
 
-* Shift operation: shift $x$ coordinate by $5$, $y$ coordinate by $7$ and $z$ coordinate by $9$.
+* Phép dịch chuyển: dịch chuyển tọa độ $x$ bởi $5$, tọa độ $y$ bởi $7$ và tọa độ $z$ bởi $9$.
 
 $$\begin{pmatrix}
 1 & 0 & 0 & 0 \\
@@ -195,7 +195,7 @@ $$\begin{pmatrix}
 5 & 7 & 9 & 1
 \end{pmatrix}$$
 
-* Scaling operation: scale the $x$ coordinate by $10$ and the other two by $5$.
+* Phép biến đổi tỉ lệ: thay đổi tỉ lệ của tọa độ $x$ bởi $10$ và thay đổi tỉ lệ của hai tọa độ còn lại bởi $5$.
 
 $$\begin{pmatrix}
 10 & 0 & 0 & 0 \\
@@ -204,7 +204,7 @@ $$\begin{pmatrix}
 0 & 0 & 0 & 1
 \end{pmatrix}$$
 
-* Rotation operation: rotate $\theta$ degrees around the $x$ axis following the right-hand rule (counter-clockwise direction).
+* Phép quay: quay góc $\theta$ quanh trục $x$ theo quy tắc tay phải (hướng ngược chiều kim đồng hồ).
 
 $$\begin{pmatrix}
 1 & 0 & 0 & 0 \\
@@ -213,7 +213,7 @@ $$\begin{pmatrix}
 0 & 0 & 0 & 1
 \end{pmatrix}$$
 
-Now, once every transformation is described as a matrix, the sequence of transformations can be described as a product of these matrices, and a "loop" of $k$ repetitions can be described as the matrix raised to the power of $k$ (which can be calculated using binary exponentiation in $O(\log{k})$). This way, the matrix which represents all transformations can be calculated first in $O(m \log{k})$, and then it can be applied to each of the $n$ points in $O(n)$ for a total complexity of $O(n + m \log{k})$.
+Bây giờ, khi mỗi phép biến đổi được mô tả dưới dạng một ma trận, chuỗi các phép biến đổi có thể được mô tả dưới dạng tích của các ma trận này, và một "loop" với $k$ lần lặp có thể được mô tả dưới dạng ma trận nâng lên lũy thừa $k$ (có thể tính toán bằng phép lũy thừa nhị phân với độ phức tạp $O(\log{k})$). Bằng cách này, ma trận đại diện cho tất cả các phép biến đổi có thể được tính toán trước trong $O(m \log{k})$, và sau đó có thể được áp dụng cho mỗi điểm trong số $n$ điểm với độ phức tạp $O(n)$ tổng cộng có độ phức tạp là $O(n + m \log{k})$.
 
 
 ### Number of paths of length $k$ in a graph
