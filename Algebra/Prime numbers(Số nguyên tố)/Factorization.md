@@ -2,10 +2,9 @@
 
 # Integer factorization
 
-In this article we list several algorithms for the factorization of integers, each of which can be either fast or varying levels of slow depending on their input.
+Trong bài viết này, chúng ta liệt kê một số thuật toán để phân tích thừa số của các số nguyên, mỗi thuật toán có thể nhanh hoặc có tốc độ khác nhau tùy thuộc vào đầu vào của chúng.
 
-Notice, if the number that you want to factorize is actually a prime number, most of the algorithms will run very slowly. This is especially true for Fermat's, Pollard's p-1 and Pollard's rho factorization algorithms.
-Therefore, it makes the most sense to perform a probabilistic (or a fast deterministic) [primality test](https://cp-algorithms.com/algebra/primality_tests.html) before trying to factorize the number.
+Lưu ý rằng, nếu số bạn muốn phân tích thực sự là một số nguyên tố, hầu hết các thuật toán sẽ chạy rất chậm. Điều này đặc biệt đúng đối với các thuật toán phân tích thừa số Fermat, Pollard's p-1 và Pollard's rho. Do đó, hợp lý nhất là thực hiện một [kiểm tra tính nguyên tố](https://cp-algorithms.com/algebra/primality_tests.html) xác suất (hoặc xác suất nhanh) trước khi thử phân tích thừa số của số đó.
 
 ## Trial division
 
