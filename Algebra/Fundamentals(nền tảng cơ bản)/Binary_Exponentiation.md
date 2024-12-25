@@ -4,13 +4,11 @@
 
 Phép lũy thừa nhị phân (còn được biết đến là phép lũy thừa bằng phương pháp bình phương) là một mẹo cho phép tính toán $a^n$ chỉ với $O(\log n)$ phép nhân (thay vì $O(n)$ phép nhân như phương pháp thông thường).
 
-It also has important applications in many tasks unrelated to arithmetic, since it
-can be used with any operations that have the property of **associativity**:
+Nó cũng có những ứng dụng quan trọng trong nhiều tác vụ không liên quan đến số học, vì nó có thể được sử dụng với bất kỳ phép toán nào có tính chất kết hợp:
 
 $$(X \cdot Y) \cdot Z = X \cdot (Y \cdot Z)$$
 
-Most obviously this applies to modular multiplication, to multiplication of matrices and
-to other problems which we will discuss below.
+Rõ ràng nhất, điều này áp dụng cho phép nhân modulo, phép nhân ma trận và các bài toán khác mà chúng ta sẽ thảo luận bên dưới.
 
 ## Algorithm
 
@@ -241,4 +239,4 @@ $$a \cdot b = \begin{cases}
 2 \cdot \frac{a-1}{2} \cdot b + b &\text{if }a > 0 \text{ and }a \text{ odd}
 \end{cases}$$
 
-**Note:** You can solve this task in a different way by using floating-point operations. First compute the expression $\frac{a \cdot b}{m}$ using floating-point numbers and cast it to an unsigned integer $q$. Subtract $q \cdot m$ from $a \cdot b$ using unsigned integer arithmetics and take it modulo $m$ to find the answer. This solution looks rather unreliable, but it is very fast, and very easy to implement. See [here](https://cs.stackexchange.com/questions/77016/modular-multiplication) for more information.
+Lưu ý: Bạn có thể giải quyết bài toán này theo cách khác bằng cách sử dụng phép toán số thực. Đầu tiên, tính biểu thức $\frac{a \cdot b}{m}$ sử dụng số thực và chuyển nó thành một số nguyên không dấu $q$. Sau đó, trừ $q \cdot m$ ra khỏi $a \cdot b$ bằng phép toán số nguyên không dấu và lấy kết quả modulo $m$ để tìm đáp án. Giải pháp này có vẻ không đáng tin cậy, nhưng rất nhanh và rất dễ triển khai. Xem thêm thông tin tại [here](https://cs.stackexchange.com/questions/77016/modular-multiplication).
