@@ -226,14 +226,14 @@ struct FenwickTreeMin {
 };
 ```
 
-Note: it is possible to implement a Fenwick tree that can handle arbitrary minimum range queries and arbitrary updates.
-The paper [Efficient Range Minimum Queries using Binary Indexed Trees](http://ioinformatics.org/oi/pdf/v9_2015_39_44.pdf) describes such an approach.
-However with that approach you need to maintain a second binary indexed tree over the data, with a slightly different structure, since one tree is not enough to store the values of all elements in the array.
-The implementation is also a lot harder compared to the normal implementation for sums.
+Lưu ý: có thể triển khai một cây Fenwick có thể xử lý các truy vấn giá trị nhỏ nhất trong khoảng tùy ý và các cập nhật tùy ý.
+Bài viết [Efficient Range Minimum Queries using Binary Indexed Trees](http://ioinformatics.org/oi/pdf/v9_2015_39_44.pdf) mô tả một cách tiếp cận như vậy.
+Tuy nhiên, với cách tiếp cận đó, bạn cần duy trì một cây chỉ số nhị phân thứ hai trên dữ liệu, với một cấu trúc hơi khác, vì một cây không đủ để lưu trữ các giá trị của tất cả các phần tử trong mảng. 
+Việc triển khai cũng khó khăn hơn rất nhiều so với triển khai thông thường cho các phép toán tổng.
 
 ### Finding sum in two-dimensional array
 
-As claimed before, it is very easy to implement Fenwick Tree for multidimensional array.
+Như đã nói trước đó, việc triển khai cây Fenwick cho mảng đa chiều là rất dễ dàng.
 
 ```cpp
 struct FenwickTree2D {
@@ -260,9 +260,9 @@ struct FenwickTree2D {
 
 ### One-based indexing approach
 
-For this approach we change the requirements and definition for $T[]$ and $g()$ a little bit.
-We want $T[i]$ to store the sum of $[g(i)+1; i]$.
-This changes the implementation a little bit, and allows for a similar nice definition for $g(i)$:
+Đối với phương pháp này, chúng ta thay đổi một chút yêu cầu và định nghĩa cho $T[]$ và $g()$ a little bit.
+Chúng ta muốn $T[i]$ lưu trữ tổng của $[g(i)+1; i]$.
+Điều này thay đổi một chút cách triển khai, và cho phép một định nghĩa tương tự đẹp cho $g(i)$:
 
 ```python
 def sum(int r):
@@ -277,8 +277,8 @@ def increase(int i, int delta):
         t[j] += delta
 ```
 
-The computation of $g(i)$ is defined as:
-toggling of the last set $1$ bit in the binary representation of $i$.
+Việc tính toán $g(i)$ được định nghĩa là:
+đảo ngược bit $1$ cuối cùng đã được thiết lập trong biểu diễn nhị phân của $i$.
 
 $$\begin{align}
 g(7) = g(111_2) = 110_2 &= 6 \\\\
@@ -286,17 +286,17 @@ g(6) = g(110_2) = 100_2 &= 4 \\\\
 g(4) = g(100_2) = 000_2 &= 0 \\\\
 \end{align}$$
 
-The last set bit can be extracted using $i ~\&~ (-i)$, so the operation can be expressed as:
+Bit 1 cuối cùng đã được thiết lập có thể được trích xuất bằng cách sử dụng i & (-i), vì vậy phép toán có thể được biểu diễn như sau:
 
-$$g(i) = i - (i ~\&~ (-i)).$$
+${g(i) = i - (i}$ & ${(-i))}$
 
-And it's not hard to see, that you need to change all values $T[j]$ in the sequence $i,~ h(i),~ h(h(i)),~ \dots$ when you want to update $A[j]$, where $h(i)$ is defined as:
+Và không khó để nhận thấy, rằng bạn cần phải thay đổi tất cả các giá trị $T[j]$ trong chuỗi (sequence) $i,~ h(i),~ h(h(i)),~ \dots$ khi bạn muốn cập nhật $A[j]$, trong đó $h(i)$ được định nghĩa là:
 
-$$h(i) = i + (i ~\&~ (-i)).$$
+${h(i) = i + (i}$ & ${(-i))}$
 
-As you can see, the main benefit of this approach is that the binary operations complement each other very nicely.
+Như bạn có thể thấy, lợi ích chính của phương pháp này là các phép toán nhị phân bổ sung cho nhau một cách rất đẹp.
 
-The following implementation can be used like the other implementations, however it uses one-based indexing internally.
+Triển khai dưới đây có thể được sử dụng giống như các triển khai khác, tuy nhiên nó sử dụng chỉ số bắt đầu từ 1 bên trong.
 
 ```cpp
 struct FenwickTreeOneBasedIndexing {
@@ -334,31 +334,31 @@ struct FenwickTreeOneBasedIndexing {
 
 ## Range operations
 
-A Fenwick tree can support the following range operations:
+Cây Fenwick có thể hỗ trợ các phép toán trên khoảng sau:
 
-1. Point Update and Range Query
-2. Range Update and Point Query
-3. Range Update and Range Query
+1. Cập nhật điểm và truy vấn khoảng
+2. Cập nhật khoảng và truy vấn điểm
+3. Cập nhật khoảng và truy vấn khoảng
 
 ### 1. Point Update and Range Query
 
-This is just the ordinary Fenwick tree as explained above.
+Đây chỉ là cây Fenwick thông thường như đã giải thích ở trên.
 
 ### 2. Range Update and Point Query
 
-Using simple tricks we can also do the reverse operations: increasing ranges and querying for single values.
+Dùng những mẹo đơn giản, chúng ta cũng có thể thực hiện các phép toán ngược lại: tăng giá trị trong khoảng và truy vấn các giá trị đơn lẻ.
 
-Let the Fenwick tree be initialized with zeros.
-Suppose that we want to increment the interval $[l, r]$ by $x$.
-We make two point update operations on Fenwick tree which are `add(l, x)` and `add(r+1, -x)`.
+Giả sử cây Fenwick được khởi tạo với giá trị bằng không.
+Giả sử chúng ta muốn tăng khoảng $[l, r]$ lên (by trong trường hợp này hiểu là lên) $x$.
+Chúng ta thực hiện hai phép toán cập nhật điểm trên cây Fenwick, đó là `add(l, x)` và `add(r+1, -x)`.
 
-If we want to get the value of $A[i]$, we just need to take the prefix sum using the ordinary range sum method.
-To see why this is true, we can just focus on the previous increment operation again.
-If $i < l$, then the two update operations have no effect on the query and we get the sum $0$.
-If $i \in [l, r]$, then we get the answer $x$ because of the first update operation.
-And if $i > r$, then the second update operation will cancel the effect of first one.
+Nếu chúng ta muốn lấy giá trị của $A[i]$, chỉ cần lấy tổng tiền tố sử dụng phương pháp tổng khoảng thông thường.
+Để hiểu tại sao điều này đúng, chúng ta chỉ cần tập trung vào phép toán tăng giá trị trước đó.
+Nếu $i < l$, thì hai phép toán cập nhật không có tác động lên truy vấn và chúng ta nhận được tổng là $0$.
+Nếu $i \in [l, r]$, thì chúng ta nhận được giá trị $x$ nhờ phép toán cập nhật đầu tiên.
+Và nếu $i > r$, thì phép toán cập nhật thứ hai sẽ hủy bỏ tác động của phép toán đầu tiên.
 
-The following implementation uses one-based indexing.
+Triển khai dưới đây sử dụng chỉ số bắt đầu từ 1.
 
 ```cpp
 void add(int idx, int val) {
