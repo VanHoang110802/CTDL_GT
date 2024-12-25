@@ -36,12 +36,12 @@ vector<long long> trial_division1(long long n) {
 
 ### Wheel factorization
 
-This is an optimization of the trial division.
-Once we know that the number is not divisible by 2, we don't need to check other even numbers.
-This leaves us with only $50\%$ of the numbers to check.
-After factoring out 2, and getting an odd number, we can simply start with 3 and only count other odd numbers.
+Đây là một tối ưu hóa của phương pháp chia thử.
+Khi chúng ta biết rằng số đó không chia hết cho 2, chúng ta không cần phải kiểm tra các số chẵn khác.
+Điều này giúp giảm chỉ còn $50\%$ số cần kiểm tra.
+Sau khi phân tích 2 và có được một số lẻ, chúng ta có thể bắt đầu từ 3 và chỉ kiểm tra các số lẻ khác.
 
-```{.cpp file=factorization_trial_division2}
+```cpp
 vector<long long> trial_division2(long long n) {
     vector<long long> factorization;
     while (n % 2 == 0) {
@@ -60,18 +60,18 @@ vector<long long> trial_division2(long long n) {
 }
 ```
 
-This method can be extended further.
-If the number is not divisible by 3, we can also ignore all other multiples of 3 in the future computations.
-So we only need to check the numbers $5, 7, 11, 13, 17, 19, 23, \dots$.
-We can observe a pattern of these remaining numbers.
-We need to check all numbers with $d \bmod 6 = 1$ and $d \bmod 6 = 5$.
-So this leaves us with only $33.3\%$ percent of the numbers to check.
-We can implement this by factoring out the primes 2 and 3 first, after which we start with 5 and only count remainders $1$ and $5$ modulo $6$.
+Phương pháp này có thể được mở rộng thêm.
+Nếu số đó không chia hết cho 3, chúng ta cũng có thể bỏ qua tất cả các bội số khác của 3 trong các phép tính sau này.
+Vậy chúng ta chỉ cần kiểm tra các số ${5, 7, 11, 13, 17, 19, 23, \dots}$.
+Chúng ta có thể nhận thấy một mẫu hình của các số còn lại.
+Chúng ta cần kiểm tra tất cả các số có $d \bmod 6 = 1$ và $d \bmod 6 = 5$.
+Vì vậy, chúng ta chỉ cần kiểm tra $33.3\%$ số còn lại.
+Chúng ta có thể triển khai điều này bằng cách phân tích các số nguyên tố 2 và 3 trước, sau đó bắt đầu từ 5 và chỉ kiểm tra các số có phần dư là $1$ và $5$ khi chia cho $6$.
 
-Here is an implementation for the prime number 2, 3 and 5.
-It is convenient to store the skipping strides in an array.
+Dưới đây là một triển khai cho các số nguyên tố 2, 3 và 5.
+Sẽ tiện lợi khi lưu trữ các bước nhảy vào một mảng.
 
-```{.cpp file=factorization_trial_division3}
+```cpp
 vector<long long> trial_division3(long long n) {
     vector<long long> factorization;
     for (int d : {2, 3, 5}) {
