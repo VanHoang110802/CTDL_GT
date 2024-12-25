@@ -64,17 +64,17 @@ Hàm `sum` hoạt động như sau:
 2. Sau đó, nó "jumps" đến khoảng $[g(g(r)-1), g(r)-1]$ và cộng tổng của khoảng này vào `result`.
 3. Quá trình này tiếp tục cho đến khi nó "jumps" từ $[0, g(g( \dots g(r)-1 \dots -1)-1)]$ đến $[g(-1), -1]$; đây là điểm mà hàm `sum` dừng lại việc nhảy.
 
-The function `increase` works with the same analogy, but it "jumps" in the direction of increasing indices:
+Hàm `increase` hoạt động với cùng một phép phân tích, nhưng nó "jumps" theo hướng các chỉ số tăng dần:
 
-1. The sum for each range of the form $[g(j), j]$ which satisfies the condition $g(j) \le i \le j$ is increased by `delta`; that is, `t[j] += delta`.
-Therefore, it updates all elements in $T$ that correspond to ranges in which $A_i$ lies.
+1. Tổng của mỗi khoảng có dạng $[g(j), j]$ mà thỏa mãn điều kiện $g(j) \le i \le j$ sẽ được tăng thêm `delta`; tức là, `t[j] += delta`.
+Do đó, nó cập nhật tất cả các phần tử trong $T$ tương ứng với các khoảng mà $A_i$ nằm trong đó.
 
-The complexity of both `sum` and `increase` depend on the function $g$.
-There are many ways to choose the function $g$ such that $0 \le g(i) \le i$ for all $i$.
-For instance, the function $g(i) = i$ works, which yields $T = A$ (in which case, the summation queries are slow).
-We could also take the function $g(i) = 0$.
-This would correspond to prefix sum arrays (in which case, finding the sum of the range $[0, i]$ will only take constant time; however, updates are slow).
-The clever part of the algorithm for Fenwick trees is how it uses a special definition of the function $g$ which can handle both operations in $O(\log N)$ time.
+Độ phức tạp của cả hai hàm `sum` và `increase` phụ thuộc vào hàm $g$.
+Có nhiều cách để chọn hàm $g$ sao cho $0 \le g(i) \le i$ với mọi $i$.
+Ví dụ, hàm $g(i) = i$ hoạt động, dẫn đến $T = A$ (trong trường hợp này, các truy vấn tổng sẽ chậm).
+Chúng ta cũng có thể chọn hàm $g(i) = 0$.
+Điều này sẽ tương ứng với mảng tổng tiền tố (trong trường hợp này, việc tìm tổng trong khoảng $[0, i]$ chỉ mất thời gian hằng số; tuy nhiên, việc cập nhật sẽ chậm).
+Điểm thông minh trong thuật toán của cây Fenwick là cách nó sử dụng một định nghĩa đặc biệt của hàm $g$ giúp xử lý cả hai phép toán trong thời gian $O(\log N)$.
 
 ### Definition of $g(i)$ { data-toc-label='Definition of <script type="math/tex">g(i)</script>' }
 
