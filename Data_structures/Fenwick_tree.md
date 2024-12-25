@@ -2,9 +2,9 @@
 
 # Fenwick Tree
 
-Let $f$ be some group operation (a binary associative function over a set with an identity element and inverse elements) and $A$ be an array of integers of length $N$.
-Denote $f$'s infix notation as $*$; that is, $f(x,y) = x*y$ for arbitrary integers $x,y$.
-(Since this is associative, we will omit parentheses for order of application of $f$ when using infix notation.)
+Giả sử $f$ là một phép toán nhóm (một hàm nhị phân kết hợp trên một tập với phần tử đơn vị và các phần tử nghịch đảo) và $A$ là một mảng các số nguyên có độ dài $N$.
+Ký hiệu theo cách ghi chú trung tố của ${f}$ là ${*}$; tức là, ${ f(x,y) = x*y }$ đối với các số nguyên tùy ý ${x,y}$.
+(Vì phép toán này kết hợp, chúng ta sẽ bỏ qua dấu ngoặc khi biểu thị thứ tự áp dụng $f$ trong cách ghi chú trung tố.)
 
 The Fenwick tree is a data structure which:
 
