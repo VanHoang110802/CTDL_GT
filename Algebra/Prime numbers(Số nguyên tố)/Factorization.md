@@ -8,18 +8,18 @@ Lưu ý rằng, nếu số bạn muốn phân tích thực sự là một số n
 
 ## Trial division
 
-This is the most basic algorithm to find a prime factorization.
+Đây là thuật toán cơ bản nhất để tìm phân tích thừa số nguyên tố.
 
-We divide by each possible divisor $d$.
-It can be observed that it is impossible for all prime factors of a composite number $n$ to be bigger than $\sqrt{n}$.
-Therefore, we only need to test the divisors $2 \le d \le \sqrt{n}$, which gives us the prime factorization in $O(\sqrt{n})$.
-(This is [pseudo-polynomial time](https://en.wikipedia.org/wiki/Pseudo-polynomial_time), i.e. polynomial in the value of the input but exponential in the number of bits of the input.)
+Chúng ta chia cho mỗi ước số khả dĩ là $d$.
+Có thể nhận thấy rằng không thể tất cả các thừa số nguyên tố của một số hợp composite $n$ đều lớn hơn $\sqrt{n}$.
+Do đó, chúng ta chỉ cần kiểm tra các ước số $2 \le d \le \sqrt{n}$, điều này giúp ta tìm được phân tích thừa số nguyên tố trong $O(\sqrt{n})$.
+(Đây là [thời gian giả đa thức](https://en.wikipedia.org/wiki/Pseudo-polynomial_time), tức là đa thức theo giá trị của đầu vào nhưng có độ phức tạp theo số bit của đầu vào.)
 
-The smallest divisor must be a prime number.
-We remove the factored number, and continue the process.
-If we cannot find any divisor in the range $[2; \sqrt{n}]$, then the number itself has to be prime.
+Ước số nhỏ nhất phải là một số nguyên tố.
+Chúng ta loại bỏ số đã được phân tích và tiếp tục quá trình.
+Nếu không thể tìm được bất kỳ ước số nào trong khoảng $[2; \sqrt{n}]$, thì số đó phải là một số nguyên tố.
 
-```{.cpp file=factorization_trial_division1}
+```cpp
 vector<long long> trial_division1(long long n) {
     vector<long long> factorization;
     for (long long d = 2; d * d <= n; d++) {
