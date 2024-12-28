@@ -270,11 +270,13 @@ Thus the complexity is $O((N+Q)F\sqrt{N})$ where $O(F)$  is the complexity of `a
 > Với $S \approx \sqrt{N}$, tổng số phép toán sẽ là $O((N + Q) \sqrt{N})$.
 Vì vậy, độ phức tạp là $O((N+Q)F\sqrt{N})$, trong đó $O(F)$ là độ phức tạp của các hàm `add` và `remove`.
 
-### Tips for improving runtime
+### Tips for improving runtime (Một vài mẹo để cải thiện thời gian chạy)
 
 * Block size of precisely $\sqrt{N}$ doesn't always offer the best runtime.  For example, if $\sqrt{N}=750$ then it may happen that block size of $700$ or $800$ may run better.
 More importantly, don't compute the block size at runtime - make it `const`. Division by constants is well optimized by compilers.
 * In odd blocks sort the right index in ascending order and in even blocks sort it in descending order. This will minimize the movement of right pointer, as the normal sorting will move the right pointer from the end back to the beginning at the start of every block. With the improved version this resetting is no more necessary.
+> * Kích thước khối chính xác bằng $\sqrt{N}$ không phải lúc nào cũng mang lại thời gian chạy tốt nhất. Ví dụ, nếu $\sqrt{N}=750$, có thể kích thước khối là 700 hoặc 800 sẽ chạy nhanh hơn. Quan trọng hơn, đừng tính toán kích thước khối trong thời gian chạy – hãy đặt nó là `const`. Phép chia cho các hằng số được tối ưu hóa rất tốt bởi các trình biên dịch.
+> * Với các khối lẻ, hãy sắp xếp chỉ số phải theo thứ tự tăng dần và với các khối chẵn, sắp xếp theo thứ tự giảm dần. Điều này sẽ giảm thiểu sự di chuyển của con trỏ phải, vì việc sắp xếp bình thường sẽ khiến con trỏ phải di chuyển từ cuối trở lại đầu mỗi khi bắt đầu một khối mới. Với phiên bản cải tiến, việc thiết lập lại này không còn cần thiết nữa.
 
 ```cpp
 bool cmp(pair<int, int> p, pair<int, int> q) {
@@ -285,6 +287,7 @@ bool cmp(pair<int, int> p, pair<int, int> q) {
 ```
 
 You can read about even faster sorting approach [here](https://codeforces.com/blog/entry/61203).
+> Bạn có thể đọc về phương pháp sắp xếp nhanh hơn nữa ở đây.
 
 ## Practice Problems
 
