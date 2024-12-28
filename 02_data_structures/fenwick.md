@@ -399,13 +399,13 @@ The last set bit can be extracted using i&(-i), so the operation can be expresse
 > Bit 1 cuối cùng đã được thiết lập có thể được trích xuất bằng cách sử dụng i & (-i), vì vậy phép toán có thể được biểu diễn như sau:
 
 
-$$g(i) = i - (i ~\&~ (-i)).$$
+${g(i) = i - (i}$ & ${(-i))}$
 
 And it's not hard to see, that you need to change all values $T[j]$ in the sequence $i,~ h(i),~ h(h(i)),~ \dots$ when you want to update $A[j]$, where $h(i)$ is defined as:
 > Và không khó để nhận thấy, rằng bạn cần phải thay đổi tất cả các giá trị $T[j]$ trong chuỗi (sequence) $i,~ h(i),~ h(h(i)),~ \dots$ khi bạn muốn cập nhật $A[j]$, trong đó $h(i)$ được định nghĩa là:
 
 
-$$h(i) = i + (i ~\&~ (-i)).$$
+${h(i) = i + (i}$ & ${(-i))}$
 
 As you can see, the main benefit of this approach is that the binary operations complement each other very nicely.
 > Như bạn có thể thấy, lợi ích chính của phương pháp này là các phép toán nhị phân bổ sung cho nhau một cách rất tốt.
