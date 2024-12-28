@@ -129,45 +129,80 @@ We start the construction at the root vertex, and hence, we are able to compute 
 
 
 The time complexity of this construction is $O(n)$, assuming that the merge operation is constant time (the merge operation gets called $n$ times, which is equal to the number of internal nodes in the segment tree).
+> Độ phức tạp thời gian của quá trình xây dựng này là $O(n)$, giả sử rằng phép hợp nhất có độ phức tạp thời gian hằng số (phép hợp nhất được gọi $n$ lần, tương đương với số lượng các nút nội tại trong cây đoạn).
 
-### Sum queries
+### Sum queries (Truy vấn tổng)
 
 For now we are going to answer sum queries. As an input we receive two integers $l$ and $r$, and we have to compute the sum of the segment $a[l \dots r]$ in $O(\log n)$ time. 
+> Hiện tại, chúng ta sẽ trả lời các truy vấn tổng. Như một đầu vào, chúng ta nhận hai số nguyên $l$ và $r$, và chúng ta phải tính tổng của đoạn $a[l \dots r]$ trong thời gian $O(\log n)$. 
 
 To do this, we will traverse the Segment Tree and use the precomputed sums of the segments.
 Let's assume that we are currently at the vertex that covers the segment $a[tl \dots tr]$.
 There are three possible cases. 
+> Để làm điều này, chúng ta sẽ duyệt qua Cây Phân Đoạn và sử dụng các tổng đã được tính toán trước của các đoạn.
+Giả sử rằng chúng ta hiện đang ở đỉnh bao phủ đoạn $a[tl \dots tr]$.
+Có ba trường hợp khả thi.
+
 
 The easiest case is when the segment $a[l \dots r]$ is equal to the corresponding segment of the current vertex (i.e. $a[l \dots r] = a[tl \dots tr]$), then we are finished and can return the precomputed sum that is stored in the vertex.
+> Trường hợp dễ nhất là khi đoạn $a[l \dots r]$ bằng với đoạn tương ứng của đỉnh hiện tại (tức là $a[l \dots r] = a[tl \dots tr]$), khi đó chúng ta đã hoàn thành và có thể trả về tổng đã được tính toán trước và lưu trữ trong đỉnh.
+
 
 Alternatively the segment of the query can fall completely into the domain of either the left or the right child.
 Recall that the left child covers the segment $a[tl \dots tm]$ and the right vertex covers the segment $a[tm + 1 \dots tr]$ with $tm = (tl + tr) / 2$. 
 In this case we can simply go to the child vertex, which corresponding segment covers the query segment, and execute the algorithm described here with that vertex. 
+> Ngoài ra, đoạn của truy vấn có thể rơi hoàn toàn vào miền của một trong hai đỉnh con.
+Nhớ rằng đỉnh trái bao phủ đoạn $a[tl \dots tm]$ và đỉnh phải bao phủ đoạn $a[tm + 1 \dots tr]$ với $tm = (tl + tr) / 2$. 
+Trong trường hợp này, chúng ta có thể đơn giản di chuyển đến đỉnh con mà đoạn tương ứng của nó bao phủ đoạn truy vấn, và thực hiện thuật toán đã được mô tả ở đây với đỉnh đó. 
+
 
 And then there is the last case, the query segment intersects with both children. 
 In this case we have no other option as to make two recursive calls, one for each child.
 First we go to the left child, compute a partial answer for this vertex (i.e. the sum of values of the intersection between the segment of the query and the segment of the left child), then go to the right child, compute the partial answer using that vertex, and then combine the answers by adding them. 
 In other words, since the left child represents the segment $a[tl \dots tm]$ and the right child the segment $a[tm+1 \dots tr]$, we compute the sum query $a[l \dots tm]$ using the left child, and the sum query $a[tm+1 \dots r]$ using the right child. 
+> Và sau đó là trường hợp cuối cùng, khi đoạn truy vấn giao với cả hai đỉnh con.
+Trong trường hợp này, chúng ta không có lựa chọn nào khác ngoài việc thực hiện hai cuộc gọi đệ quy, mỗi cuộc gọi cho một đỉnh con.
+Trước tiên, chúng ta đi đến đỉnh trái, tính toán một phần kết quả cho đỉnh này (tức là tổng các giá trị của phần giao nhau giữa đoạn truy vấn và đoạn của đỉnh trái), sau đó đi đến đỉnh phải, tính toán kết quả phần của nó, và cuối cùng kết hợp các kết quả bằng cách cộng chúng lại.
+Nói cách khác, vì đỉnh trái đại diện cho đoạn $a[tl \dots tm]$ và đỉnh phải đại diện cho đoạn $a[tm+1 \dots tr]$, chúng ta tính tổng truy vấn $a[l \dots tm]$ sử dụng đỉnh trái, và tổng truy vấn $a[tm+1 \dots r]$ sử dụng đỉnh phải. 
+
 
 So processing a sum query is a function that recursively calls itself once with either the left or the right child (without changing the query boundaries), or twice, once for the left and once for the right child (by splitting the query into two subqueries). 
 And the recursion ends, whenever the boundaries of the current query segment coincides with the boundaries of the segment of the current vertex. 
 In that case the answer will be the precomputed value of the sum of this segment, which is stored in the tree.
+> Vì vậy, việc xử lý một truy vấn tổng là một hàm đệ quy gọi chính nó một lần với đỉnh trái hoặc đỉnh phải (mà không thay đổi biên giới của truy vấn), hoặc hai lần, một lần cho đỉnh trái và một lần cho đỉnh phải (bằng cách chia truy vấn thành hai truy vấn con).
+Và đệ quy sẽ kết thúc khi biên giới của đoạn truy vấn hiện tại trùng với biên giới của đoạn của đỉnh hiện tại.
+Trong trường hợp đó, câu trả lời sẽ là giá trị đã được tính toán trước của tổng của đoạn này, được lưu trữ trong cây.
+
 
 In other words, the calculation of the query is a traversal of the tree, which spreads through all necessary branches of the tree, and uses the precomputed sum values of the segments in the tree. 
+> Nói cách khác, việc tính toán truy vấn là một phép duyệt qua cây, lan rộng qua tất cả các nhánh cần thiết của cây, và sử dụng các giá trị tổng đã được tính toán trước của các đoạn trong cây.
+
 
 Obviously we will start the traversal from the root vertex of the Segment Tree.
+> Hiển nhiên, chúng ta sẽ bắt đầu việc duyệt từ đỉnh gốc của Cây Phân Đoạn.
+
 
 The procedure is illustrated in the following image.
 Again the array $a = [1, 3, -2, 8, -7]$ is used, and here we want to compute the sum $\sum_{i=2}^4 a[i]$.
 The colored vertices will be visited, and we will use the precomputed values of the green vertices.
 This gives us the result $-2 + 1 = -1$.
+> Quy trình này được minh họa trong hình dưới đây.
+Một lần nữa, mảng $a = [1, 3, -2, 8, -7]$ được sử dụng, và ở đây chúng ta muốn tính tổng $\sum_{i=2}^4 a[i]$.
+Các đỉnh được tô màu sẽ được thăm, và chúng ta sẽ sử dụng các giá trị đã tính toán trước của các đỉnh màu xanh lá cây.
+Kết quả thu được là $-2 + 1 = -1$.
 
-!["Sum Segment Tree Query"](sum-segment-tree-query.png)
+
+![Sum Segment Tree Query](zzpn_05_sum-segment-tree-query.png)
 
 Why is the complexity of this algorithm $O(\log n)$?
 To show this complexity we look at each level of the tree. 
 It turns out, that for each level we only visit not more than four vertices. 
 And since the height of the tree is $O(\log n)$, we receive the desired running time. 
+> Tại sao độ phức tạp của thuật toán này là $O(\log n)$?
+Để chứng minh độ phức tạp này, chúng ta xem xét từng cấp của cây.
+Hóa ra, ở mỗi cấp, chúng ta chỉ thăm không quá bốn đỉnh.
+Và vì chiều cao của cây là $O(\log n)$, chúng ta có được thời gian thực thi mong muốn.
+
 
 We can show that this proposition (at most four vertices each level) is true by induction.
 At the first level, we only visit one vertex, the root vertex, so here we visit less than four vertices. 
@@ -181,32 +216,65 @@ Therefore these vertices will not make any recursive calls.
 So only the most left, and the most right vertex will have the potential to make recursive calls. 
 And those will only create at most four recursive calls, so also the next level will satisfy the assertion.
 We can say that one branch approaches the left boundary of the query, and the second branch approaches the right one. 
+> Chúng ta có thể chứng minh rằng phát biểu này (tối đa bốn đỉnh mỗi cấp) là đúng bằng phương pháp quy nạp.
+Ở cấp đầu tiên, chúng ta chỉ thăm một đỉnh, đỉnh gốc, vì vậy ở đây chúng ta thăm ít hơn bốn đỉnh.
+Bây giờ, hãy xem xét một cấp bất kỳ.
+Theo giả thuyết quy nạp, chúng ta thăm tối đa bốn đỉnh.
+Nếu chúng ta chỉ thăm tối đa hai đỉnh, thì cấp tiếp theo sẽ có tối đa bốn đỉnh. Điều này là hiển nhiên, vì mỗi đỉnh chỉ có thể gây ra tối đa hai cuộc gọi đệ quy.
+Vậy hãy giả sử rằng chúng ta thăm ba hoặc bốn đỉnh ở cấp hiện tại.
+Từ những đỉnh này, chúng ta sẽ phân tích kỹ hơn các đỉnh ở giữa.
+Vì truy vấn tổng yêu cầu tính tổng của một dãy con liên tiếp, chúng ta biết rằng các đoạn tương ứng với các đỉnh đã thăm ở giữa sẽ hoàn toàn được bao phủ bởi đoạn của truy vấn tổng.
+Do đó, các đỉnh này sẽ không tạo ra bất kỳ cuộc gọi đệ quy nào.
+Vậy chỉ có đỉnh trái nhất và đỉnh phải nhất mới có khả năng tạo ra các cuộc gọi đệ quy.
+Và chúng chỉ tạo ra tối đa bốn cuộc gọi đệ quy, vì vậy cấp tiếp theo cũng sẽ thỏa mãn phát biểu này.
+Chúng ta có thể nói rằng một nhánh tiếp cận biên trái của truy vấn, và nhánh còn lại tiếp cận biên phải của truy vấn.
+
 
 Therefore we visit at most $4 \log n$ vertices in total, and that is equal to a running time of $O(\log n)$. 
+> Do đó, chúng ta thăm tối đa $4 \log n$ đỉnh tổng cộng, và điều này tương đương với thời gian thực thi $O(\log n)$. 
+
 
 In conclusion the query works by dividing the input segment into several sub-segments for which all the sums are already precomputed and stored in the tree. 
 And if we stop partitioning whenever the query segment coincides with the vertex segment, then we only need $O(\log n)$ such segments, which gives the effectiveness of the Segment Tree. 
+> Tóm lại, truy vấn hoạt động bằng cách chia đoạn đầu vào thành nhiều đoạn con, với tất cả các tổng đã được tính toán trước và lưu trữ trong cây.
+Và nếu chúng ta dừng việc phân chia khi đoạn truy vấn trùng với đoạn của đỉnh, thì chúng ta chỉ cần tối đa $O(\log n)$ đoạn như vậy, điều này giải thích hiệu quả của Cây Phân Đoạn.
 
-### Update queries
+
+### Update queries (Truy vấn cập nhật)
 
 Now we want to modify a specific element in the array, let's say we want to do the assignment $a[i] = x$. 
 And we have to rebuild the Segment Tree, such that it corresponds to the new, modified array. 
+> Bây giờ, chúng ta muốn sửa đổi một phần tử cụ thể trong mảng, giả sử chúng ta muốn thực hiện phép gán $a[i] = x$. 
+Và chúng ta phải xây dựng lại Cây Đoạn, sao cho nó tương ứng với mảng đã được sửa đổi mới.
+
 
 This query is easier than the sum query. 
 Each level of a Segment Tree forms a partition of the array. 
 Therefore an element $a[i]$ only contributes to one segment from each level. 
 Thus only $O(\log n)$ vertices need to be updated. 
+> Truy vấn này dễ dàng hơn truy vấn tổng.
+Mỗi cấp của Cây Phân Đoạn tạo thành một phân hoạch của mảng.
+Do đó, một phần tử $a[i]$ chỉ đóng góp vào một đoạn tại mỗi cấp.
+Vì vậy, chỉ cần cập nhật $O(\log n)$ đỉnh.
+
 
 It is easy to see, that the update request can be implemented using a recursive function. 
 The function gets passed the current tree vertex, and it recursively calls itself with one of the two child vertices (the one that contains $a[i]$ in its segment), and after that recomputes its sum value, similar how it is done in the build method (that is as the sum of its two children). 
+> Rất dễ thấy rằng yêu cầu cập nhật có thể được triển khai bằng một hàm đệ quy.
+Hàm này nhận đỉnh cây hiện tại làm đối số, và nó sẽ gọi đệ quy với một trong hai đỉnh con (đỉnh chứa $a[i]$ trong đoạn của nó), sau đó tính lại giá trị tổng của đỉnh đó, tương tự như cách thực hiện trong phương thức xây dựng (tức là tổng của hai đỉnh con của nó).
+
 
 Again here is a visualization using the same array.
 Here we perform the update $a[2] = 3$.
 The green vertices are the vertices that we visit and update.
+> Một lần nữa, đây là hình minh họa sử dụng mảng giống như trước.
+Ở đây, chúng ta thực hiện cập nhật $a[2] = 3$.
+Các đỉnh màu xanh lá cây là các đỉnh mà chúng ta thăm và cập nhật.
 
-!["Sum Segment Tree Update"](sum-segment-tree-update.png)
 
-### Implementation ### { #implementation}
+![Sum Segment Tree Update](zzpn_06_sum-segment-tree-update.png)
+
+### Implementation 
 
 The main consideration is how to store the Segment Tree.
 Of course we can define a $\text{Vertex}$ struct and create objects, that store the boundaries of the segment, its sum and additionally also pointers to its child vertices.
@@ -216,17 +284,37 @@ We will use a simple trick to make this a lot more efficient by using an _implic
 The sum of the root vertex at index 1, the sums of its two child vertices at indices 2 and 3, the sums of the children of those two vertices at indices 4 to 7, and so on. 
 With 1-indexing, conveniently the left child of a vertex at index $i$ is stored at index $2i$, and the right one at index $2i + 1$. 
 Equivalently, the parent of a vertex at index $i$ is stored at $i/2$ (integer division).
+> Điều quan trọng chính là cách lưu trữ Cây Phân Đoạn.
+Tất nhiên, chúng ta có thể định nghĩa một cấu trúc $\text{Vertex}$ và tạo ra các đối tượng lưu trữ biên giới của đoạn, tổng của nó và thêm vào đó là các con trỏ đến các đỉnh con của nó.
+Tuy nhiên, cách này yêu cầu lưu trữ rất nhiều thông tin thừa dưới dạng con trỏ.
+Chúng ta sẽ sử dụng một mẹo đơn giản để làm điều này hiệu quả hơn nhiều bằng cách sử dụng một _implicit data structure_: chỉ lưu trữ các tổng trong một mảng.
+(Một phương pháp tương tự được sử dụng cho các đống nhị phân).
+Tổng của đỉnh gốc ở chỉ số 1, tổng của hai đỉnh con của nó ở các chỉ số 2 và 3, tổng của các đỉnh con của hai đỉnh này ở các chỉ số từ 4 đến 7, và cứ như vậy.
+Với chỉ số bắt đầu từ 1, một cách thuận tiện là đỉnh trái của một đỉnh ở chỉ số $i$ được lưu trữ tại chỉ số $2i$, và đỉnh phải ở chỉ số $2i + 1$. 
+Tương tự, đỉnh cha của một đỉnh ở chỉ số $i$ được lưu trữ tại chỉ số $i/2$ (phép chia nguyên).
+
 
 This simplifies the implementation a lot. 
 We don't need to store the structure of the tree in memory. 
 It is defined implicitly. 
 We only need one array which contains the sums of all segments. 
+> Điều này giúp đơn giản hóa việc triển khai rất nhiều.
+Chúng ta không cần phải lưu trữ cấu trúc của cây trong bộ nhớ.
+Cấu trúc này được định nghĩa ngầm.
+Chúng ta chỉ cần một mảng duy nhất chứa tổng của tất cả các đoạn.
+
 
 As noted before, we need to store at most $4n$ vertices.
 It might be less, but for convenience we always allocate an array of size $4n$.
 There will be some elements in the sum array, that will not correspond to any vertices in the actual tree, but this doesn't complicate the implementation.
+> Như đã đề cập trước đó, chúng ta cần lưu trữ tối đa $4n$ đỉnh.
+Có thể ít hơn, nhưng để thuận tiện, chúng ta luôn cấp phát một mảng có kích thước $4n$.
+Sẽ có một số phần tử trong mảng tổng mà không tương ứng với bất kỳ đỉnh nào trong cây thực tế, nhưng điều này không làm phức tạp hóa việc triển khai.
+
 
 So, we store the Segment Tree simply as an array $t[]$ with a size of four times the input size $n$:
+> Như vậy, chúng ta lưu trữ Cây Đoạn đơn giản dưới dạng một mảng $t[]$ có kích thước gấp bốn lần kích thước đầu vào $n$:
+
 
 ```{.cpp file=segment_tree_implementation_definition}
 int n, t[4*MAXN];
@@ -235,6 +323,10 @@ int n, t[4*MAXN];
 The procedure for constructing the Segment Tree from a given array $a[]$ looks like this: 
 it is a recursive function with the parameters $a[]$ (the input array), $v$ (the index of the current vertex), and the boundaries $tl$ and $tr$ of the current segment. 
 In the main program this function will be called with the parameters of the root vertex: $v = 1$, $tl = 0$, and $tr = n - 1$. 
+> Quy trình xây dựng Cây Phân Đoạn từ một mảng cho trước $a[]$ có dạng như sau:
+Đây là một hàm đệ quy với các tham số $a[]$ (mảng đầu vào), $v$ (chỉ số của đỉnh hiện tại), và các biên giới $tl$ và $tr$ của đoạn hiện tại.
+Trong chương trình chính, hàm này sẽ được gọi với các tham số của đỉnh gốc: $v = 1$, $tl = 0$, và $tr = n - 1$. 
+
 
 ```{.cpp file=segment_tree_implementation_build}
 void build(int a[], int v, int tl, int tr) {
@@ -251,6 +343,9 @@ void build(int a[], int v, int tl, int tr) {
 
 Further the function for answering sum queries is also a recursive function, which receives as parameters information about the current vertex/segment (i.e. the index $v$ and the boundaries $tl$ and $tr$) and also the information about the boundaries of the query, $l$ and $r$. 
 In order to simplify the code, this function always does two recursive calls, even if only one is necessary - in that case the superfluous recursive call will have $l > r$, and this can easily be caught using an additional check at the beginning of the function.
+> Hơn nữa, hàm để trả lời các truy vấn tổng cũng là một hàm đệ quy, nhận làm tham số thông tin về đỉnh/đoạn hiện tại (tức là chỉ số $v$ và các biên giới $tl$ và $tr$) và cũng nhận thông tin về các biên giới của truy vấn, $l$ và $r$. 
+Để đơn giản hóa mã nguồn, hàm này luôn thực hiện hai cuộc gọi đệ quy, ngay cả khi chỉ cần một cuộc gọi - trong trường hợp đó, cuộc gọi đệ quy thừa sẽ có $l > r$, và điều này có thể dễ dàng được phát hiện bằng cách kiểm tra thêm ở đầu hàm.
+
 
 ```{.cpp file=segment_tree_implementation_sum}
 int sum(int v, int tl, int tr, int l, int r) {
@@ -266,6 +361,8 @@ int sum(int v, int tl, int tr, int l, int r) {
 ```
 
 Finally the update query. The function will also receive information about the current vertex/segment, and additionally also the parameter of the update query (i.e. the position of the element and its new value).
+> Cuối cùng là truy vấn cập nhật. Hàm này cũng sẽ nhận thông tin về đỉnh/đoạn hiện tại, và ngoài ra còn nhận tham số của truy vấn cập nhật (tức là vị trí của phần tử và giá trị mới của nó).
+
 
 ```{.cpp file=segment_tree_implementation_update}
 void update(int v, int tl, int tr, int pos, int new_val) {
@@ -282,12 +379,17 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 }
 ```
 
-### Memory efficient implementation
+### Memory efficient implementation (Triển khai tiết kiệm bộ nhớ)
 
 Most people use the implementation from the previous section. If you look at the array `t` you can see that it follows the numbering of the tree nodes in the order of a BFS traversal (level-order traversal). 
 Using this traversal the children of vertex $v$ are $2v$ and $2v + 1$ respectively.
 However if $n$ is not a power of two, this method will skip some indices and leave some parts of the array `t` unused.
 The memory consumption is limited by $4n$, even though a Segment Tree of an array of $n$ elements requires only $2n - 1$ vertices.
+> Hầu hết mọi người sử dụng triển khai từ phần trước. Nếu bạn nhìn vào mảng `t` bạn sẽ thấy rằng nó theo thứ tự đánh số các đỉnh của cây theo cách duyệt theo chiều rộng (duyệt theo thứ tự cấp).
+Sử dụng duyệt này, các đỉnh con của đỉnh $v$ là $2v$ và $2v + 1$ tương ứng.
+Tuy nhiên, nếu $n$ không phải là lũy thừa của hai, phương pháp này sẽ bỏ qua một số chỉ số và để trống một số phần của mảng `t`.
+Tuy nhiên, mức tiêu thụ bộ nhớ bị giới hạn bởi $4n$, mặc dù Cây Phân Đoạn của một mảng có $n$ phần tử chỉ yêu cầu $2n - 1$ đỉnh.
+
 
 However it can be reduced. 
 We renumber the vertices of the tree in the order of an Euler tour traversal (pre-order traversal), and we write all these vertices next to each other.
