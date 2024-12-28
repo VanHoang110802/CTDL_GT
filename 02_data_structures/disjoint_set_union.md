@@ -273,25 +273,40 @@ In the same way - by storing it at the representative nodes - you can also store
 One common application of the DSU is the following:
 There is a set of vertices, and each vertex has an outgoing edge to another vertex.
 With DSU you can find the end point, to which we get after following all edges from a given starting point, in almost constant time.
+> Một ứng dụng phổ biến của DSU là bài toán sau: Có một tập hợp các đỉnh, và mỗi đỉnh có một cạnh hướng ra đến một đỉnh khác. Với DSU, bạn có thể tìm được điểm cuối, tức là đỉnh mà ta sẽ đến sau khi đi theo tất cả các cạnh từ một điểm xuất phát cho trước, trong thời gian gần như hằng số.
 
 A good example of this application is the **problem of painting subarrays**.
 We have a segment of length $L$, each element initially has the color 0.
-We have to repaint the subarray $[l, r]$ with the color $c$ for each query $(l, r, c)$.
+We have to repaint the subarray ${[l, r]}$ with the color $c$ for each query ${(l, r, c)}$.
 At the end we want to find the final color of each cell.
 We assume that we know all the queries in advance, i.e. the task is offline.
+> Một ví dụ tốt về ứng dụng này là bài toán tô màu các mảng con.
+Chúng ta có một đoạn dài $L$, mỗi phần tử ban đầu có màu 0.
+Chúng ta phải tô lại mảng con ${[l, r]}$ với màu $c$ cho mỗi truy vấn ${(l, r, c)}$. Cuối cùng, chúng ta muốn tìm màu cuối cùng của mỗi ô.
+Giả sử chúng ta biết tất cả các truy vấn trước, tức là bài toán là offline.
 
 For the solution we can make a DSU, which for each cell stores a link to the next unpainted cell.
 Thus initially each cell points to itself.
 After painting one requested repaint of a segment, all cells from that segment will point to the cell after the segment.
+> Để giải quyết bài toán này, chúng ta có thể sử dụng một DSU, trong đó mỗi ô sẽ lưu một liên kết đến ô chưa được tô màu tiếp theo.
+Vì vậy, ban đầu mỗi ô sẽ trỏ đến chính nó.
+Sau khi tô lại một đoạn theo yêu cầu, tất cả các ô trong đoạn này sẽ trỏ đến ô ngay sau đoạn.
 
 Now to solve this problem, we consider the queries **in the reverse order**: from last to first.
-This way when we execute a query, we only have to paint exactly the unpainted cells in the subarray $[l, r]$.
+This way when we execute a query, we only have to paint exactly the unpainted cells in the subarray ${[l, r]}$.
 All other cells already contain their final color.
 To quickly iterate over all unpainted cells, we use the DSU.
 We find the left-most unpainted cell inside of a segment, repaint it, and with the pointer we move to the next empty cell to the right.
+> Bây giờ, để giải quyết bài toán này, chúng ta sẽ xét các truy vấn theo thứ tự ngược lại: từ cuối lên đầu.
+Như vậy, khi thực hiện một truy vấn, chúng ta chỉ cần tô lại chính các ô chưa được tô màu trong mảng con ${[l, r]}$.
+Tất cả các ô còn lại đã có màu cuối cùng của chúng.
+Để duyệt qua tất cả các ô chưa được tô màu, chúng ta sử dụng DSU.
+Chúng ta tìm ô chưa được tô màu ở bên trái nhất trong một đoạn, tô lại nó, và sau đó với con trỏ, chúng ta di chuyển đến ô trống tiếp theo ở phía bên phải.
 
 Here we can use the DSU with path compression, but we cannot use union by rank / size (because it is important who becomes the leader after the merge).
 Therefore the complexity will be $O(\log n)$ per union (which is also quite fast).
+> Ở đây, chúng ta có thể sử dụng DSU với nén đường đi (path compression), nhưng không thể sử dụng union by rank / size (vì điều quan trọng là ai sẽ trở thành leader sau khi hợp nhất).
+Do đó, độ phức tạp sẽ là $O(\log n)$ cho mỗi phép union (điều này cũng khá nhanh).
 
 Implementation:
 
@@ -318,13 +333,17 @@ Then we can merge two sets into one ranked according to their heuristics, and we
 ### Support distances up to representative
 
 Sometimes in specific applications of the DSU you need to maintain the distance between a vertex and the representative of its set (i.e. the path length in the tree from the current node to the root of the tree).
+> Đôi khi, trong một số ứng dụng cụ thể của DSU, bạn cần duy trì khoảng cách giữa một đỉnh và đại diện của tập hợp của nó (tức là độ dài đường đi trong cây từ nút hiện tại đến gốc của cây).
 
 If we don't use path compression, the distance is just the number of recursive calls.
 But this will be inefficient.
+> Nếu chúng ta không sử dụng nén đường đi (path compression), khoảng cách chỉ đơn giản là số lần gọi đệ quy. Tuy nhiên, điều này sẽ không hiệu quả.
 
 However it is possible to do path compression, if we store the **distance to the parent** as additional information for each node.
+> Tuy nhiên, có thể thực hiện nén đường đi nếu chúng ta lưu trữ khoảng cách đến cha như một thông tin bổ sung cho mỗi nút.
 
 In the implementation it is convenient to use an array of pairs for `parent[]` and the function `find_set` now returns two numbers: the representative of the set, and the distance to it.
+> Trong cài đặt, thuận tiện là sử dụng một mảng cặp giá trị cho `parent[]` và hàm `find_set` giờ sẽ trả về hai giá trị: đại diện của tập hợp và khoảng cách đến nó.
 
 ```cpp
 void make_set(int v) {
@@ -389,8 +408,10 @@ Therefore we receive the formula ($\oplus$ denotes the XOR operation):
 $$t = x \oplus y \oplus 1$$
 
 Thus regardless of how many joins we perform, the parity of the edges is carried from one leader to another.
+> Do đó, bất kể chúng ta thực hiện bao nhiêu phép hợp nhất, độ chẵn lẻ của các cạnh sẽ được truyền từ một đại diện (leader) này sang đại diện khác.
 
 We give the implementation of the DSU that supports parity. As in the previous section we use a pair to store the ancestor and the parity. In addition for each set we store in the array `bipartite[]` whether it is still bipartite or not.
+> Chúng tôi cung cấp cài đặt DSU hỗ trợ độ chẵn lẻ. Như trong phần trước, chúng ta sử dụng một cặp giá trị để lưu trữ đại diện và độ chẵn lẻ. Ngoài ra, đối với mỗi tập hợp, chúng ta lưu trữ trong mảng `bipartite[]` xem nó có còn là đồ thị hai phần hay không.
 
 ```cpp
 void make_set(int v) {
