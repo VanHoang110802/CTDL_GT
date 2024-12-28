@@ -54,8 +54,8 @@ $[l\dots (k + 1)\cdot s-1]$ và $[p\cdot s\dots r]$, và tính tổng các giá 
 
 $$ \sum\limits_{i=l}^r a[i] = \sum\limits_{i=l}^{(k+1) \cdot s-1} a[i] + \sum\limits_{i=k+1}^{p-1} b[i] + \sum\limits_{i=p\cdot s}^r a[i] $$
 
-_Note: When $k = p$, i.e. $l$ and $r$ belong to the same block, the formula can't be applied, and the sum should be calculated trivially._
-> Lưu ý: Khi $k = p$, tức là $l$ và $r$ thuộc cùng một khối, công thức này không thể áp dụng được, và tổng cần được tính một cách thông thường.
+Note: When ${k = p}$, i.e. $l$ and $r$ belong to the same block, the formula can't be applied, and the sum should be calculated trivially.
+> Lưu ý: Khi ${k = p}$, tức là $l$ và $r$ thuộc cùng một khối, công thức này không thể áp dụng được, và tổng cần được tính một cách thông thường.
 
 This approach allows us to significantly reduce the number of operations. Indeed, the size of each "tail" does not exceed the block length $s$, and the number of blocks in the sum does not exceed $s$. Since we have chosen $s \approx \sqrt n$, the total number of operations required to find the sum of elements on the interval $[l, r]$ is $O(\sqrt n)$.
 > Phương pháp này giúp chúng ta giảm đáng kể số phép toán cần thực hiện. Thật vậy, kích thước của mỗi "đuôi" không vượt quá độ dài khối $s$, và số lượng khối trong tổng không vượt quá $s$. Vì chúng ta đã chọn $s \approx \sqrt n$, tổng số phép toán cần thiết để tính tổng các phần tử trong khoảng $[l, r]$ là $O(\sqrt n)$.
