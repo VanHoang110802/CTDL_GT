@@ -201,8 +201,7 @@ The nodes of the tree show the ranges they cover.
 > Hình ảnh dưới đây cho thấy một cách diễn giải có thể của cây Fenwick dưới dạng cây. 
 Các nút của cây biểu thị các khoảng mà chúng bao phủ.
 
-
-<center>![Binary Indexed Tree](binary_indexed_tree.png)</center>
+![binary_indexed_tree](zzpn_01_binary_indexed_tree.png)
 
 ## Implementation
 
