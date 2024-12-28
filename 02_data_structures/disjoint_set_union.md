@@ -24,6 +24,9 @@ It is selected in each set by the data structure itself (and can change over tim
 This representative can be used to check if two elements are part of the same set or not.
 `a` and `b` are exactly in the same set, if `find_set(a) == find_set(b)`.
 Otherwise they are in different sets.
+> - `make_set(v)` - tạo một tập mới chứa phần tử mới `v`
+> - `union_sets(a, b)` - hợp nhất hai tập đã chỉ định (tập chứa phần tử `a` và tập chứa phần tử `b`)
+> - `find_set(v)` - trả về đại diện (còn gọi là "leader") của tập chứa phần tử `v`. Đại diện này là một phần tử của tập tương ứng. Nó được cấu trúc dữ liệu tự động chọn trong mỗi tập (và có thể thay đổi theo thời gian, đặc biệt là sau các cuộc gọi `union_sets`. Đại diện này có thể được sử dụng để kiểm tra xem hai phần tử có thuộc cùng một tập hay không. Hai phần tử `a` và `b` thuộc cùng một tập nếu và chỉ nếu `find_set(a) == find_set(b)`. Nếu không, chúng thuộc hai tập khác nhau.
 
 As described in more detail later, the data structure allows you to do each of these operations in almost $O(1)$ time on average.
 > Như đã mô tả chi tiết hơn ở các phần sau, cấu trúc dữ liệu này cho phép thực hiện mỗi thao tác trong thời gian gần như trung bình là $O(1)$.
