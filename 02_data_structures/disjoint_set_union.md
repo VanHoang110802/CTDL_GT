@@ -477,16 +477,24 @@ This algorithm compares favorable with other algorithms for finding the LCA due 
 
 One of the alternative ways of storing the DSU is the preservation of each set in the form of an **explicitly stored list of its elements**.
 At the same time each element also stores the reference to the representative of his set.
+> Một trong những cách thay thế để lưu trữ DSU là bảo tồn mỗi tập hợp dưới dạng danh sách các phần tử của nó được lưu trữ rõ ràng.
+Đồng thời, mỗi phần tử cũng lưu tham chiếu đến đại diện của tập hợp của nó.
 
 At first glance this looks like an inefficient data structure:
 by combining two sets we will have to add one list to the end of another and have to update the leadership in all elements of one of the lists.
+> Thoạt nhìn, đây có vẻ như là một cấu trúc dữ liệu không hiệu quả:
+Khi hợp nhất hai tập hợp, chúng ta sẽ phải thêm một danh sách vào cuối danh sách khác và phải cập nhật lại đại diện trong tất cả các phần tử của một trong hai danh sách.
 
 However it turns out, the use of a **weighting heuristic** (similar to Union by size) can significantly reduce the asymptotic complexity:
 $O(m + n \log n)$ to perform $m$ queries on the $n$ elements.
+> Tuy nhiên, hóa ra việc sử dụng chiến lược trọng số (tương tự như Union by size) có thể giảm đáng kể độ phức tạp tiệm cận: $O(m + n \log n)$ để thực hiện $m$ truy vấn trên $n$ phần tử.
 
 Under weighting heuristic we mean, that we will always **add the smaller of the two sets to the bigger set**.
 Adding one set to another is easy to implement in `union_sets` and will take time proportional to the size of the added set.
 And the search for the leader in `find_set` will take $O(1)$ with this method of storing.
+> Với chiến lược trọng số, chúng ta có nghĩa là luôn luôn thêm tập hợp nhỏ hơn vào tập hợp lớn hơn.
+Việc thêm một tập hợp vào một tập hợp khác rất dễ triển khai trong `union_sets` và sẽ tốn thời gian tỷ lệ với kích thước của tập hợp được thêm vào.
+Và việc tìm đại diện trong `find_set` sẽ mất $O(1)$ với phương pháp lưu trữ này.
 
 Let us prove the **time complexity** $O(m + n \log n)$ for the execution of $m$ queries.
 We will fix an arbitrary element $x$ and count how often it was touched in the merge operation `union_sets`.
