@@ -222,8 +222,6 @@ You can create a Fenwick tree initialized with zeros, or you can convert an exis
 > Ngoài ra, triển khai này hỗ trợ hai hàm tạo. 
 Bạn có thể tạo một cây Fenwick được khởi tạo với giá trị bằng không, hoặc bạn có thể chuyển đổi một mảng hiện có thành dạng cây Fenwick.
 
-
-
 ```{.cpp file=fenwick_sum}
 struct FenwickTree {
     vector<int> bit;  // binary indexed tree
@@ -281,7 +279,7 @@ FenwickTree(vector<int> const &a) : FenwickTree(a.size()){
 }
 ```
 
-### Finding minimum of $[0, r]$ in one-dimensional array { data-toc-label='Finding minimum of <script type="math/tex">[0, r]</script> in one-dimensional array' }
+### Finding minimum of $[0, r]$ in one-dimensional array
 
 It is obvious that there is no easy way of finding minimum of range $[l, r]$ using Fenwick tree, as Fenwick tree can only answer queries of type $[0, r]$.
 Additionally, each time a value is `update`'d, the new value has to be smaller than the current value.
