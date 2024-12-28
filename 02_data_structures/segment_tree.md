@@ -1,80 +1,132 @@
----
-tags:
-  - Translated
-e_maxx_link: segment_tree
----
+> Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/segment_tree.html)
 
 # Segment Tree
 
 A Segment Tree is a data structure that stores information about array intervals as a tree. This allows answering range queries over an array efficiently, while still being flexible enough to allow quick modification of the array.
 This includes finding the sum of consecutive array elements $a[l \dots r]$, or finding the minimum element in a such a range in $O(\log n)$ time. 
 Between answering such queries, the Segment Tree allows modifying the array by replacing one element, or even changing the elements of a whole subsegment (e.g. assigning all elements $a[l \dots r]$ to any value, or adding a value to all element in the subsegment). 
+> Cây Segment (Segment Tree) là một cấu trúc dữ liệu lưu trữ thông tin về các khoảng (intervals) trong mảng dưới dạng một cây. Điều này cho phép trả lời các truy vấn theo khoảng trên mảng một cách hiệu quả, đồng thời vẫn đủ linh hoạt để cho phép thay đổi nhanh chóng mảng.
+Điều này bao gồm việc tìm tổng các phần tử liên tiếp trong mảng $a[l \dots r]$, hoặc tìm phần tử nhỏ nhất trong một khoảng như vậy với thời gian $O(\log n)$.
+Trong quá trình trả lời các truy vấn như vậy, Cây Segment cho phép sửa đổi mảng bằng cách thay thế một phần tử, hoặc thậm chí thay đổi các phần tử của một đoạn con (ví dụ: gán tất cả các phần tử $a[l \dots r]$ với một giá trị nào đó, hoặc cộng một giá trị vào tất cả các phần tử trong đoạn con đó).
 
 In general, a Segment Tree is a very flexible data structure, and a huge number of problems can be solved with it. 
 Additionally, it is also possible to apply more complex operations and answer more complex queries (see [Advanced versions of Segment Trees](segment_tree.md#advanced-versions-of-segment-trees)).
 In particular the Segment Tree can be easily generalized to larger dimensions. 
 For instance, with a two-dimensional Segment Tree you can answer sum or minimum queries over some subrectangle of a given matrix in only $O(\log^2 n)$ time. 
+> Nói chung, Cây Segment là một cấu trúc dữ liệu rất linh hoạt, và một lượng lớn các bài toán có thể được giải quyết bằng nó. 
+Ngoài ra, cũng có thể áp dụng các phép toán phức tạp hơn và trả lời các truy vấn phức tạp hơn.
+Cụ thể, Cây Segment có thể dễ dàng được tổng quát hóa cho các chiều lớn hơn.
+Chẳng hạn, với Cây Segment hai chiều, bạn có thể trả lời các truy vấn về tổng hoặc giá trị nhỏ nhất trên một subrectangle (hình chữ nhật con) của một ma trận cho trước trong chỉ $O(\log^2 n)$ thời gian.
+
 
 One important property of Segment Trees is that they require only a linear amount of memory.
 The standard Segment Tree requires $4n$ vertices for working on an array of size $n$. 
+> Một đặc điểm quan trọng của Cây Segment là chúng chỉ yêu cầu một lượng bộ nhớ tuyến tính. 
+Cây Segment chuẩn yêu cầu $4n$ đỉnh để hoạt động trên một mảng có kích thước $n$.
 
-## Simplest form of a Segment Tree
+
+## Simplest form of a Segment Tree (Dạng đơn giản nhất của Cây Segment)
 
 To start easy, we consider the simplest form of a Segment Tree. 
 We want to answer sum queries efficiently. 
 The formal definition of our task is:
 Given an array $a[0 \dots n-1]$, the Segment Tree must be able to find the sum of elements between the indices $l$ and $r$ (i.e. computing the sum $\sum_{i=l}^r a[i]$), and also handle changing values of the elements in the array (i.e. perform assignments of the form $a[i] = x$).
 The Segment Tree should be able to process **both** queries in $O(\log n)$ time.
+> Để bắt đầu một cách dễ dàng, chúng ta xem xét dạng đơn giản nhất của Cây Segment.
+Chúng ta muốn trả lời các truy vấn về tổng một cách hiệu quả.
+Định nghĩa chính thức của bài toán của chúng ta là:
+Cho một mảng $a[0 \dots n-1]$, Cây Segment phải có khả năng tìm tổng các phần tử giữa các chỉ số $l$ and $r$ (tức là tính tổng $\sum_{i=l}^r a[i]$), và cũng phải xử lý việc thay đổi giá trị của các phần tử trong mảng (tức là thực hiện các phép gán dưới dạng $a[i] = x$).
+Cây Segment phải có khả năng xử lý cả hai truy vấn trong thời gian $O(\log n)$.
+
 
 This is an improvement over the simpler approaches.
 A naive array implementation - just using a simple array - can update elements in $O(1)$, but requires $O(n)$ to compute each sum query.
 And precomputed prefix sums can compute sum queries in $O(1)$, but updating an array element requires $O(n)$ changes to the prefix sums.
+> Đây là một cải tiến so với các phương pháp đơn giản hơn.
+Một cách triển khai mảng ngây thơ - chỉ sử dụng một mảng đơn giản - có thể cập nhật các phần tử trong thời gian $O(1)$, nhưng yêu cầu $O(n)$ để tính mỗi truy vấn tổng.
+Còn việc tính tổng truy vấn bằng cách sử dụng mảng tổng tiền tố đã được tính trước có thể thực hiện trong $O(1)$, nhưng việc cập nhật một phần tử trong mảng lại yêu cầu phải thay đổi $O(n)$ giá trị trong mảng tổng tiền tố.
 
-### Structure of the Segment Tree
+
+### Structure of the Segment Tree (Cấu trúc của Cây Đoạn)
 
 We can take a divide-and-conquer approach when it comes to array segments. 
 We compute and store the sum of the elements of the whole array, i.e. the sum of the segment $a[0 \dots n-1]$. 
 We then split the array into two halves $a[0 \dots n/2-1]$ and $a[n/2 \dots n-1]$ and compute the sum of each halve and store them. 
 Each of these two halves in turn are split in half, and so on until all segments reach size $1$. 
+> Chúng ta có thể áp dụng phương pháp chia để trị (divide-and-conquer) khi làm việc với các đoạn mảng.
+Chúng ta tính toán và lưu trữ tổng của tất cả các phần tử trong mảng, tức là tổng của đoạn $a[0 \dots n-1]$. 
+Sau đó, chúng ta chia mảng thành hai phần: $a[0 \dots n/2-1]$ và $a[n/2 \dots n-1]$ và tính tổng của mỗi phần rồi lưu trữ chúng. 
+Mỗi phần trong số hai phần này lại tiếp tục được chia đôi, và quá trình này lặp lại cho đến khi tất cả các đoạn mảng có kích thước bằng $1$. 
+
 
 We can view these segments as forming a binary tree: 
 the root of this tree is the segment $a[0 \dots n-1]$, and each vertex (except leaf vertices) has exactly two child vertices. 
 This is why the data structure is called "Segment Tree", even though in most implementations the tree is not constructed explicitly (see [Implementation](segment_tree.md#implementation)).
+> Chúng ta có thể coi các đoạn mảng này tạo thành một cây nhị phân:
+Gốc của cây này là đoạn $a[0 \dots n-1]$, và mỗi đỉnh (ngoại trừ các đỉnh lá) có chính xác hai đỉnh con. 
+Đây là lý do tại sao cấu trúc dữ liệu này được gọi là "Cây Segment", mặc dù trong hầu hết các triển khai, cây không được xây dựng một cách rõ ràng.
 
 Here is a visual representation of such a Segment Tree over the array $a = [1, 3, -2, 8, -7]$:
+> Dưới đây là một biểu diễn trực quan của Cây Segment như vậy trên mảng $a = [1, 3, -2, 8, -7]$:
 
-!["Sum Segment Tree"](sum-segment-tree.png)
+![Sum Segment Tree](zzpn_04_sum-segment-tree.png)
 
 From this short description of the data structure, we can already conclude that a Segment Tree only requires a linear number of vertices. 
 The first level of the tree contains a single node (the root), the second level will contain two vertices, in the third it will contain four vertices, until the number of vertices reaches $n$. 
 Thus the number of vertices in the worst case can be estimated by the sum $1 + 2 + 4 + \dots + 2^{\lceil\log_2 n\rceil} \lt 2^{\lceil\log_2 n\rceil + 1} \lt 4n$.
+> Từ mô tả ngắn gọn về cấu trúc dữ liệu này, chúng ta có thể kết luận rằng một Cây Segment chỉ yêu cầu một số lượng đỉnh tuyến tính.
+Cấp đầu tiên của cây chứa một đỉnh duy nhất (gốc), cấp thứ hai sẽ chứa hai đỉnh, cấp thứ ba sẽ chứa bốn đỉnh, và cứ tiếp tục như vậy cho đến khi số lượng đỉnh đạt $n$. 
+Do đó, số lượng đỉnh trong trường hợp xấu nhất có thể được ước tính bằng tổng $1 + 2 + 4 + \dots + 2^{\lceil\log_2 n\rceil} \lt 2^{\lceil\log_2 n\rceil + 1} \lt 4n$.
+
 
 It is worth noting that whenever $n$ is not a power of two, not all levels of the Segment Tree will be completely filled. 
 We can see that behavior in the image.
 For now we can forget about this fact, but it will become important later during the implementation.
+> Cần lưu ý rằng khi $n$ không phải là một số mũ của hai, không phải tất cả các cấp của Cây Segment sẽ được điền đầy đủ.
+Chúng ta có thể thấy hành vi này trong hình ảnh.
+Hiện tại, chúng ta có thể bỏ qua thực tế này, nhưng nó sẽ trở nên quan trọng sau này trong quá trình triển khai.
+
 
 The height of the Segment Tree is $O(\log n)$, because when going down from the root to the leaves the size of the segments decreases approximately by half. 
+> Chiều cao của Cây Segment là $O(\log n)$, vì khi di chuyển từ gốc đến các lá, kích thước của các đoạn mảng giảm dần một cách gần như gấp đôi.
 
-### Construction
+
+### Construction (Xây dựng)
 
 Before constructing the segment tree, we need to decide:
+> Trước khi xây dựng cây đoạn, chúng ta cần quyết định rằng:
 
 1. the *value* that gets stored at each node of the segment tree.
    For example, in a sum segment tree, a node would store the sum of the elements in its range $[l, r]$.
 2. the *merge* operation that merges two siblings in a segment tree.
    For example, in a sum segment tree, the two nodes corresponding to the ranges $a[l_1 \dots r_1]$ and $a[l_2 \dots r_2]$ would be merged into a node corresponding to the range $a[l_1 \dots r_2]$ by adding the values of the two nodes.
+> 1. the *value* được lưu trữ tại mỗi nút của cây phân đoạn.
+   Ví dụ, trong cây phân đoạn tổng, một nút sẽ lưu trữ tổng của các phần tử trong phạm vi $[l, r]$ của nó.
+> 2. the *merge* operation dùng để hợp nhất hai nút con trong cây đoạn.
+   Ví dụ, trong cây đoạn tổng, hai nút tương ứng với các phạm vi $a[l_1 \dots r_1]$ và $a[l_2 \dots r_2]$ sẽ được hợp nhất thành một nút tương ứng với phạm vi $a[l_1 \dots r_2]$ bằng cách cộng giá trị của hai nút này lại với nhau.
+
 
 Note that a vertex is a "leaf vertex", if its corresponding segment covers only one value in the original array. It is present at the lowermost level of a segment tree. Its value would be equal to the (corresponding) element $a[i]$. 
+> Lưu ý rằng một đỉnh là "đỉnh lá" (leaf vertex) nếu đoạn tương ứng của nó chỉ bao phủ một giá trị trong mảng gốc. Nó xuất hiện ở cấp thấp nhất của cây đoạn. Giá trị của nó sẽ bằng với phần tử (tương ứng) $a[i]$.
 
 Now, for construction of the segment tree, we start at the bottom level (the leaf vertices) and assign them their respective values. On the basis of these values, we can compute the values of the previous level, using the `merge` function.
 And on the basis of those, we can compute the values of the previous, and repeat the procedure until we reach the root vertex. 
+> Bây giờ, để xây dựng cây đoạn, chúng ta bắt đầu từ cấp thấp nhất (các đỉnh lá) và gán cho chúng các giá trị tương ứng. Dựa trên các giá trị này, chúng ta có thể tính toán giá trị của cấp trước đó, sử dụng hàm `merge` .
+Và dựa trên các giá trị đó, chúng ta có thể tính toán giá trị của cấp trước đó, và lặp lại quy trình cho đến khi đạt đến đỉnh gốc.
+
 
 It is convenient to describe this operation recursively in the other direction, i.e., from the root vertex to the leaf vertices. The construction procedure, if called on a non-leaf vertex, does the following:
+> Thật tiện lợi khi mô tả phép toán này một cách đệ quy theo hướng ngược lại, tức là từ đỉnh gốc đến các đỉnh lá. Quy trình xây dựng, nếu được gọi trên một đỉnh không phải lá, sẽ thực hiện các bước sau:
 
 1. recursively construct the values of the two child vertices
 2. merge the computed values of these children.
+> 1. Đệ quy xây dựng các giá trị của hai đỉnh con.
+> 2. Hợp nhất các giá trị đã tính toán của các đỉnh con này.
+
 
 We start the construction at the root vertex, and hence, we are able to compute the entire segment tree.
+> Chúng ta bắt đầu xây dựng từ đỉnh gốc, và do đó, có thể tính toán toàn bộ cây phân đoạn.
+
 
 The time complexity of this construction is $O(n)$, assuming that the merge operation is constant time (the merge operation gets called $n$ times, which is equal to the number of internal nodes in the segment tree).
 
