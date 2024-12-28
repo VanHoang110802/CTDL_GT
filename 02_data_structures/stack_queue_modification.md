@@ -232,12 +232,12 @@ $$\min_{0 \le i \le M-1} A[i], \min_{1 \le i \le M} A[i], \min_{2 \le i \le M+1}
 
 We have to solve this problem in linear time, i.e. $O(n)$.
 
+Chúng ta phải giải quyết bài toán này trong thời gian tuyến tính, tức là $O(n)$.
+
 We can use any of the three modified queues to solve the problem.
 The solutions should be clear:
 we add the first $M$ element of the array, find and output its minimum, then add the next element to the queue and remove the first element of the array, find and output its minimum, etc. 
 Since all operations with the queue are performed in constant time on average, the complexity of the whole algorithm will be $O(n)$.
-
-Chúng ta phải giải quyết bài toán này trong thời gian tuyến tính, tức là $O(n)$.
 
 Chúng ta có thể sử dụng bất kỳ một trong ba hàng đợi đã chỉnh sửa để giải quyết bài toán.
 Các giải pháp nên rõ ràng: chúng ta thêm $M$ phần tử đầu tiên của mảng, tìm và in ra giá trị nhỏ nhất của nó, sau đó thêm phần tử tiếp theo vào hàng đợi và loại bỏ phần tử đầu tiên của mảng, tìm và in ra giá trị nhỏ nhất của nó, v.v. 
