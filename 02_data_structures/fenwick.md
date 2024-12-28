@@ -93,15 +93,26 @@ def increase(int i, int delta):
 ```
 
 The function `sum` works as follows:
+> Hàm `sum` hoạt động như sau:
+
 
 1. First, it adds the sum of the range $[g(r), r]$ (i.e. $T[r]$) to the `result`.
 2. Then, it "jumps" to the range $[g(g(r)-1), g(r)-1]$ and adds this range's sum to the `result`.
 3. This continues until it "jumps" from $[0, g(g( \dots g(r)-1 \dots -1)-1)]$ to $[g(-1), -1]$; this is where the `sum` function stops jumping.
+> 1. Đầu tiên, nó cộng tổng của khoảng $[g(r), r]$ (tức là $T[r]$) vào biến `result`.
+> 2. Sau đó, nó "jumps" đến khoảng $[g(g(r)-1), g(r)-1]$ và cộng tổng của khoảng này vào `result`.
+> 3. Quá trình này tiếp tục cho đến khi nó "jumps" từ $[0, g(g( \dots g(r)-1 \dots -1)-1)]$ đến $[g(-1), -1]$; đây là điểm mà hàm `sum` dừng lại việc nhảy.
+
 
 The function `increase` works with the same analogy, but it "jumps" in the direction of increasing indices:
+> Hàm `increase` hoạt động với cùng một phép phân tích, nhưng nó "jumps" theo hướng các chỉ số tăng dần:
+
 
 1. The sum for each range of the form $[g(j), j]$ which satisfies the condition $g(j) \le i \le j$ is increased by `delta`; that is, `t[j] += delta`.
 Therefore, it updates all elements in $T$ that correspond to ranges in which $A_i$ lies.
+> 1. Tổng của mỗi khoảng có dạng $[g(j), j]$ mà thỏa mãn điều kiện $g(j) \le i \le j$ sẽ được tăng thêm `delta`; tức là, `t[j] += delta`.
+Do đó, nó cập nhật tất cả các phần tử trong $T$ tương ứng với các khoảng mà $A_i$ nằm trong đó.
+
 
 The complexity of both `sum` and `increase` depend on the function $g$.
 There are many ways to choose the function $g$ such that $0 \le g(i) \le i$ for all $i$.
@@ -109,16 +120,31 @@ For instance, the function $g(i) = i$ works, which yields $T = A$ (in which case
 We could also take the function $g(i) = 0$.
 This would correspond to prefix sum arrays (in which case, finding the sum of the range $[0, i]$ will only take constant time; however, updates are slow).
 The clever part of the algorithm for Fenwick trees is how it uses a special definition of the function $g$ which can handle both operations in $O(\log N)$ time.
+> Độ phức tạp của cả hai hàm `sum` và `increase` phụ thuộc vào hàm $g$.
+Có nhiều cách để chọn hàm $g$ sao cho $0 \le g(i) \le i$ với mọi $i$.
+Ví dụ, hàm $g(i) = i$ hoạt động, dẫn đến $T = A$ (trong trường hợp này, các truy vấn tổng sẽ chậm).
+Chúng ta cũng có thể chọn hàm $g(i) = 0$.
+Điều này sẽ tương ứng với mảng tổng tiền tố (trong trường hợp này, việc tìm tổng trong khoảng $[0, i]$ chỉ mất thời gian hằng số; tuy nhiên, việc cập nhật sẽ chậm).
+Điểm thông minh trong thuật toán của cây Fenwick là cách nó sử dụng một định nghĩa đặc biệt của hàm $g$ giúp xử lý cả hai phép toán trong thời gian $O(\log N)$.
 
-### Definition of $g(i)$ { data-toc-label='Definition of <script type="math/tex">g(i)</script>' }
+
+### Definition of $g(i)$ 
 
 The computation of $g(i)$ is defined using the following simple operation:
 we replace all trailing $1$ bits in the binary representation of $i$ with $0$ bits.
+> Việc tính toán $g(i)$ được định nghĩa bằng cách sử dụng phép toán đơn giản sau:
+chúng ta thay thế tất cả các bit $1$ ở cuối trong biểu diễn nhị phân của $i$ bằng các bit $0$.
+
 
 In other words, if the least significant digit of $i$ in binary is $0$, then $g(i) = i$.
 And otherwise the least significant digit is a $1$, and we take this $1$ and all other trailing $1$s and flip them.
+> Nói cách khác, nếu chữ số ít quan trọng nhất của $i$ trong hệ nhị phân là $0$, thì $g(i) = i$.
+Ngược lại, nếu chữ số ít quan trọng nhất là $1$, thì chúng ta lấy chữ số $1$ này và tất cả các chữ số $1$ tiếp theo ở cuối và đảo ngược chúng.
+
 
 For instance we get
+> Ví dụ, chúng ta có:
+
 
 $$\begin{align}
 g(11) = g(1011_2) = 1000_2 &= 8 \\\\
@@ -129,16 +155,27 @@ g(15) = g(1111_2) = 0000_2 &= 0 \\\\
 \end{align}$$
 
 There exists a simple implementation using bitwise operations for the non-trivial operation described above:
+> Có một triển khai đơn giản sử dụng các phép toán theo bit cho phép toán không tầm thường được mô tả ở trên (dưới đây dùng AND thay cho dấu "&" vì system does not support it):
 
-$$g(i) = i ~\&~ (i+1),$$
+$$\begin{align}
+g(i) = i AND (i + 1)
+\end{align}$$
 
-where $\&$ is the bitwise AND operator. It is not hard to convince yourself that this solution does the same thing as the operation described above.
+where "&" is the bitwise AND operator. It is not hard to convince yourself that this solution does the same thing as the operation described above.
+> Trong đó & là toán tử AND theo bit. Không khó để thuyết phục bản thân rằng giải pháp này thực hiện cùng một phép toán như mô tả ở trên.
+
 
 Now, we just need to find a way to iterate over all $j$'s, such that $g(j) \le i \le j$.
+> Bây giờ, chúng ta chỉ cần tìm một cách để lặp qua tất cả các giá trị $j$, sao cho $g(j) \le i \le j$.
+
 
 It is easy to see that we can find all such $j$'s by starting with $i$ and flipping the last unset bit.
 We will call this operation $h(j)$.
 For example, for $i = 10$ we have:
+> Dễ dàng nhận thấy rằng chúng ta có thể tìm tất cả các $j$ như vậy bằng cách bắt đầu từ $i$ và đảo ngược bit chưa được thiết lập cuối cùng.
+Chúng ta sẽ gọi phép toán này là $h(j)$.
+Ví dụ, đối với $i = 10$ ta có:
+
 
 $$\begin{align}
 10 &= 0001010_2 \\\\
@@ -150,13 +187,20 @@ h(31) = 63 &= 0111111_2 \\\\
 \end{align}$$
 
 Unsurprisingly, there also exists a simple way to perform $h$ using bitwise operations:
+> Không có gì ngạc nhiên khi cũng tồn tại một cách đơn giản để thực hiện $h$ bằng cách sử dụng các phép toán theo bit:
+
 
 $$h(j) = j ~|~ (j+1),$$
 
 where $|$ is the bitwise OR operator.
+> Trong đó $|$ là toán tử OR theo bit.
+
 
 The following image shows a possible interpretation of the Fenwick tree as tree.
 The nodes of the tree show the ranges they cover.
+> Hình ảnh dưới đây cho thấy một cách diễn giải có thể của cây Fenwick dưới dạng cây. 
+Các nút của cây biểu thị các khoảng mà chúng bao phủ.
+
 
 <center>![Binary Indexed Tree](binary_indexed_tree.png)</center>
 
@@ -165,12 +209,20 @@ The nodes of the tree show the ranges they cover.
 ### Finding sum in one-dimensional array
 
 Here we present an implementation of the Fenwick tree for sum queries and single updates.
+> Ở đây, chúng ta trình bày một triển khai của cây Fenwick cho các truy vấn tổng và cập nhật đơn.
+
 
 The normal Fenwick tree can only answer sum queries of the type $[0, r]$ using `sum(int r)`, however we can also answer other queries of the type $[l, r]$ by computing two sums $[0, r]$ and $[0, l-1]$ and subtract them.
 This is handled in the `sum(int l, int r)` method.
+> Cây Fenwick thông thường chỉ có thể trả lời các truy vấn tổng kiểu $[0, r]$ thông qua hàm `sum(int r)`, tuy nhiên, chúng ta cũng có thể trả lời các truy vấn khác kiểu $[l, r]$ bằng cách tính hai tổng $[0, r]$ và $[0, l-1]$ sau đó trừ chúng đi.
+Điều này được xử lý trong phương thức `sum(int l, int r)` .
+
 
 Also this implementation supports two constructors.
 You can create a Fenwick tree initialized with zeros, or you can convert an existing array into the Fenwick form.
+> Ngoài ra, triển khai này hỗ trợ hai hàm tạo. 
+Bạn có thể tạo một cây Fenwick được khởi tạo với giá trị bằng không, hoặc bạn có thể chuyển đổi một mảng hiện có thành dạng cây Fenwick.
+
 
 
 ```{.cpp file=fenwick_sum}
@@ -210,9 +262,15 @@ struct FenwickTree {
 
 The above implementation requires $O(N \log N)$ time.
 It's possible to improve that to $O(N)$ time.
+> Triển khai trên yêu cầu thời gian $O(N \log N)$.
+Tuy nhiên, có thể cải thiện điều này xuống còn thời gian $O(N)$.
+
 
 The idea is, that the number $a[i]$ at index $i$ will contribute to the range stored in $bit[i]$, and to all ranges that the index $i | (i + 1)$ contributes to.
 So by adding the numbers in order, you only have to push the current sum further to the next range, where it will then get pushed further to the next range, and so on.
+> Ý tưởng là, số $a[i]$ tại chỉ số $i$ sẽ đóng góp vào khoảng lưu trữ trong $bit[i]$, và vào tất cả các khoảng mà chỉ số $i | (i + 1)$ đóng góp.
+Vì vậy, bằng cách cộng các số theo thứ tự, bạn chỉ cần đẩy tổng hiện tại vào khoảng tiếp theo, nơi nó sẽ tiếp tục được đẩy vào khoảng tiếp theo, và cứ như vậy.
+
 
 ```cpp
 FenwickTree(vector<int> const &a) : FenwickTree(a.size()){
@@ -229,6 +287,9 @@ FenwickTree(vector<int> const &a) : FenwickTree(a.size()){
 It is obvious that there is no easy way of finding minimum of range $[l, r]$ using Fenwick tree, as Fenwick tree can only answer queries of type $[0, r]$.
 Additionally, each time a value is `update`'d, the new value has to be smaller than the current value.
 Both significant limitations are because the $min$ operation together with the set of integers doesn't form a group, as there are no inverse elements.
+> Rõ ràng là không có cách dễ dàng để tìm giá trị nhỏ nhất trong khoảng $[l, r]$ bằng cách sử dụng cây Fenwick, vì cây Fenwick chỉ có thể trả lời các truy vấn kiểu $[0, r]$.
+Thêm vào đó, mỗi lần một giá trị được `update` , giá trị mới phải nhỏ hơn giá trị hiện tại.
+Cả hai hạn chế quan trọng này là do phép toán $min$ cùng với tập các số nguyên không tạo thành một nhóm, vì không có phần tử nghịch đảo.
 
 ```{.cpp file=fenwick_min}
 struct FenwickTreeMin {
@@ -264,10 +325,17 @@ Note: it is possible to implement a Fenwick tree that can handle arbitrary minim
 The paper [Efficient Range Minimum Queries using Binary Indexed Trees](http://ioinformatics.org/oi/pdf/v9_2015_39_44.pdf) describes such an approach.
 However with that approach you need to maintain a second binary indexed tree over the data, with a slightly different structure, since one tree is not enough to store the values of all elements in the array.
 The implementation is also a lot harder compared to the normal implementation for sums.
+> Lưu ý: có thể triển khai một cây Fenwick có thể xử lý các truy vấn giá trị nhỏ nhất trong khoảng tùy ý và các cập nhật tùy ý.
+Bài viết Efficient Range Minimum Queries using Binary Indexed Trees mô tả một cách tiếp cận như vậy.
+Tuy nhiên, với cách tiếp cận đó, bạn cần duy trì một cây chỉ số nhị phân thứ hai trên dữ liệu, với một cấu trúc hơi khác, vì một cây không đủ để lưu trữ các giá trị của tất cả các phần tử trong mảng. 
+Việc triển khai cũng khó khăn hơn rất nhiều so với triển khai thông thường cho các phép toán tổng.
+
 
 ### Finding sum in two-dimensional array
 
 As claimed before, it is very easy to implement Fenwick Tree for multidimensional array.
+> Như đã nói trước đó, việc triển khai cây Fenwick cho mảng đa chiều là rất dễ dàng.
+
 
 ```cpp
 struct FenwickTree2D {
@@ -297,6 +365,10 @@ struct FenwickTree2D {
 For this approach we change the requirements and definition for $T[]$ and $g()$ a little bit.
 We want $T[i]$ to store the sum of $[g(i)+1; i]$.
 This changes the implementation a little bit, and allows for a similar nice definition for $g(i)$:
+> Đối với phương pháp này, chúng ta thay đổi một chút yêu cầu và định nghĩa cho $T[]$ và $g()$ a little bit.
+Chúng ta muốn $T[i]$ lưu trữ tổng của $[g(i)+1; i]$.
+Điều này thay đổi một chút cách triển khai, và cho phép một định nghĩa tương tự đẹp cho $g(i)$:
+
 
 ```python
 def sum(int r):
@@ -313,6 +385,9 @@ def increase(int i, int delta):
 
 The computation of $g(i)$ is defined as:
 toggling of the last set $1$ bit in the binary representation of $i$.
+> Việc tính toán $g(i)$ được định nghĩa là:
+đảo ngược bit $1$ cuối cùng đã được thiết lập trong biểu diễn nhị phân của $i$.
+
 
 $$\begin{align}
 g(7) = g(111_2) = 110_2 &= 6 \\\\
@@ -320,17 +395,23 @@ g(6) = g(110_2) = 100_2 &= 4 \\\\
 g(4) = g(100_2) = 000_2 &= 0 \\\\
 \end{align}$$
 
-The last set bit can be extracted using $i ~\&~ (-i)$, so the operation can be expressed as:
+The last set bit can be extracted using i&(-i), so the operation can be expressed as:
+> Bit 1 cuối cùng đã được thiết lập có thể được trích xuất bằng cách sử dụng i & (-i), vì vậy phép toán có thể được biểu diễn như sau:
+
 
 $$g(i) = i - (i ~\&~ (-i)).$$
 
 And it's not hard to see, that you need to change all values $T[j]$ in the sequence $i,~ h(i),~ h(h(i)),~ \dots$ when you want to update $A[j]$, where $h(i)$ is defined as:
+> Và không khó để nhận thấy, rằng bạn cần phải thay đổi tất cả các giá trị $T[j]$ trong chuỗi (sequence) $i,~ h(i),~ h(h(i)),~ \dots$ khi bạn muốn cập nhật $A[j]$, trong đó $h(i)$ được định nghĩa là:
+
 
 $$h(i) = i + (i ~\&~ (-i)).$$
 
 As you can see, the main benefit of this approach is that the binary operations complement each other very nicely.
+> Như bạn có thể thấy, lợi ích chính của phương pháp này là các phép toán nhị phân bổ sung cho nhau một cách rất tốt.
 
 The following implementation can be used like the other implementations, however it uses one-based indexing internally.
+> Triển khai dưới đây có thể được sử dụng giống như các triển khai khác, tuy nhiên nó sử dụng chỉ số bắt đầu từ 1 bên trong.
 
 ```{.cpp file=fenwick_sum_onebased}
 struct FenwickTreeOneBasedIndexing {
@@ -369,30 +450,49 @@ struct FenwickTreeOneBasedIndexing {
 ## Range operations
 
 A Fenwick tree can support the following range operations:
+> Cây Fenwick có thể hỗ trợ các phép toán trên khoảng sau:
 
 1. Point Update and Range Query
 2. Range Update and Point Query
 3. Range Update and Range Query
+> 1. Cập nhật điểm và truy vấn khoảng
+> 2. Cập nhật khoảng và truy vấn điểm
+> 3. Cập nhật khoảng và truy vấn khoảng
 
 ### 1. Point Update and Range Query
 
 This is just the ordinary Fenwick tree as explained above.
+> Đây chỉ là cây Fenwick thông thường như đã giải thích ở trên.
 
 ### 2. Range Update and Point Query
 
 Using simple tricks we can also do the reverse operations: increasing ranges and querying for single values.
+> Dùng những mẹo đơn giản, chúng ta cũng có thể thực hiện các phép toán ngược lại: tăng giá trị trong khoảng và truy vấn các giá trị đơn lẻ.
+
 
 Let the Fenwick tree be initialized with zeros.
 Suppose that we want to increment the interval $[l, r]$ by $x$.
 We make two point update operations on Fenwick tree which are `add(l, x)` and `add(r+1, -x)`.
+> Giả sử cây Fenwick được khởi tạo với giá trị bằng không.
+Giả sử chúng ta muốn tăng khoảng $[l, r]$ lên (by trong trường hợp này hiểu là lên) $x$.
+Chúng ta thực hiện hai phép toán cập nhật điểm trên cây Fenwick, đó là `add(l, x)` và `add(r+1, -x)`.
+
 
 If we want to get the value of $A[i]$, we just need to take the prefix sum using the ordinary range sum method.
 To see why this is true, we can just focus on the previous increment operation again.
 If $i < l$, then the two update operations have no effect on the query and we get the sum $0$.
 If $i \in [l, r]$, then we get the answer $x$ because of the first update operation.
 And if $i > r$, then the second update operation will cancel the effect of first one.
+> Nếu chúng ta muốn lấy giá trị của $A[i]$, chỉ cần lấy tổng tiền tố sử dụng phương pháp tổng khoảng thông thường.
+Để hiểu tại sao điều này đúng, chúng ta chỉ cần tập trung vào phép toán tăng giá trị trước đó.
+Nếu $i < l$, thì hai phép toán cập nhật không có tác động lên truy vấn và chúng ta nhận được tổng là $0$.
+Nếu $i \in [l, r]$, thì chúng ta nhận được giá trị $x$ nhờ phép toán cập nhật đầu tiên.
+Và nếu $i > r$, thì phép toán cập nhật thứ hai sẽ hủy bỏ tác động của phép toán đầu tiên.
+
 
 The following implementation uses one-based indexing.
+> Triển khai dưới đây sử dụng chỉ số bắt đầu từ 1.
+
 
 ```cpp
 void add(int idx, int val) {
@@ -414,14 +514,21 @@ int point_query(int idx) {
 ```
 
 Note: of course it is also possible to increase a single point $A[i]$ with `range_add(i, i, val)`.
+> Lưu ý: tất nhiên, cũng có thể tăng một điểm duy nhất $A[i]$ với `range_add(i, i, val)`.
+
 
 ### 3. Range Update and Range Query
 
 To support both range updates and range queries we will use two BITs namely $B_1[]$ and $B_2[]$, initialized with zeros.
+> Để hỗ trợ cả cập nhật khoảng và truy vấn khoảng, chúng ta sẽ sử dụng hai cây chỉ số nhị phân (BIT), đó là $B_1[]$ và $B_2[]$, được khởi tạo với giá trị bằng không.
 
 Suppose that we want to increment the interval $[l, r]$ by the value $x$.
 Similarly as in the previous method, we perform two point updates on $B_1$: `add(B1, l, x)` and `add(B1, r+1, -x)`.
 And we also update $B_2$. The details will be explained later.
+> Giả sử chúng ta muốn tăng khoảng $[l, r]$ lên giá trị $x$.
+Tương tự như phương pháp trước, chúng ta thực hiện hai phép toán cập nhật điểm trên $B_1$: `add(B1, l, x)` và `add(B1, r+1, -x)`.
+Và chúng ta cũng cập nhật $B_2$. Chi tiết sẽ được giải thích sau.
+
 
 ```python
 def range_add(l, r, x):
@@ -430,7 +537,10 @@ def range_add(l, r, x):
     add(B2, l, x*(l-1))
     add(B2, r+1, -x*r))
 ```
+
 After the range update $(l, r, x)$ the range sum query should return the following values:
+> Sau khi cập nhật khoảng $(l, r, x)$ truy vấn tổng khoảng nên trả về các giá trị sau:
+
 
 $$
 sum[0, i]=
@@ -443,6 +553,9 @@ $$
 
 We can write the range sum as difference of two terms, where we use $B_1$ for first term and $B_2$ for second term.
 The difference of the queries will give us prefix sum over $[0, i]$.
+> Chúng ta có thể viết tổng khoảng như hiệu của hai hạng tử, trong đó chúng ta sử dụng $B_1$ cho hạng tử đầu tiên và $B_2$ cho hạng tử thứ hai.
+Hiệu của các truy vấn sẽ cho chúng ta tổng tiền tố trên $[0, i]$.
+
 
 $$\begin{align}
 sum[0, i] &= sum(B_1, i) \cdot i - sum(B_2, i) \\\\
@@ -456,8 +569,13 @@ $$
 
 The last expression is exactly equal to the required terms.
 Thus we can use $B_2$ for shaving off extra terms when we multiply $B_1[i]\times i$.
+> Biểu thức cuối cùng hoàn toàn bằng với các hạng tử yêu cầu.
+Do đó, chúng ta có thể sử dụng $B_2$ để loại bỏ các hạng tử thừa khi nhân $B_1[i]\times i$.
+
 
 We can find arbitrary range sums by computing the prefix sums for $l-1$ and $r$ and taking the difference of them again.
+> Chúng ta có thể tìm tổng khoảng bất kỳ bằng cách tính tổng tiền tố cho $l-1$ và $r$ sau đó lấy hiệu của chúng.
+
 
 ```python
 def add(b, idx, x):
