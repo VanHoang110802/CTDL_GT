@@ -597,10 +597,17 @@ Với một giá trị $x$ và một dải $a[l \dots r]$ tìm chỉ số nhỏ 
 
 This task can be solved using binary search over max prefix queries with the Segment Tree.
 However, this will lead to a $O(\log^2 n)$ solution.
+> Bài toán này có thể được giải quyết bằng cách sử dụng tìm kiếm nhị phân trên các truy vấn tiền tố cực đại với Cây Đoạn.
+Tuy nhiên, điều này sẽ dẫn đến một giải pháp có độ phức tạp thời gian $O(\log^2 n)$.
+
 
 Instead, we can use the same idea as in the previous sections, and find the position by descending the tree:
 by moving each time to the left or the right, depending on the maximum value of the left child.
 Thus finding the answer in $O(\log n)$ time. 
+> Thay vào đó, chúng ta có thể sử dụng ý tưởng giống như trong các phần trước và tìm vị trí bằng cách di chuyển xuống cây:
+mỗi lần di chuyển đến con trái hoặc con phải, tùy thuộc vào giá trị cực đại của con trái.
+Như vậy, ta có thể tìm câu trả lời trong thời gian $O(\log n)$. 
+
 
 ```{.cpp file=segment_tree_first_greater}
 int get_first(int v, int tl, int tr, int l, int r, int x) {
@@ -616,29 +623,51 @@ int get_first(int v, int tl, int tr, int l, int r, int x) {
 }
 ```
 
-#### Finding subsegments with the maximal sum
+#### Finding subsegments with the maximal sum (Tìm các đoạn con với tổng lớn nhất)
 
 Here again we receive a range $a[l \dots r]$ for each query, this time we have to find a subsegment $a[l^\prime \dots r^\prime]$ such that $l \le l^\prime$ and $r^\prime \le r$ and the sum of the elements of this segment is maximal. 
 As before we also want to be able to modify individual elements of the array. 
 The elements of the array can be negative, and the optimal subsegment can be empty (e.g. if all elements are negative).
+> Ở đây, mỗi truy vấn lại nhận một khoảng $a[l \dots r]$ , lần này chúng ta phải tìm một dãy con $a[l^\prime \dots r^\prime]$ sao cho $l \le l^\prime$ and $r^\prime \le r$ và tổng các phần tử trong dãy con này là lớn nhất. 
+Như trước, chúng ta cũng muốn có khả năng sửa đổi các phần tử riêng lẻ trong mảng. 
+Các phần tử của mảng có thể là số âm, và dãy con tối ưu có thể là rỗng (ví dụ nếu tất cả các phần tử đều là số âm).
+
 
 This problem is a non-trivial usage of a Segment Tree.
 This time we will store four values for each vertex: 
 the sum of the segment, the maximum prefix sum, the maximum suffix sum, and the sum of the maximal subsegment in it.
 In other words for each segment of the Segment Tree the answer is already precomputed as well as the answers for segments touching the left and the right boundaries of the segment.
+> Vấn đề này là một ứng dụng không đơn giản của Cây Phân Đoạn.
+Lần này, chúng ta sẽ lưu trữ bốn giá trị cho mỗi đỉnh:
+tổng của đoạn, tổng tiền tố tối đa, tổng hậu tố tối đa, và tổng của dãy con tối đa trong đoạn đó.
+Nói cách khác, đối với mỗi đoạn trong Cây Phân Đoạn, kết quả đã được tính trước, cũng như kết quả cho các đoạn chạm vào biên trái và biên phải của đoạn đó.
+
 
 How to build a tree with such data?
 Again we compute it in a recursive fashion: 
 we first compute all four values for the left and the right child, and then combine those to archive the four values for the current vertex.
 Note the answer for the current vertex is either:
+> Làm thế nào để xây dựng một cây với dữ liệu như vậy?
+Lại một lần nữa, chúng ta tính toán nó theo cách đệ quy:
+chúng ta đầu tiên tính toán tất cả bốn giá trị cho con trái (the left child) và con phải (the right child), và sau đó kết hợp chúng để có được bốn giá trị cho đỉnh hiện tại.
+Lưu ý rằng kết quả cho đỉnh hiện tại là một trong các giá trị sau:
+
 
  * the answer of the left child, which means that the optimal subsegment is entirely placed in the segment of the left child
  * the answer of the right child, which means that the optimal subsegment is entirely placed in the segment of the right child
  * the sum of the maximum suffix sum of the left child and the maximum prefix sum of the right child, which means that the optimal subsegment intersects with both children.
+> * Câu trả lời của con trái, có nghĩa là đoạn con tối ưu hoàn toàn nằm trong đoạn của con trái.
+> * Câu trả lời của con phải, có nghĩa là đoạn con tối ưu hoàn toàn nằm trong đoạn của con phải.
+> * Tổng của tổng hậu tố tối đa của con trái và tổng tiền tố tối đa của con phải, có nghĩa là đoạn con tối ưu giao với cả hai con.
+
 
 Hence the answer to the current vertex is the maximum of these three values. 
 Computing the maximum prefix / suffix sum is even easier. 
 Here is the implementation of the $\text{combine}$ function, which receives only data from the left and right child, and returns the data of the current vertex. 
+> Vì vậy, câu trả lời cho đỉnh hiện tại là giá trị lớn nhất trong ba giá trị này. 
+Việc tính toán tổng tiền tố (prefix sum) / tổng hậu tố (suffix sum) tối đa còn dễ dàng hơn. 
+Dưới đây là phần triển khai hàm $\text{combine}$, hàm này chỉ nhận dữ liệu từ con trái và con phải, và trả về dữ liệu của đỉnh hiện tại. 
+
 
 ```{.cpp file=segment_tree_maximal_sum_subsegments1}
 struct data {
@@ -655,9 +684,13 @@ data combine(data l, data r) {
 }
 ```
 
-Using the $\text{combine}$ function it is easy to build the Segment Tree. 
+Using the ${combine}$ function it is easy to build the Segment Tree. 
 We can implement it in exactly the same way as in the previous implementations.
-To initialize the leaf vertices, we additionally create the auxiliary function $\text{make_data}$, which will return a $\text{data}$ object holding the information of a single value.
+To initialize the leaf vertices, we additionally create the auxiliary function ${make_data}$, which will return a ${data}$ object holding the information of a single value.
+> Sử dụng hàm ${combine}$ chúng ta có thể dễ dàng xây dựng cây phân đoạn (Segment Tree).
+Chúng ta có thể triển khai nó theo cách giống như các triển khai trước đây.
+Để khởi tạo các đỉnh lá, chúng ta tạo thêm hàm phụ trợ ${make_data}$, hàm này sẽ trả về một đối tượng ${data}$ chứa thông tin của một giá trị duy nhất.
+
 
 ```{.cpp file=segment_tree_maximal_sum_subsegments2}
 data make_data(int val) {
@@ -694,7 +727,10 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 
 It only remains, how to compute the answer to a query. 
 To answer it, we go down the tree as before, breaking the query into several subsegments that coincide with the segments of the Segment Tree, and combine the answers in them into a single answer for the query.
-Then it should be clear, that the work is exactly the same as in the simple Segment Tree, but instead of summing / minimizing / maximizing the values, we use the $\text{combine}$ function.
+Then it should be clear, that the work is exactly the same as in the simple Segment Tree, but instead of summing / minimizing / maximizing the values, we use the ${combine}$ function.
+> Chỉ còn lại cách tính toán câu trả lời cho một truy vấn. 
+Để trả lời truy vấn, chúng ta di chuyển xuống cây phân đoạn như trước, chia truy vấn thành nhiều đoạn con khớp với các đoạn của cây phân đoạn, và kết hợp các câu trả lời trong các đoạn đó thành một câu trả lời duy nhất cho truy vấn.
+Sau đó, có thể thấy rằng công việc này hoàn toàn giống như trong cây phân đoạn đơn giản, nhưng thay vì cộng / tìm giá trị tối thiểu / tối đa các giá trị, chúng ta sử dụng hàm ${combine}$.
 
 ```{.cpp file=segment_tree_maximal_sum_subsegments3}
 data query(int v, int tl, int tr, int l, int r) {
@@ -708,29 +744,48 @@ data query(int v, int tl, int tr, int l, int r) {
 }
 ```
 
-### Saving the entire subarrays in each vertex
+### Saving the entire subarrays in each vertex (Đưa toàn bộ dãy con vào mỗi đỉnh)
 
 This is a separate subsection that stands apart from the others, because at each vertex of the Segment Tree we don't store information about the corresponding segment in compressed form (sum, minimum, maximum, ...), but store all elements of the segment.
 Thus the root of the Segment Tree will store all elements of the array, the left child vertex will store the first half of the array, the right vertex the second half, and so on.
+> Đây là một phần phụ riêng biệt, tách biệt so với các phần khác, vì tại mỗi đỉnh của Cây Phân Đoạn, chúng ta không lưu trữ thông tin về đoạn tương ứng dưới dạng nén (tổng, giá trị nhỏ nhất, giá trị lớn nhất, ...), mà lưu trữ tất cả các phần tử của đoạn đó.
+Do đó, gốc của Cây Phân Đoạn sẽ lưu tất cả các phần tử của mảng, đỉnh con trái sẽ lưu nửa đầu của mảng, đỉnh con phải sẽ lưu nửa sau, và cứ như vậy.
+
 
 In its simplest application of this technique we store the elements in sorted order.
 In more complex versions the elements are not stored in lists, but more advanced data structures (sets, maps, ...). 
 But all these methods have the common factor, that each vertex requires linear memory (i.e. proportional to the length of the corresponding segment).
+> Trong ứng dụng đơn giản nhất của kỹ thuật này, chúng ta lưu các phần tử theo thứ tự đã sắp xếp.
+Trong các phiên bản phức tạp hơn, các phần tử không được lưu trong danh sách mà trong các cấu trúc dữ liệu tiên tiến hơn (sets, maps, ...). 
+Tuy nhiên, tất cả những phương pháp này có một yếu tố chung là mỗi đỉnh yêu cầu bộ nhớ tuyến tính (tức là tỷ lệ thuận với độ dài của đoạn tương ứng).
+
 
 The first natural question, when considering these Segment Trees, is about memory consumption.
 Intuitively this might look like $O(n^2)$ memory, but it turns out that the complete tree will only need $O(n \log n)$ memory.
 Why is this so?
-Quite simply, because each element of the array falls into $O(\log n)$ segments (remember the height of the tree is $O(\log n)$). 
+Quite simply, because each element of the array falls into $O(\log n)$ segments (remember the height of the tree is $O(\log n)$).
+> Câu hỏi tự nhiên đầu tiên khi xem xét các Cây Phân Đoạn này là về việc tiêu thụ bộ nhớ.
+Về trực quan, điều này có vẻ như sẽ tiêu tốn $O(n^2)$ bộ nhớ, nhưng thực tế, cây hoàn chỉnh chỉ cần $O(n \log n)$ bộ nhớ.
+Tại sao lại như vậy?
+Rất đơn giản, vì mỗi phần tử của mảng rơi vào $O(\log n)$ đoạn (nhớ rằng chiều cao của cây là $O(\log n)$). 
+
 
 So in spite of the apparent extravagance of such a Segment Tree, it consumes only slightly more memory than the usual Segment Tree. 
+> Vì vậy, mặc dù có vẻ tốn kém về bộ nhớ, nhưng Cây Phân Đoạn này chỉ tiêu tốn một chút bộ nhớ hơn so với Cây Phân Đoạn thông thường.
+
 
 Several typical applications of this data structure are described below.
 It is worth noting the similarity of these Segment Trees with 2D data structures (in fact this is a 2D data structure, but with rather limited capabilities).
+> Dưới đây là một số ứng dụng điển hình của cấu trúc dữ liệu này.
+Cần lưu ý sự tương đồng của những Cây Phân Đoạn này với các cấu trúc dữ liệu 2D (thực tế đây là một cấu trúc dữ liệu 2D, nhưng với các khả năng khá hạn chế).
 
-#### Find the smallest number greater or equal to a specified number. No modification queries.
+#### Find the smallest number greater or equal to a specified number. No modification queries. (Tìm số nhỏ nhất lớn hơn hoặc bằng một số đã cho. Không có truy vấn thay đổi)
 
 We want to answer queries of the following form: 
 for three given numbers $(l, r, x)$ we have to find the minimal number in the segment $a[l \dots r]$ which is greater than or equal to $x$.
+> Chúng ta muốn trả lời các truy vấn có dạng sau: 
+Với ba số cho trước $(l, r, x)$ ta phải tìm số nhỏ nhất trong đoạn $a[l \dots r]$ mà lớn hơn hoặc bằng $x$.
+
 
 We construct a Segment Tree. 
 In each vertex we store a sorted list of all numbers occurring in the corresponding segment, like described above. 
@@ -739,8 +794,18 @@ As always we approach this problem recursively: let the lists of the left and ri
 From this view the operation is now trivial and can be accomplished in linear time:
 We only need to combine the two sorted lists into one, which can be done by iterating over them using two pointers. 
 The C++ STL already has an implementation of this algorithm.
+> Chúng ta xây dựng một Cây Phân Đoạn. 
+Trong mỗi đỉnh, ta lưu một danh sách đã được sắp xếp của tất cả các số xuất hiện trong đoạn tương ứng, như đã mô tả ở trên. 
+Làm thế nào để xây dựng một Cây Phân Mảnh như vậy một cách hiệu quả nhất?
+Như thường lệ, ta tiếp cận bài toán này theo cách đệ quy: giả sử danh sách của các đỉnh con trái và phải đã được xây dựng, và ta muốn xây dựng danh sách cho đỉnh hiện tại.
+Từ góc độ này, thao tác trở nên đơn giản và có thể hoàn thành trong thời gian tuyến tính:
+Chúng ta chỉ cần kết hợp hai danh sách đã sắp xếp thành một danh sách duy nhất, điều này có thể thực hiện được bằng cách duyệt qua chúng bằng hai con trỏ. 
+C++ STL đã có một triển khai thuật toán này.
+
 
 Because this structure of the Segment Tree and the similarities to the merge sort algorithm, the data structure is also often called "Merge Sort Tree".
+> Vì cấu trúc của Cây Phân Mảnh này và sự tương đồng với thuật toán sắp xếp hợp nhất (merge sort),cấu trúc dữ liệu này cũng thường được gọi là Cây Sắp Xếp Hợp Nhất (Merge Sort Tree).
+
 
 ```{.cpp file=segment_tree_smallest_number_greater1}
 vector<int> t[4*MAXN];
@@ -760,16 +825,27 @@ void build(int a[], int v, int tl, int tr) {
 
 We already know that the Segment Tree constructed in this way will require $O(n \log n)$ memory.
 And thanks to this implementation its construction also takes $O(n \log n)$ time, after all each list is constructed in linear time in respect to its size. 
+> Chúng ta đã biết rằng Cây Phân Đoạn được xây dựng theo cách này sẽ yêu cầu bộ nhớ là $O(n \log n)$.
+Và nhờ vào triển khai này, việc xây dựng cây cũng mất $O(n \log n)$ thời gian, vì mỗi danh sách được xây dựng trong thời gian tuyến tính theo kích thước của nó. 
 
 Now consider the answer to the query. 
 We will go down the tree, like in the regular Segment Tree, breaking our segment $a[l \dots r]$ into several subsegments (into at most $O(\log n)$ pieces). 
 It is clear that the answer of the whole answer is the minimum of each of the subqueries.
 So now we only need to understand, how to respond to a query on one such subsegment that corresponds with some vertex of the tree.
+> Bây giờ, hãy xét đến việc trả lời truy vấn.
+Chúng ta sẽ đi xuống cây, giống như trong Cây Phân Đoạn thông thường, chia đoạn $a[l \dots r]$ thành nhiều đoạn con (tối đa là $O(\log n)$ đoạn). 
+Rõ ràng, câu trả lời cho truy vấn tổng thể chính là giá trị nhỏ nhất trong các truy vấn con.
+Vậy bây giờ, chúng ta chỉ cần hiểu cách trả lời một truy vấn trên một đoạn con tương ứng với một đỉnh của cây.
 
 We are at some vertex of the Segment Tree and we want to compute the answer to the query, i.e. find the minimum number greater that or equal to a given number $x$. 
 Since the vertex contains the list of elements in sorted order, we can simply perform a binary search on this list and return the first number, greater than or equal to $x$.
+> Chúng ta đang ở một đỉnh của Cây Phân Đoạn và muốn tính câu trả lời cho truy vấn, tức là tìm giá trị nhỏ nhất lớn hơn hoặc bằng một số $x$. 
+Vì đỉnh này chứa danh sách các phần tử theo thứ tự sắp xếp, chúng ta có thể đơn giản thực hiện tìm kiếm nhị phân trên danh sách này và trả về số đầu tiên lớn hơn hoặc bằng $x$.
+
 
 Thus the answer to the query in one segment of the tree takes $O(\log n)$ time, and the entire query is processed in $O(\log^2 n)$.
+> Do đó, câu trả lời cho truy vấn trên một đoạn con của cây mất $O(\log n)$ thời gian, và toàn bộ truy vấn được xử lý trong $O(\log^2 n)$.
+
 
 ```{.cpp file=segment_tree_smallest_number_greater2}
 int query(int v, int tl, int tr, int l, int r, int x) {
@@ -787,27 +863,45 @@ int query(int v, int tl, int tr, int l, int r, int x) {
 }
 ```
 
-The constant $\text{INF}$ is equal to some large number that is bigger than all numbers in the array. 
+The constant ${INF}$ is equal to some large number that is bigger than all numbers in the array. 
 Its usage means, that there is no number greater than or equal to $x$ in the segment. 
 It has the meaning of "there is no answer in the given interval".
+> Hằng số ${INF}$ bằng một số lớn hơn tất cả các số trong mảng.
+Ý nghĩa của việc sử dụng nó là, không có số nào lớn hơn hoặc bằng $x$ trong đoạn. 
+Nó mang ý nghĩa là "không có câu trả lời trong khoảng cho trước" (there is no answer in the given interval).
 
-#### Find the smallest number greater or equal to a specified number. With modification queries.
+
+#### Find the smallest number greater or equal to a specified number. With modification queries. (Tìm số nhỏ nhất lớn hơn hoặc bằng một số đã chỉ định. Với các truy vấn sửa đổi.)
 
 This task is similar to the previous.
 The last approach has a disadvantage, it was not possible to modify the array between answering queries.
 Now we want to do exactly this: a modification query will do the assignment $a[i] = y$.
+> Vấn đề này tương tự như vấn đề trước.
+Phương pháp cuối cùng có một nhược điểm, đó là không thể sửa đổi mảng giữa các truy vấn.
+Giờ đây, chúng ta muốn thực hiện chính điều này: một truy vấn sửa đổi sẽ thực hiện phép gán $a[i] = y$.
 
 The solution is similar to the solution of the previous problem, but instead of lists at each vertex of the Segment Tree, we will store a balanced list that allows you to quickly search for numbers, delete numbers, and insert new numbers. 
-Since the array can contain a number repeated, the optimal choice is the data structure $\text{multiset}$. 
+Since the array can contain a number repeated, the optimal choice is the data structure ${multiset}$. 
+> Giải pháp tương tự như giải pháp của vấn đề trước, nhưng thay vì lưu trữ các danh sách ở mỗi đỉnh của Cây Phân Đoạn, chúng ta sẽ lưu trữ một danh sách cân bằng cho phép tìm kiếm số nhanh chóng, xóa số, và chèn số mới.
+Vì mảng có thể chứa các số lặp lại, lựa chọn tối ưu là cấu trúc dữ liệu ${multiset}$. 
+
 
 The construction of such a Segment Tree is done in pretty much the same way as in the previous problem, only now we need to combine $\text{multiset}$s and not sorted lists.
 This leads to a construction time of $O(n \log^2 n)$ (in general merging two red-black trees can be done in linear time, but the C++ STL doesn't guarantee this time complexity).
+> Việc xây dựng Segment Tree như vậy thực hiện khá giống với bài toán trước, chỉ khác là giờ đây chúng ta cần kết hợp các ${multiset}$ thay vì các danh sách đã sắp xếp.
+Điều này dẫn đến thời gian xây dựng là $O(n \log^2 n)$ (vì về lý thuyết, việc hợp nhất hai cây red-black có thể được thực hiện trong thời gian tuyến tính, nhưng STL của C++ không đảm bảo độ phức tạp thời gian này).
 
-The $\text{query}$ function is also almost equivalent, only now the $\text{lower_bound}$ function of the $\text{multiset}$ function should be called instead ($\text{std::lower_bound}$ only works in $O(\log n)$ time if used with random-access iterators).
+The ${query}$ function is also almost equivalent, only now the ${lower_bound}$ function of the ${multiset}$ function should be called instead (${std::lower_bound}$ only works in $O(\log n)$ time if used with random-access iterators).
+> Hàm ${query}$ cũng gần giống như trước, nhưng bây giờ cần gọi hàm ${lower_bound}$ của ${multiset}$ thay vì sử dụng (Vì ${std::lower_bound}$ chỉ hoạt động trong $O(\log n)$ khi sử dụng với iterators có thể truy cập ngẫu nhiên).
+
 
 Finally the modification request. 
-To process it, we must go down the tree, and modify all $\text{multiset}$ from the corresponding segments that contain the affected element.
+To process it, we must go down the tree, and modify all ${multiset}$ from the corresponding segments that contain the affected element.
 We simply delete the old value of this element (but only one occurrence), and insert the new value.
+> Cuối cùng, với yêu cầu sửa đổi. 
+Để xử lý yêu cầu này, chúng ta phải đi xuống cây và sửa đổi tất cả các ${multiset}$ từ các đoạn tương ứng chứa phần tử bị ảnh hưởng. 
+Cách đơn giản là xóa giá trị cũ của phần tử này (chỉ xóa một lần xuất hiện) và chèn giá trị mới vào.
+
 
 ```cpp
 void update(int v, int tl, int tr, int pos, int new_val) {
@@ -826,27 +920,46 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 ```
 
 Processing of this modification query also takes $O(\log^2 n)$ time.
+> Việc xử lý yêu cầu sửa đổi này cũng mất $O(\log^2 n)$ thời gian.
 
-#### Find the smallest number greater or equal to a specified number. Acceleration with "fractional cascading".
+
+#### Find the smallest number greater or equal to a specified number. Acceleration with "fractional cascading". (Tìm số nhỏ nhất lớn hơn hoặc bằng một số chỉ định. Tăng tốc với "fractional cascading")
 
 We have the same problem statement, we want to find the minimal number greater than or equal to $x$ in a segment, but this time in $O(\log n)$ time.
 We will improve the time complexity using the technique "fractional cascading".
+> Chúng ta có cùng một đề bài, chúng ta muốn tìm số nhỏ nhất lớn hơn hoặc bằng $x$ trong một đoạn, nhưng lần này trong thời gian $O(\log n)$.
+Chúng ta sẽ cải thiện độ phức tạp thời gian bằng cách sử dụng kỹ thuật "fractional cascading".
 
 Fractional cascading is a simple technique that allows you to improve the running time of multiple binary searches, which are conducted at the same time. 
 Our previous approach to the search query was, that we divide the task into several subtasks, each of which is solved with a binary search. 
 Fractional cascading allows you to replace all of these binary searches with a single one.
+> Fractional cascading là một kỹ thuật đơn giản cho phép cải thiện thời gian chạy của nhiều tìm kiếm nhị phân, được thực hiện đồng thời.
+Cách tiếp cận trước đây của chúng ta cho truy vấn tìm kiếm là chia bài toán thành nhiều tiểu bài toán, mỗi bài toán được giải quyết bằng một tìm kiếm nhị phân.
+Fractional cascading cho phép bạn thay thế tất cả các tìm kiếm nhị phân này bằng một tìm kiếm duy nhất.
+
 
 The simplest and most obvious example of fractional cascading is the following problem:
 there are $k$ sorted lists of numbers, and we must find in each list the first number greater than or equal to the given number.
+> Ví dụ đơn giản và rõ ràng nhất về fractional cascading là bài toán sau:
+Có $k$ danh sách đã được sắp xếp, và chúng ta phải tìm trong mỗi danh sách số đầu tiên lớn hơn hoặc bằng số cho trước.
+
 
 Instead of performing a binary search for each list, we could merge all lists into one big sorted list.
 Additionally for each element $y$ we store a list of results of searching for $y$ in each of the $k$ lists.
 Therefore if we want to find the smallest number greater than or equal to $x$, we just need to perform one single binary search, and from the list of indices we can determine the smallest number in each list.
 This approach however requires $O(n \cdot k)$ ($n$ is the length of the combined lists), which can be quite inefficient. 
+> Thay vì thực hiện một tìm kiếm nhị phân cho mỗi danh sách, chúng ta có thể gộp tất cả các danh sách lại thành một danh sách lớn duy nhất.
+Thêm vào đó, đối với mỗi phần tử $y$ chúng ta lưu một danh sách các kết quả tìm kiếm cho $y$ trong mỗi danh sách $k$.
+Do đó, nếu chúng ta muốn tìm số nhỏ nhất lớn hơn hoặc bằng $x$, chúng ta chỉ cần thực hiện một tìm kiếm nhị phân duy nhất, và từ danh sách các chỉ số, chúng ta có thể xác định số nhỏ nhất trong mỗi danh sách.
+Tuy nhiên, cách tiếp cận này yêu cầu $O(n \cdot k)$ bộ nhớ ($n$ là độ dài của các danh sách đã gộp), điều này có thể khá không hiệu quả. 
 
 Fractional cascading reduces this memory complexity to $O(n)$ memory, by creating from the $k$ input lists $k$ new lists, in which each list contains the corresponding list and additionally also every second element of the following new list.
 Using this structure it is only necessary to store two indices, the index of the element in the original list, and the index of the element in the following new list.
 So this approach only uses $O(n)$ memory, and still can answer the queries using a single binary search. 
+> Fractional cascading giảm độ phức tạp bộ nhớ này xuống $O(n)$ bộ nhớ, bằng cách tạo ra từ $k$ danh sách đầu vào $k$ danh sách mới, trong đó mỗi danh sách chứa danh sách tương ứng và thêm vào đó mỗi phần tử thứ hai của danh sách tiếp theo.
+Sử dụng cấu trúc này, chỉ cần lưu hai chỉ số, chỉ số của phần tử trong danh sách ban đầu và chỉ số của phần tử trong danh sách mới tiếp theo. 
+Vì vậy, cách tiếp cận này chỉ sử dụng $O(n)$ bộ nhớ, và vẫn có thể trả lời các truy vấn bằng một tìm kiếm nhị phân duy nhất. 
+
 
 But for our application we do not need the full power of fractional cascading.
 In our Segment Tree a vertex will contain the sorted list of all elements that occur in either the left or the right subtrees (like in the Merge Sort Tree). 
@@ -854,52 +967,98 @@ Additionally to this sorted list, we store two positions for each element.
 For an element $y$ we store the smallest index $i$, such that the $i$th element in the sorted list of the left child is greater or equal to $y$.
 And we store the smallest index $j$, such that the $j$th element in the sorted list of the right child is greater or equal to $y$.
 These values can be computed in parallel to the merging step when we build the tree.
+> Tuy nhiên, đối với ứng dụng của chúng ta, chúng ta không cần toàn bộ khả năng của fractional cascading.
+Trong Segment Tree của chúng ta, mỗi đỉnh sẽ chứa danh sách đã được sắp xếp của tất cả các phần tử xuất hiện trong cây con bên trái hoặc bên phải (giống như trong Merge Sort Tree). 
+Ngoài danh sách đã sắp xếp này, chúng ta lưu hai chỉ số cho mỗi phần tử.
+Đối với một phần tử $y$ chúng ta lưu chỉ số nhỏ nhất $i$, sao cho phần tử thứ $i$ trong danh sách đã sắp xếp của cây con trái lớn hơn hoặc bằng $y$.
+Và chúng ta lưu chỉ số nhỏ nhất $j$, sao cho phần tử thứ $j$th trong danh sách đã sắp xếp của cây con phải lớn hơn hoặc bằng $y$.
+Các giá trị này có thể được tính song song với bước kết hợp khi xây dựng cây.
+
 
 How does this speed up the queries?
+> Làm thế nào để tăng tốc các truy vấn?
+
 
 Remember, in the normal solution we did a binary search in every node.
 But with this modification, we can avoid all except one.
+> Hãy nhớ lại, trong giải pháp bình thường, chúng ta thực hiện một tìm kiếm nhị phân tại mỗi nút.
+Nhưng với sự điều chỉnh này, chúng ta có thể tránh tất cả các tìm kiếm nhị phân ngoại trừ một.
+
 
 To answer a query, we simply do a binary search in the root node.
 This gives us the smallest element $y \ge x$ in the complete array, but it also gives us two positions.
 The index of the smallest element greater or equal $x$ in the left subtree, and the index of the smallest element $y$ in the right subtree. Notice that $\ge y$ is the same as $\ge x$, since our array doesn't contain any elements between $x$ and $y$.
 In the normal Merge Sort Tree solution we would compute these indices via binary search, but with the help of the precomputed values we can just look them up in $O(1)$.
 And we can repeat that until we visited all nodes that cover our query interval.
+> Để trả lời một truy vấn, chúng ta chỉ cần thực hiện một tìm kiếm nhị phân tại nút gốc.
+Điều này cho chúng ta phần tử nhỏ nhất $y \ge x$ trong toàn bộ mảng, nhưng nó cũng cho chúng ta hai chỉ số.
+Chỉ số của phần tử nhỏ nhất lớn hơn hoặc bằng $x$ trong cây con bên trái, và chỉ số của phần tử nhỏ nhất $y$ trong cây con bên phải. Lưu ý rằng $\ge y$ là giống như $\ge x$, vì mảng của chúng ta không chứa bất kỳ phần tử nào giữa $x$ và $y$.
+Trong giải pháp Merge Sort Tree thông thường, chúng ta sẽ tính toán các chỉ số này qua tìm kiếm nhị phân, nhưng với sự trợ giúp của các giá trị đã được tính sẵn, chúng ta chỉ cần tra cứu chúng trong $O(1)$.
+Và chúng ta có thể lặp lại điều này cho đến khi thăm tất cả các nút bao phủ phạm vi truy vấn của chúng ta.
+
 
 To summarize, as usual we touch $O(\log n)$ nodes during a query. In the root node we do a binary search, and in all other nodes we only do constant work.
 This means the complexity for answering a query is $O(\log n)$.
+> Tóm lại, như thường lệ, chúng ta sẽ chạm vào $O(\log n)$ nút trong một truy vấn. Ở nút gốc, chúng ta thực hiện một tìm kiếm nhị phân, và ở tất cả các nút khác, chúng ta chỉ làm công việc hằng số.
+Điều này có nghĩa là độ phức tạp để trả lời một truy vấn là $O(\log n)$.
+
 
 But notice, that this uses three times more memory than a normal Merge Sort Tree, which already uses a lot of memory ($O(n \log n)$).
+> Nhưng lưu ý rằng, điều này sử dụng bộ nhớ gấp ba lần so với Merge Sort Tree bình thường, vốn đã sử dụng rất nhiều bộ nhớ $O(n \log n)$.
+
 
 It is straightforward to apply this technique to a problem, that doesn't require any modification queries.
 The two positions are just integers and can easily be computed by counting when merging the two sorted sequences.
+> Kỹ thuật này dễ dàng áp dụng cho một bài toán không yêu cầu truy vấn sửa đổi. 
+Hai chỉ số này chỉ là các số nguyên và có thể dễ dàng tính toán khi hợp nhất hai dãy đã sắp xếp.
+
 
 It it still possible to also allow modification queries, but that complicates the entire code.
 Instead of integers, you need to store the sorted array as `multiset`, and instead of indices you need to store iterators.
 And you need to work very carefully, so that you increment or decrement the correct iterators during a modification query.
+> Tuy nhiên, vẫn có thể cho phép truy vấn sửa đổi, nhưng điều này làm cho toàn bộ code phức tạp hơn.
+Thay vì các số nguyên, bạn cần lưu trữ mảng đã sắp xếp dưới dạng `multiset`, và thay vì các chỉ số, bạn cần lưu trữ các iterator.
+Và bạn cần làm việc rất cẩn thận, để đảm bảo rằng bạn tăng hoặc giảm đúng iterator trong một truy vấn sửa đổi.
 
-#### Other possible variations
+
+#### Other possible variations (Các biến thể khả thi khác)
 
 This technique implies a whole new class of possible applications. 
 Instead of storing a $\text{vector}$ or a $\text{multiset}$ in each vertex, other data structures can be used:
 other Segment Trees (somewhat discussed in [Generalization to higher dimensions](segment_tree.md#generalization-to-higher-dimensions)), Fenwick Trees, Cartesian trees, etc.
+> Kỹ thuật này mở ra một lớp ứng dụng mới hoàn toàn. 
+Thay vì lưu trữ một ${vector}$ hoặc một ${multiset}$ trong mỗi đỉnh, có thể sử dụng các cấu trúc dữ liệu khác:
+other Segment Trees, Fenwick Trees, Cartesian trees, etc.
 
-### Range updates (Lazy Propagation)
+
+### Range updates (Lazy Propagation) (Cập nhật đoạn)
 
 All problems in the above sections discussed modification queries that only affected a single element of the array each.
 However the Segment Tree allows applying modification queries to an entire segment of contiguous elements, and perform the query in the same time $O(\log n)$. 
+> Tất cả các bài toán trong các phần trên đều bàn về các truy vấn sửa đổi chỉ ảnh hưởng đến một phần tử duy nhất trong mảng.
+Tuy nhiên, Segment Tree cho phép áp dụng các truy vấn sửa đổi đối với một dải các phần tử liên tiếp trong mảng, và thực hiện truy vấn trong cùng một thời gian $O(\log n)$.
 
-#### Addition on segments
+#### Addition on segments (Phép cộng trên các đoạn)
 
 We begin by considering problems of the simplest form: the modification query should add a number $x$ to all numbers in the segment $a[l \dots r]$.
 The second query, that we are supposed to answer, asked simply for the value of $a[i]$.
+> Chúng ta bắt đầu xem xét các vấn đề đơn giản nhất: truy vấn thay đổi giá trị nên cộng một số $x$ vào tất cả các số trong đoạn $a[l \dots r]$.
+Truy vấn thứ hai mà chúng ta cần trả lời chỉ đơn giản là yêu cầu giá trị của $a[i]$.
+
 
 To make the addition query efficient, we store at each vertex in the Segment Tree how many we should add to all numbers in the corresponding segment. 
 For example, if the query "add 3 to the whole array $a[0 \dots n-1]$" comes, then we place the number 3 in the root of the tree.
 In general we have to place this number to multiple segments, which form a partition of the query segment. 
 Thus we don't have to change all $O(n)$ values, but only $O(\log n)$ many.
+> Để làm cho truy vấn cộng trở nên hiệu quả, chúng ta lưu trữ tại mỗi đỉnh trong Segment Tree số lượng mà chúng ta cần cộng vào tất cả các số trong dải tương ứng.
+Ví dụ, nếu truy vấn "cộng 3 vào toàn bộ mảng $a[0 \dots n-1]$" đến, thì chúng ta sẽ đặt số 3 vào gốc của cây.
+Thông thường, chúng ta phải đặt số này vào nhiều dải, tạo thành một phân hoạch của dải truy vấn. 
+Vì vậy, chúng ta không phải thay đổi tất cả $O(n)$ giá trị, mà chỉ thay đổi $O(\log n)$ giá trị.
+
 
 If now there comes a query that asks the current value of a particular array entry, it is enough to go down the tree and add up all values found along the way.
+> Nếu bây giờ có một truy vấn yêu cầu giá trị hiện tại của một phần tử cụ thể trong mảng, chỉ cần đi xuống cây và cộng tất cả các giá trị tìm thấy dọc theo đường đi.
+
 
 ```cpp
 void build(int a[], int v, int tl, int tr) {
@@ -936,10 +1095,13 @@ int get(int v, int tl, int tr, int pos) {
 }
 ```
 
-#### Assignment on segments
+#### Assignment on segments (Gán giá trị trên các đoạn)
 
 Suppose now that the modification query asks to assign each element of a certain segment $a[l \dots r]$ to some value $p$.
 As a second query we will again consider reading the value of the array $a[i]$.
+> Giả sử bây giờ truy vấn thay đổi yêu cầu gán mỗi phần tử của một đoạn nhất định $a[l \dots r]$ với một giá trị $p$.
+Với truy vấn thứ hai, chúng ta sẽ lại xem xét việc đọc giá trị của một phần tử trong mảng $a[i]$.
+
 
 To perform this modification query on a whole segment, you have to store at each vertex of the Segment Tree whether the corresponding segment is covered entirely with the same value or not.
 This allows us to make a "lazy" update: 
@@ -947,26 +1109,53 @@ instead of changing all segments in the tree that cover the query segment, we on
 A marked vertex will mean, that every element of the corresponding segment is assigned to that value, and actually also the complete subtree should only contain this value.
 In a sense we are lazy and delay writing the new value to all those vertices.
 We can do this tedious task later, if this is necessary.
+> Để thực hiện truy vấn thay đổi trên toàn bộ đoạn, bạn phải lưu tại mỗi đỉnh của Segment Tree xem liệu đoạn tương ứng có bị bao phủ hoàn toàn với cùng một giá trị hay không.
+Điều này cho phép chúng ta thực hiện một cập nhật "lười biếng" (lazy update): 
+thay vì thay đổi tất cả các đoạn trong cây bao phủ đoạn truy vấn, chúng ta chỉ thay đổi một số đoạn và để các đoạn khác không thay đổi.
+Một đỉnh đã đánh dấu có nghĩa là mỗi phần tử của đoạn tương ứng được gán với giá trị đó, và thực tế là toàn bộ cây con cũng chỉ chứa giá trị này.
+Ở một chừng mực nào đó, chúng ta đang làm việc một cách lười biếng và trì hoãn việc ghi giá trị mới vào tất cả các đỉnh đó.
+Chúng ta có thể thực hiện công việc tẻ nhạt này sau, nếu cần thiết.
+
 
 So after the modification query is executed, some parts of the tree become irrelevant - some modifications remain unfulfilled in it.
+> Vì vậy, sau khi truy vấn thay đổi được thực hiện, một số phần của cây trở nên không liên quan - một số thay đổi vẫn chưa được thực hiện trong đó.
+
 
 For example if a modification query "assign a number to the whole array $a[0 \dots n-1]$" gets executed, in the Segment Tree only a single change is made - the number is placed in the root of the tree and this vertex gets marked.
 The remaining segments remain unchanged, although in fact the number should be placed in the whole tree.
+> Ví dụ, nếu một truy vấn sửa đổi yêu cầu 'gán một giá trị cho toàn bộ mảng $a[0 \dots n-1]$" trong Cây Segment chỉ cần thực hiện một thay đổi duy nhất - số đó được đặt vào gốc của cây và đỉnh này được đánh dấu. 
+Các đoạn còn lại không thay đổi, mặc dù thực tế giá trị đó nên được gán cho toàn bộ cây.
+
 
 Suppose now that the second modification query says, that the first half of the array $a[0 \dots n/2]$ should be assigned with some other number. 
 To process this query we must assign each element in the whole left child of the root vertex with that number. 
 But before we do this, we must first sort out the root vertex first. 
 The subtlety here is that the right half of the array should still be assigned to the value of the first query, and at the moment there is no information for the right half stored.
+> Giả sử bây giờ truy vấn sửa đổi thứ hai yêu cầu rằng nửa đầu của mảng $a[0 \dots n/2]$ nên được gán một giá trị khác. 
+Để xử lý truy vấn này, chúng ta phải gán mỗi phần tử trong nửa trái của cây con gốc với giá trị đó. 
+Tuy nhiên, trước khi làm điều này, chúng ta phải giải quyết gốc của cây trước. 
+Sự tinh tế ở đây là nửa phải của mảng vẫn nên được gán với giá trị của truy vấn đầu tiên, và hiện tại không có thông tin nào về nửa phải được lưu trữ.
+
 
 The way to solve this is to push the information of the root to its children, i.e. if the root of the tree was assigned with any number, then we assign the left and the right child vertices with this number and remove the mark of the root.
 After that, we can assign the left child with the new value, without losing any necessary information.
+> Cách giải quyết vấn đề này là đẩy thông tin của gốc xuống các con của nó, tức là nếu gốc của cây đã được gán một giá trị nào đó, thì chúng ta sẽ gán các đỉnh con trái và con phải với giá trị này và xóa dấu hiệu của gốc.
+Sau đó, chúng ta có thể gán giá trị mới cho đỉnh con trái mà không mất đi bất kỳ thông tin cần thiết nào.
+
 
 Summarizing we get:
 for any queries (a modification or reading query) during the descent along the tree we should always push information from the current vertex into both of its children. 
 We can understand this in such a way, that when we descent the tree we apply delayed modifications, but exactly as much as necessary (so not to degrade the complexity of $O(\log n)$). 
+> Tóm lại, chúng ta có:
+Đối với bất kỳ truy vấn nào (cả truy vấn sửa đổi hay truy vấn đọc) trong quá trình đi xuống cây, chúng ta luôn phải đẩy thông tin từ đỉnh hiện tại xuống cả hai đỉnh con của nó. 
+Chúng ta có thể hiểu điều này theo cách, khi đi xuống cây, chúng ta áp dụng các sửa đổi bị hoãn lại, nhưng chỉ áp dụng đúng mức cần thiết (để không làm giảm độ phức tạp của thuật toán xuống $O(\log n)$. 
+
 
 For the implementation we need to make a $\text{push}$ function, which will receive the current vertex, and it will push the information for its vertex to both its children. 
 We will call this function at the beginning of the query functions (but we will not call it from the leaves, because there is no need to push information from them any further).
+> Để triển khai, chúng ta cần tạo một hàm ${push}$, hàm này sẽ nhận vào đỉnh hiện tại và đẩy thông tin của đỉnh đó xuống cả hai đỉnh con của nó. 
+Chúng ta sẽ gọi hàm này ở đầu các hàm truy vấn (nhưng không gọi nó từ các lá, vì không cần phải đẩy thông tin từ các lá nữa).
+
 
 ```cpp
 void push(int v) {
@@ -1006,18 +1195,31 @@ int get(int v, int tl, int tr, int pos) {
 
 Notice: the function $\text{get}$ can also be implemented in a different way: 
 do not make delayed updates, but immediately return the value $t[v]$ if $marked[v]$ is true.
+> Lưu ý rằng: hàm ${get}$ cũng có thể được triển khai theo một cách khác:
+không thực hiện cập nhật trễ, mà ngay lập tức trả về giá trị $t[v]$ nếu $marked[v]$ là đúng.
 
-#### Adding on segments, querying for maximum
+
+#### Adding on segments, querying for maximum (Thêm vào các đoạn, truy vấn giá trị lớn nhất)
 
 Now the modification query is to add a number to all elements in a range, and the reading query is to find the maximum in a range.
+> Bây giờ, truy vấn sửa đổi là thêm một số vào tất cả các phần tử trong một đoạn, và truy vấn đọc là tìm giá trị lớn nhất trong một đoạn.
+
 
 So for each vertex of the Segment Tree we have to store the maximum of the corresponding subsegment. 
 The interesting part is how to recompute these values during a modification request.
+> Vì vậy, với mỗi đỉnh của Cây Phân Đoạn, chúng ta phải lưu trữ giá trị lớn nhất của đoạn con tương ứng. 
+Phần thú vị là làm thế nào để tính lại các giá trị này trong quá trình yêu cầu sửa đổi.
+
 
 For this purpose we keep store an additional value for each vertex. 
 In this value we store the addends we haven't propagated to the child vertices.
 Before traversing to a child vertex, we call $\text{push}$ and propagate the value to both children.
 We have to do this in both the $\text{update}$ function and the $\text{query}$ function.
+> Để làm điều này, chúng ta lưu trữ thêm một giá trị cho mỗi đỉnh. 
+Trong giá trị này, chúng ta lưu trữ các giá trị cộng thêm mà chúng ta chưa truyền tới các đỉnh con.
+Trước khi di chuyển tới một đỉnh con, chúng ta gọi hàm ${push}$ và truyền giá trị này xuống cả hai đỉnh con.
+Chúng ta phải làm điều này trong cả hàm ${update}$ và hàm ${query}$.
+
 
 ```cpp
 void build(int a[], int v, int tl, int tr) {
@@ -1070,23 +1272,41 @@ int query(int v, int tl, int tr, int l, int r) {
 
 A Segment Tree can be generalized quite natural to higher dimensions.
 If in the one-dimensional case we split the indices of the array into segments, then in the two-dimensional we make an ordinary Segment Tree with respect to the first indices, and for each segment we build an ordinary Segment Tree with respect to the second indices.
+> Một cây Segment có thể được mở rộng một cách tự nhiên lên các chiều cao hơn.
+Nếu trong trường hợp một chiều, chúng ta chia các chỉ số của mảng thành các đoạn, thì trong trường hợp hai chiều, chúng ta xây dựng một cây Segment thông thường đối với các chỉ số đầu tiên, và cho mỗi đoạn, chúng ta xây dựng một cây Segment thông thường đối với các chỉ số thứ hai.
+
 
 #### Simple 2D Segment Tree
 
 A matrix $a[0 \dots n-1, 0 \dots m-1]$ is given, and we have to find the sum (or minimum/maximum) on some submatrix $a[x_1 \dots x_2, y_1 \dots y_2]$, as well as perform modifications of individual matrix elements (i.e. queries of the form $a[x][y] = p$).
+> Cho một ma trận $a[0 \dots n-1, 0 \dots m-1]$, và chúng ta phải tìm tổng (hoặc giá trị nhỏ nhất/lớn nhất) trong một ma trận con $a[x_1 \dots x_2, y_1 \dots y_2]$, cũng như thực hiện các phép thay đổi giá trị của các phần tử trong ma trận (tức là các truy vấn có dạng $a[x][y] = p$).
+
 
 So we build a 2D Segment Tree: first the Segment Tree using the first coordinate ($x$), then the second ($y$).
+> Vậy là chúng ta xây dựng một Cây Segment 2D: đầu tiên là Cây Segment sử dụng tọa độ thứ nhất ($x$), sau đó là tọa độ thứ hai ($y$).
+
 
 To make the construction process more understandable, you can forget for a while that the matrix is two-dimensional, and only leave the first coordinate.
 We will construct an ordinary one-dimensional Segment Tree using only the first coordinate.
 But instead of storing a number in a segment, we store an entire Segment Tree: 
 i.e. at this moment we remember that we also have a second coordinate; but because at this moment the first coordinate is already fixed to some interval $[l \dots r]$, we actually work with such a strip $a[l \dots r, 0 \dots m-1]$ and for it we build a Segment Tree.
+> Để làm cho quá trình xây dựng dễ hiểu hơn, bạn có thể tạm quên rằng ma trận là hai chiều, và chỉ xét đến tọa độ đầu tiên.
+Chúng ta sẽ xây dựng một cây Segment một chiều thông thường chỉ sử dụng tọa độ đầu tiên.
+Tuy nhiên, thay vì lưu trữ một số trong một đoạn, chúng ta lưu trữ toàn bộ cây Segment:
+Tức là, vào thời điểm này, chúng ta nhớ rằng chúng ta còn có một tọa độ thứ hai; nhưng vì vào thời điểm này, tọa độ thứ nhất đã được cố định trong một khoảng $[l \dots r]$, nên thực tế chúng ta đang làm việc với một đoạn $a[l \dots r, 0 \dots m-1]$ và xây dựng một Cây Segment cho đoạn này.
+
 
 Here is the implementation of the construction of a 2D Segment Tree.
 It actually represents two separate blocks: 
 the construction of a Segment Tree along the $x$ coordinate ($\text{build}_x$), and the $y$ coordinate ($\text{build}_y$).
 For the leaf nodes in $\text{build}_y$ we have to separate two cases: 
 when the current segment of the first coordinate $[tlx \dots trx]$ has length 1, and when it has a length greater than one. In the first case, we just take the corresponding value from the matrix, and in the second case we can combine the values of two Segment Trees from the left and the right son in the coordinate $x$.
+> Dưới đây là cách triển khai xây dựng Cây Segment 2D.
+Trên thực tế, nó đại diện cho hai khối chức năng riêng biệt:
+Việc xây dựng một Cây Segment theo tọa độ $x$ (${build}_x$), và theo tọa độ $y$ (${build}_y$).
+Đối với các nút lá trong ${build}_y$ chúng ta cần phân tách thành hai trường hợp: 
+khi đoạn hiện tại của tọa độ thứ nhất $[tlx \dots trx]$ có độ dài bằng 1, và khi nó có độ dài lớn hơn 1. Trong trường hợp đầu tiên, chúng ta chỉ cần lấy giá trị tương ứng từ ma trận, và trong trường hợp thứ hai, chúng ta có thể kết hợp các giá trị từ hai cây Segment con bên trái và bên phải theo tọa độ $x$.
+
 
 ```cpp
 void build_y(int vx, int lx, int rx, int vy, int ly, int ry) {
@@ -1115,9 +1335,14 @@ void build_x(int vx, int lx, int rx) {
 
 Such a Segment Tree still uses a linear amount of memory, but with a larger constant: $16 n m$.
 It is clear that the described procedure $\text{build}_x$ also works in linear time. 
+> Cây Segment như vậy vẫn sử dụng một lượng bộ nhớ tuyến tính, nhưng với một hằng số lớn hơn: $16 n m$.
+Rõ ràng, thủ tục được mô tả ${build}_x$ cũng hoạt động trong thời gian tuyến tính.
 
 Now we turn to processing of queries. We will answer to the two-dimensional query using the same principle: 
 first break the query on the first coordinate, and then for every reached vertex, we call the corresponding Segment Tree of the second coordinate.
+> Bây giờ chúng ta chuyển sang việc xử lý các truy vấn. Chúng ta sẽ trả lời cho truy vấn hai chiều bằng cách sử dụng cùng một nguyên lý: 
+đầu tiên phân tách truy vấn theo chỉ số đầu tiên, và sau đó đối với mỗi đỉnh đã đi qua, chúng ta gọi Cây Segment tương ứng theo chỉ số thứ hai.
+
 
 ```cpp
 int sum_y(int vx, int vy, int tly, int try_, int ly, int ry) {
@@ -1142,11 +1367,18 @@ int sum_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry) {
 ```
 
 This function works in $O(\log n \log m)$ time, since it first descends the tree in the first coordinate, and for each traversed vertex in the tree it makes a query in the corresponding Segment Tree along the second coordinate.
+> Hàm này hoạt động trong thời gian $O(\log n \log m)$ vì nó đầu tiên đi xuống cây theo chỉ số đầu tiên, và đối với mỗi đỉnh đã đi qua trong cây, nó thực hiện một truy vấn trong Cây Segment tương ứng theo chỉ số thứ hai.
+
 
 Finally we consider the modification query. 
 We want to learn how to modify the Segment Tree in accordance with the change in the value of some element $a[x][y] = p$.
 It is clear, that the changes will occur only in those vertices of the first Segment Tree that cover the coordinate $x$ (and such will be $O(\log n)$), and for Segment Trees corresponding to them the changes will only occurs at those vertices that covers the coordinate $y$ (and such will be $O(\log m)$).
 Therefore the implementation will be not very different form the one-dimensional case, only now we first descend the first coordinate, and then the second.
+> Cuối cùng, chúng ta xem xét truy vấn sửa đổi. 
+Chúng ta muốn biết cách sửa đổi Cây Segment theo sự thay đổi giá trị của một phần tử nào đó $a[x][y] = p$.
+Rõ ràng, các thay đổi chỉ xảy ra tại những đỉnh của Cây Segment đầu tiên bao phủ chỉ số $x$ (và số lượng này là $O(\log n)$, và đối với các Cây Segment tương ứng với chúng, các thay đổi chỉ xảy ra tại những đỉnh bao phủ chỉ số $y$ (và số lượng này là $O(\log m)$.
+Vì vậy, việc triển khai sẽ không khác nhiều so với trường hợp một chiều, chỉ khác là bây giờ chúng ta đầu tiên đi xuống theo chỉ số đầu tiên, rồi sau đó theo chỉ số thứ hai.
+
 
 ```cpp
 void update_y(int vx, int lx, int rx, int vy, int ly, int ry, int x, int y, int new_val) {
