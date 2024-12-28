@@ -425,7 +425,7 @@ bool is_bipartite(int v) {
 }
 ```
 
-### Offline RMQ (range minimum query) in $O(\alpha(n))$ on average / Arpa's trick { #arpa data-toc-label="Offline RMQ / Arpa's trick"}
+### Offline RMQ (range minimum query) in $O(\alpha(n))$ on average / Arpa's trick
 
 We are given an array `a[]` and we have to compute some minima in given segments of the array.
 
@@ -468,7 +468,7 @@ Nowadays this algorithm is known as Arpa's trick.
 It is named after AmirReza Poorakhavan, who independently discovered and popularized this technique.
 Although this algorithm existed already before his discovery.
 
-### Offline LCA (lowest common ancestor in a tree) in $O(\alpha(n))$ on average {data-toc-label="Offline LCA"}
+### Offline LCA (lowest common ancestor in a tree) in $O(\alpha(n))$ on average 
 
 The algorithm for finding the LCA is discussed in the article [Lowest Common Ancestor - Tarjan's off-line algorithm](../graph/lca_tarjan.md).
 This algorithm compares favorable with other algorithms for finding the LCA due to its simplicity (especially compared to an optimal algorithm like the one from [Farach-Colton and Bender](../graph/lca_farachcoltonbender.md)).
@@ -495,7 +495,10 @@ When it gets touched the second time, the resulting set will have size of at lea
 And so on.
 This means, that $x$ can only be moved in at most $\log n$ merge operations.
 Thus the sum over all vertices gives $O(n \log n)$ plus $O(1)$ for each request.
-
+> Hãy chứng minh độ phức tạp thời gian là $O(m + n \log n)$ cho việc thực hiện $m$ truy vấn. Chúng ta sẽ cố định một phần tử bất kỳ $x$ và đếm xem nó đã được tác động bao nhiêu lần trong thao tác hợp nhất `union_sets`. Khi phần tử $x$ bị tác động lần đầu tiên, kích thước của tập hợp mới sẽ ít nhất là 2. Khi nó bị tác động lần thứ hai, tập hợp kết quả sẽ có kích thước ít nhất là 4, vì tập hợp nhỏ hơn được thêm vào tập hợp lớn hơn.
+Và cứ như vậy.
+Điều này có nghĩa là $x$ chỉ có thể bị di chuyển trong tối đa $\log n$ thao tác hợp nhất. Do đó, tổng của tất cả các đỉnh sẽ cho ra $O(n \log n)$ cộng thêm $O(1)$ truy vấn.
+ 
 Here is an implementation:
 
 ```cpp
@@ -528,10 +531,14 @@ void union_sets(int a, int b) {
 ```
 
 This idea of adding the smaller part to a bigger part can also be used in a lot of solutions that have nothing to do with DSU.
+> Ý tưởng này về việc thêm phần nhỏ vào phần lớn hơn cũng có thể được sử dụng trong nhiều giải pháp không liên quan gì đến DSU.
 
 For example consider the following **problem**:
 we are given a tree, each leaf has a number assigned (same number can appear multiple times on different leaves).
 We want to compute the number of different numbers in the subtree for every node of the tree.
+> Ví dụ, hãy xét bài toán sau:
+Chúng ta cho một cây, mỗi lá có một số được gán (số giống nhau có thể xuất hiện nhiều lần ở các lá khác nhau).
+Chúng ta muốn tính số lượng các số khác nhau trong cây con của mỗi nút trong cây.
 
 Applying to this task the same idea it is possible to obtain this solution:
 we can implement a [DFS](../graph/depth-first-search.md), which will return a pointer to a set of integers - the list of numbers in that subtree.
@@ -540,6 +547,13 @@ The size of the resulting set will be the answer for the current node.
 To efficiently combine multiple sets we just apply the above-described recipe:
 we merge the sets by simply adding smaller ones to larger.
 In the end we get a $O(n \log^2 n)$ solution, because one number will only added to a set at most $O(\log n)$ times.
+> Áp dụng ý tưởng trên cho bài toán này, ta có thể tìm được giải pháp như sau:
+Chúng ta có thể triển khai một DFS, sẽ trả về một con trỏ đến một tập hợp các số nguyên - danh sách các số trong cây con đó.
+Sau đó, để có được câu trả lời cho nút hiện tại (trừ khi nó là một lá), ta gọi DFS cho tất cả các con của nút đó và hợp nhất tất cả các tập hợp nhận được lại với nhau.
+Kích thước của tập hợp kết quả sẽ là câu trả lời cho nút hiện tại.
+Để kết hợp nhiều tập hợp một cách hiệu quả, chúng ta chỉ cần áp dụng công thức đã mô tả trên:
+Chúng ta hợp nhất các tập hợp bằng cách đơn giản là thêm các tập hợp nhỏ vào các tập hợp lớn hơn.
+Cuối cùng, ta sẽ có một giải pháp có độ phức tạp $O(n \log^2 n)$, vì một số sẽ chỉ được thêm vào một tập hợp tối đa $O(\log n)$ lần.
 
 ### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average 
 
