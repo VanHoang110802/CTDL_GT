@@ -529,7 +529,7 @@ In this problem we want to find the number of zeros in a given range, and additi
 
 Again we have to change the store values of the tree a bit:
 This time we will store the number of zeros in each segment in $t[]$. 
-It is pretty clear, how to implement the $\text{build}$, $\text{update}$ and $\text{count_zero}$ functions, we can simply use the ideas from the sum query problem.
+It is pretty clear, how to implement the ${build}$, ${update}$ and ${count_zero}$ functions, we can simply use the ideas from the sum query problem.
 Thus we solved the first part of the problem.
 > Một lần nữa, chúng ta cần thay đổi một chút cách lưu trữ giá trị trong cây:
 Lần này, chúng ta sẽ lưu trữ số lượng số không trong mỗi đoạn trong $t[]$. 
