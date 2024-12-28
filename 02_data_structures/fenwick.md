@@ -1,53 +1,83 @@
----
-tags:
-  - Translated
-e_maxx_link: fenwick_tree
----
+> Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/fenwick.html)
 
 # Fenwick Tree
 
 Let $f$ be some group operation (a binary associative function over a set with an identity element and inverse elements) and $A$ be an array of integers of length $N$.
-Denote $f$'s infix notation as $*$; that is, $f(x,y) = x*y$ for arbitrary integers $x,y$.
+Denote ${f}$'s infix notation as ${*}$; that is, ${ f(x, y) = x * y }$ for arbitrary integers ${x,y}$.
 (Since this is associative, we will omit parentheses for order of application of $f$ when using infix notation.)
+> Giả sử $f$ là một phép toán nhóm (một hàm nhị phân kết hợp trên một tập với phần tử đơn vị và các phần tử nghịch đảo) và $A$ là một mảng các số nguyên có độ dài $N$.
+Ký hiệu theo cách ghi chú trung tố của ${f}$ là dấu sao ${*}$; tức là, ${ f(x, y) = x * y }$ đối với các số nguyên tùy ý ${x,y}$.
+(Vì phép toán này kết hợp, chúng ta sẽ bỏ qua dấu ngoặc khi biểu thị thứ tự áp dụng $f$ trong cách ghi chú trung tố.)
+
 
 The Fenwick tree is a data structure which:
+> Cây Fenwick là một cấu trúc dữ liệu có các tính năng:
+
 
 * calculates the value of function $f$ in the given range $[l, r]$ (i.e. $A_l * A_{l+1} * \dots * A_r$) in $O(\log N)$ time
 * updates the value of an element of $A$ in $O(\log N)$ time
 * requires $O(N)$ memory (the same amount required for $A$)
 * is easy to use and code, especially in the case of multidimensional arrays
+> * Tính giá trị của hàm $f$ trong khoảng đã cho $[l, r]$ (tức là $A_l * A_{l+1} * \dots * A_r$) trong thời gian $O(\log N)$
+> * Cập nhật giá trị của một phần tử trong mảng $A$ trong thời gian $O(\log N)$
+> * Cần $O(N)$ bộ nhớ (bằng với lượng bộ nhớ yêu cầu cho $A$)
+> * Dễ sử dụng và lập trình, đặc biệt trong trường hợp mảng nhiều chiều
 
 The most common application of a Fenwick tree is _calculating the sum of a range_.
 For example, using addition over the set of integers as the group operation, i.e. $f(x,y) = x + y$: the binary operation, $*$, is $+$ in this case, so $A_l * A_{l+1} * \dots * A_r = A_l + A_{l+1} + \dots + A_{r}$.
+> Ứng dụng phổ biến nhất của cây Fenwick là _tính tổng của một khoảng (calculating the sum of a range)_.
+Ví dụ, sử dụng phép cộng trên tập hợp các số nguyên làm phép toán nhóm, tức là $f(x,y) = x + y$: phép toán nhị phân, $*$, là $+$ trong trường hợp này, vì vậy $A_l * A_{l+1} * \dots * A_r = A_l + A_{l+1} + \dots + A_{r}$.
+
 
 The Fenwick tree is also called a **Binary Indexed Tree** (BIT).
 It was first described in a paper titled "A new data structure for cumulative frequency tables" (Peter M. Fenwick, 1994).
+> Cây Fenwick còn được gọi là Cây chỉ số nhị phân (BIT).
+Nó lần đầu tiên được mô tả trong một bài báo có tiêu đề "A new data structure for cumulative frequency tables" (Peter M. Fenwick, 1994).
+
 
 ## Description
 
 ### Overview
 
 For the sake of simplicity, we will assume that function $f$ is defined as $f(x,y) = x + y$ over the integers.
+> Để cho đơn giản, chúng ta sẽ giả sử rằng hàm $f$ được định nghĩa là $f(x,y) = x + y$ trên các số nguyên.
 
 Suppose we are given an array of integers, $A[0 \dots N-1]$.
 (Note that we are using zero-based indexing.)
 A Fenwick tree is just an array, $T[0 \dots N-1]$, where each element is equal to the sum of elements of $A$ in some range, $[g(i), i]$:
+> Giả sử chúng ta được cho một mảng các số nguyên, $A[0 \dots N-1]$.
+(Lưu ý rằng chúng ta đang sử dụng chỉ số bắt đầu từ 0.)
+Cây Fenwick chỉ là một mảng, $T[0 \dots N-1]$, trong đó mỗi phần tử bằng tổng các phần tử của $A$ trong một khoảng, $[g(i), i]$:
+
 
 $$T_i = \sum_{j = g(i)}^{i}{A_j}$$
 
 where $g$ is some function that satisfies $0 \le g(i) \le i$.
 We will define $g$ in the next few paragraphs.
+> trong đó $g$ là một hàm thoả mãn $0 \le g(i) \le i$.
+Chúng ta sẽ định nghĩa $g$ trong các trang đoạn tiếp theo.
+
 
 The data structure is called a tree because there is a nice representation of it in the form of a tree, although we don't need to model an actual tree with nodes and edges.
 We only need to maintain the array $T$ to handle all queries.
+> Cấu trúc dữ liệu này được gọi là cây vì có một cách biểu diễn đẹp mắt dưới dạng cây, mặc dù chúng ta không cần phải mô phỏng một cây thực sự với các nút và cạnh.
+Chúng ta chỉ cần duy trì mảng $T$ để xử lý tất cả các truy vấn.
+
 
 **Note:** The Fenwick tree presented here uses zero-based indexing.
 Many people use a version of the Fenwick tree that uses one-based indexing.
 As such, you will also find an alternative implementation which uses one-based indexing in the implementation section.
 Both versions are equivalent in terms of time and memory complexity.
+> **Lưu ý:** Cây Fenwick được trình bày ở đây sử dụng chỉ số bắt đầu từ 0.
+Nhiều người sử dụng một phiên bản của cây Fenwick với chỉ số bắt đầu từ 1.
+Do đó, bạn cũng sẽ tìm thấy một triển khai thay thế sử dụng chỉ số bắt đầu từ 1 trong phần triển khai.
+Cả hai phiên bản đều tương đương về độ phức tạp thời gian và bộ nhớ.
+
 
 Now we can write some pseudo-code for the two operations mentioned above.
 Below, we get the sum of elements of $A$ in the range $[0, r]$ and update (increase) some element $A_i$:
+> Bây giờ chúng ta có thể viết một số mã giả cho hai phép toán đã đề cập ở trên.
+Dưới đây, chúng ta tính tổng các phần tử của $A$ trong khoảng $[0, r]$ và cập nhật (tăng) một phần tử $A_i$:
 
 ```python
 def sum(int r):
