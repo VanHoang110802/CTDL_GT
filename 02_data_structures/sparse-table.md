@@ -60,6 +60,8 @@ int st[K + 1][MAXN];
 ```
 
 Because the range $[j, j + 2^i - 1]$ of length $2^i$ splits nicely into the ranges $[j, j + 2^{i - 1} - 1]$ and $[j + 2^{i - 1}, j + 2^i - 1]$, both of length $2^{i - 1}$, we can generate the table efficiently using dynamic programming:
+> Vì khoảng $[j, j + 2^i - 1]$ có độ dài $2^i$ chia đẹp thành hai khoảng $[j, j + 2^{i - 1} - 1]$ và $[j + 2^{i - 1}, j + 2^i - 1]$, cả hai đều có độ dài $2^{i - 1}$, chúng ta có thể tạo bảng một cách hiệu quả bằng cách sử dụng quy hoạch động:
+
 
 ```{.cpp file=sparsetable_generation}
 std::copy(array.begin(), array.end(), st[0]);
