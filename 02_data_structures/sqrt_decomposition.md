@@ -1,47 +1,62 @@
----
-tags:
-  - Translated
-e_maxx_link: sqrt_decomposition
----
+> Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/sqrt_decomposition.html)
 
-# Sqrt Decomposition
+
+# Sqrt Decomposition (Phân rã căn bậc hai)
 
 Sqrt Decomposition is a method (or a data structure) that allows you to perform some common operations (finding sum of the elements of the sub-array, finding the minimal/maximal element, etc.) in $O(\sqrt n)$ operations, which is much faster than $O(n)$ for the trivial algorithm.
+> Sqrt Decomposition là một phương pháp (hoặc cấu trúc dữ liệu) cho phép bạn thực hiện một số phép toán phổ biến (như tính tổng các phần tử trong mảng con, tìm phần tử nhỏ nhất/lớn nhất, v.v.) trong thời gian $O(\sqrt n)$ , nhanh hơn rất nhiều so với $O(n)$ của thuật toán thông thường.
 
 First we describe the data structure for one of the simplest applications of this idea, then show how to generalize it to solve some other problems, and finally look at a slightly different use of this idea: splitting the input requests into sqrt blocks.
+> Trước tiên, chúng ta sẽ mô tả cấu trúc dữ liệu cho một trong những ứng dụng đơn giản nhất của ý tưởng này, sau đó chỉ ra cách tổng quát hóa nó để giải quyết một số vấn đề khác, và cuối cùng xem xét một cách sử dụng hơi khác của ý tưởng này: phân tách các yêu cầu đầu vào thành các khối căn bậc hai.
 
 ## Sqrt-decomposition based data structure
 
 Given an array $a[0 \dots n-1]$, implement a data structure that allows to find the sum of the elements $a[l \dots r]$ for arbitrary $l$ and $r$ in $O(\sqrt n)$ operations.
+> Cho một mảng $a[0 \dots n-1]$, hãy triển khai một cấu trúc dữ liệu cho phép tìm tổng các phần tử $a[l \dots r]$ với $l$ và $r$ bất kỳ trong $O(\sqrt n)$ phép toán.
 
 ### Description
 
 The basic idea of sqrt decomposition is preprocessing. We'll divide the array $a$ into blocks of length approximately $\sqrt n$, and for each block $i$ we'll precalculate the sum of elements in it $b[i]$.
+> Ý tưởng cơ bản của phân rã căn bậc hai là tiền xử lý. Chúng ta sẽ chia mảng $a$ thành các khối có độ dài xấp xỉ $\sqrt n$, và với mỗi khối $i$, chúng ta sẽ tính trước tổng các phần tử trong khối đó, lưu trữ trong $b[i]$.
 
 We can assume that both the size of the block and the number of blocks are equal to $\sqrt n$ rounded up:
+> Chúng ta có thể giả sử rằng cả kích thước của mỗi khối và số lượng khối đều bằng $\sqrt n$ làm tròn lên:
 
 $$ s = \lceil \sqrt n \rceil $$
 
 Then the array $a$ is divided into blocks in the following way:
+> Sau đó, mảng $a$ được chia thành các khối theo cách sau:
 
-$$ \underbrace{a[0], a[1], \dots, a[s-1]}_{\text{b[0]}}, \underbrace{a[s], \dots, a[2s-1]}_{\text{b[1]}}, \dots, \underbrace{a[(s-1) \cdot s], \dots, a[n-1]}_{\text{b[s-1]}} $$
+${\underbrace{a[0], a[1], \dots, a[s-1]}_{\text{b[0]}}}$,
+
+${\underbrace{a[s], \dots, a[2s-1]}_{\text{b[1]}}}$, 
+
+${\dots, \underbrace{a[(s-1) \cdot s], \dots, a[n-1]}_{\text{b[s-1]}}}$
 
 The last block may have fewer elements than the others (if $n$ not a multiple of $s$), it is not important to the discussion (as it can be handled easily).
 Thus, for each block $k$, we know the sum of elements on it $b[k]$:
+> Khối cuối cùng có thể có ít phần tử hơn các khối khác (nếu $n$ không phải là bội số của $s$ ), điều này không quan trọng đối với cuộc thảo luận (vì nó có thể được xử lý một cách dễ dàng).
+Vì vậy, với mỗi khối $k$, chúng ta biết tổng các phần tử trong khối đó là $b[k]$:
 
 $$ b[k] = \sum\limits_{i=k\cdot s}^{\min {(n-1,(k+1)\cdot s - 1})} a[i] $$
 
 So, we have calculated the values of $b[k]$ (this required $O(n)$ operations). How can they help us to answer each query $[l, r]$ ?
 Notice that if the interval $[l, r]$ is long enough, it will contain several whole blocks, and for those blocks we can find the sum of elements in them in a single operation. As a result, the interval $[l, r]$ will contain parts of only two blocks, and we'll have to calculate the sum of elements in these parts trivially.
+> Vậy là, chúng ta đã tính toán được các giá trị của $b[k]$ (việc này yêu cầu $O(n)$ phép toán). Làm thế nào chúng có thể giúp chúng ta trả lời mỗi truy vấn $[l, r]$ ?
+Lưu ý rằng nếu khoảng $[l, r]$ đủ dài, nó sẽ chứa vài khối hoàn chỉnh, và với các khối này, chúng ta có thể tính tổng các phần tử trong chúng chỉ với một phép toán. Kết quả là, khoảng $[l, r]$ sẽ chỉ chứa phần của hai khối, và chúng ta sẽ phải tính tổng các phần tử trong các phần này một cách thông thường.
 
 Thus, in order to calculate the sum of elements on the interval $[l, r]$ we only need to sum the elements of the two "tails":
 $[l\dots (k + 1)\cdot s-1]$ and $[p\cdot s\dots r]$ , and sum the values $b[i]$ in all the blocks from $k + 1$ to $p-1$:
+> Vì vậy, để tính tổng các phần tử trong khoảng $[l, r]$ chúng ta chỉ cần tính tổng các phần tử của hai "đuôi" (tail):
+$[l\dots (k + 1)\cdot s-1]$ và $[p\cdot s\dots r]$, và tính tổng các giá trị $b[i]$ trong tất cả các khối từ $k + 1$ đến $p-1$:
 
 $$ \sum\limits_{i=l}^r a[i] = \sum\limits_{i=l}^{(k+1) \cdot s-1} a[i] + \sum\limits_{i=k+1}^{p-1} b[i] + \sum\limits_{i=p\cdot s}^r a[i] $$
 
 _Note: When $k = p$, i.e. $l$ and $r$ belong to the same block, the formula can't be applied, and the sum should be calculated trivially._
+> Lưu ý: Khi $k = p$, tức là $l$ và $r$ thuộc cùng một khối, công thức này không thể áp dụng được, và tổng cần được tính một cách thông thường.
 
 This approach allows us to significantly reduce the number of operations. Indeed, the size of each "tail" does not exceed the block length $s$, and the number of blocks in the sum does not exceed $s$. Since we have chosen $s \approx \sqrt n$, the total number of operations required to find the sum of elements on the interval $[l, r]$ is $O(\sqrt n)$.
+> Phương pháp này giúp chúng ta giảm đáng kể số phép toán cần thực hiện. Thật vậy, kích thước của mỗi "đuôi" không vượt quá độ dài khối $s$, và số lượng khối trong tổng không vượt quá $s$. Vì chúng ta đã chọn $s \approx \sqrt n$, tổng số phép toán cần thiết để tính tổng các phần tử trong khoảng $[l, r]$ là $O(\sqrt n)$.
 
 ### Implementation
 
