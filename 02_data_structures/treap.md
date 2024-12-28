@@ -3,42 +3,50 @@
 # Treap (Cartesian tree)
 
 A treap is a data structure which combines binary tree and binary heap (hence the name: tree + heap $\Rightarrow$ Treap).
+> Treap là một cấu trúc dữ liệu kết hợp giữa cây nhị phân và heap nhị phân (do đó tên gọi: tree + heap $\Rightarrow$ Treap).
 
 More specifically, treap is a data structure that stores pairs $(X, Y)$ in a binary tree in such a way that it is a binary search tree by $X$ and a binary heap by $Y$.
 If some node of the tree contains values $(X_0, Y_0)$, all nodes in the left subtree have $X \leq X_0$, all nodes in the right subtree have $X_0 \leq X$, and all nodes in both left and right subtrees have $Y \leq Y_0$.
+> Cụ thể hơn, treap là một cấu trúc dữ liệu lưu trữ các cặp $(X, Y)$ trong một cây nhị phân sao cho nó vừa là cây tìm kiếm nhị phân theo $X$, vừa là heap nhị phân theo $Y$. Nếu một nút trong cây chứa giá trị $(X_0, Y_0)$, tất cả các nút trong cây con bên trái có giá trị $X \leq X_0$, tất cả các nút trong cây con bên phải có giá trị $X_0 \leq X$, và tất cả các nút trong cả hai cây con bên trái và bên phải đều có giá trị $Y \leq Y_0$.
 
 A treap is also often referred to as a "cartesian tree", as it is easy to embed it in a Cartesian plane:
+> Treap cũng thường được gọi là "cây Cartesian", vì nó dễ dàng được nhúng vào mặt phẳng Cartesian:
 
 <center>
 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Treap.svg" width="350px"/>
 </center>
 
 Treaps have been proposed by Raimund Siedel and Cecilia Aragon in 1989.
+> Treap đã được Raimund Siedel và Cecilia Aragon đề xuất vào năm 1989.
 
 ## Advantages of such data organisation
 
 In such implementation, $X$ values are the keys (and at same time the values stored in the treap), and $Y$ values are called **priorities**. Without priorities, the treap would be a regular binary search tree by $X$, and one set of $X$ values could correspond to a lot of different trees, some of them degenerate (for example, in the form of a linked list), and therefore extremely slow (the main operations would have $O(N)$ complexity).
+> Trong cách cài đặt này, giá trị $X$ là các khóa (và đồng thời là các giá trị được lưu trong treap), còn giá trị $Y$ được gọi là độ ưu tiên. Nếu không có độ ưu tiên, treap sẽ trở thành một cây tìm kiếm nhị phân thông thường theo $X$, và một tập các giá trị $X$ có thể tương ứng với nhiều cây khác nhau, một số trong đó có thể bị suy biến (ví dụ, dưới dạng danh sách liên kết), và do đó rất chậm (các phép toán chính sẽ có độ phức tạp là $O(N)$ ).
 
 At the same time, **priorities** (when they're unique) allow to **uniquely** specify the tree that will be constructed (of course, it does not depend on the order in which values are added), which can be proven using corresponding theorem. Obviously, if you **choose the priorities randomly**, you will get non-degenerate trees on average, which will ensure $O(\log N)$ complexity for the main operations. Hence another name of this data structure - **randomized binary search tree**.
+> Trong khi đó, độ ưu tiên (khi chúng là duy nhất) cho phép xác định duy nhất cây sẽ được xây dựng (tất nhiên, điều này không phụ thuộc vào thứ tự các giá trị được thêm vào), điều này có thể được chứng minh bằng định lý tương ứng. Rõ ràng, nếu bạn chọn độ ưu tiên ngẫu nhiên, bạn sẽ có được các cây không bị suy biến trung bình, đảm bảo độ phức tạp $O(\log N)$ cho các phép toán chính. Vì vậy, một tên gọi khác của cấu trúc dữ liệu này là cây tìm kiếm nhị phân ngẫu nhiên.
 
 ## Operations
 
 A treap provides the following operations:
+> Một treap cung cấp các phép toán sau:
 
-- **Insert (X,Y)** in $O(\log N)$.  
-  Adds a new node to the tree. One possible variant is to pass only $X$ and generate $Y$ randomly inside the operation.
-- **Search (X)** in $O(\log N)$.  
-  Looks for a node with the specified key value $X$. The implementation is the same as for an ordinary binary search tree.
-- **Erase (X)** in $O(\log N)$.  
-  Looks for a node with the specified key value $X$ and removes it from the tree.
-- **Build ($X_1$, ..., $X_N$)** in $O(N)$.  
-  Builds a tree from a list of values. This can be done in linear time (assuming that $X_1, ..., X_N$ are sorted).
-- **Union ($T_1$, $T_2$)** in $O(M \log (N/M))$.  
-  Merges two trees, assuming that all the elements are different. It is possible to achieve the same complexity if duplicate elements should be removed during merge.
-- **Intersect ($T_1$, $T_2$)** in $O(M \log (N/M))$.  
-  Finds the intersection of two trees (i.e. their common elements). We will not consider the implementation of this operation here.
+- **Insert (X,Y)** in $O(\log N)$: Adds a new node to the tree. One possible variant is to pass only $X$ and generate $Y$ randomly inside the operation.
+- **Search (X)** in $O(\log N)$: Looks for a node with the specified key value $X$. The implementation is the same as for an ordinary binary search tree.
+- **Erase (X)** in $O(\log N)$: Looks for a node with the specified key value $X$ and removes it from the tree.
+- **Build ($X_1$, ..., $X_N$)** in $O(N)$: Builds a tree from a list of values. This can be done in linear time (assuming that $X_1, ..., X_N$ are sorted).
+- **Union ($T_1$, $T_2$)** in $O(M \log (N/M))$: Merges two trees, assuming that all the elements are different. It is possible to achieve the same complexity if duplicate elements should be removed during merge.
+- **Intersect ($T_1$, $T_2$)** in $O(M \log (N/M))$: Finds the intersection of two trees (i.e. their common elements). We will not consider the implementation of this operation here.
+> - **Insert (X,Y)** trong $O(\log N)$: Thêm một nút mới vào cây. Một biến thể có thể là chỉ truyền vào $X$ và tự động sinh ra giá trị $Y$ ngẫu nhiên trong phép toán.
+> - **Search (X)** trong $O(\log N)$: Tìm kiếm một nút có giá trị khóa $X$ được chỉ định. Cài đặt của phép toán này giống như trong một cây tìm kiếm nhị phân thông thường.
+> - **Erase (X)** trong $O(\log N)$: Tìm kiếm một nút có giá trị khóa $X$ và xóa nó khỏi cây.
+> - **Build ($X_1$, ..., $X_N$)**  trong $O(N)$: Xây dựng một cây từ danh sách các giá trị. Điều này có thể thực hiện trong thời gian tuyến tính (giả sử các giá trị $X_1, ..., X_N$ đã được sắp xếp).
+> - **Union ($T_1$, $T_2$)**  trong $O(M \log (N/M))$: Hợp nhất hai cây, giả sử tất cả các phần tử đều khác nhau. Bạn cũng có thể đạt được độ phức tạp tương tự nếu các phần tử trùng lặp cần phải bị loại bỏ trong quá trình hợp nhất.
+> - **Intersect ($T_1$, $T_2$)**  trong $O(M \log (N/M))$: Tìm giao của hai cây (tức là các phần tử chung của chúng). Chúng ta sẽ không xét đến việc cài đặt phép toán này ở đây.
 
 In addition, due to the fact that a treap is a binary search tree, it can implement other operations, such as finding the $K$-th largest element or finding the index of an element.
+> Ngoài ra, do treap là một cây tìm kiếm nhị phân, nó có thể thực hiện các phép toán khác, chẳng hạn như tìm phần tử lớn thứ $K$ hoặc tìm chỉ số của một phần tử.
 
 ## Implementation Description
 
