@@ -491,8 +491,7 @@ pair<int, int> get_max(int v, int tl, int tr, int l, int r) {
     if (l == tl && r == tr)
         return t[v];
     int tm = (tl + tr) / 2;
-    return combine(get_max(v*2, tl, tm, l, min(r, tm)), 
-                   get_max(v*2+1, tm+1, tr, max(l, tm+1), r));
+    return combine(get_max(v*2, tl, tm, l, min(r, tm)), get_max(v*2+1, tm+1, tr, max(l, tm+1), r));
 }
 
 void update(int v, int tl, int tr, int pos, int new_val) {
@@ -739,8 +738,7 @@ data query(int v, int tl, int tr, int l, int r) {
     if (l == tl && r == tr) 
         return t[v];
     int tm = (tl + tr) / 2;
-    return combine(query(v*2, tl, tm, l, min(r, tm)), 
-                   query(v*2+1, tm+1, tr, max(l, tm+1), r));
+    return combine(query(v*2, tl, tm, l, min(r, tm)), query(v*2+1, tm+1, tr, max(l, tm+1), r));
 }
 ```
 
@@ -817,8 +815,7 @@ void build(int a[], int v, int tl, int tr) {
         int tm = (tl + tr) / 2;
         build(a, v*2, tl, tm);
         build(a, v*2+1, tm+1, tr);
-        merge(t[v*2].begin(), t[v*2].end(), t[v*2+1].begin(), t[v*2+1].end(),
-              back_inserter(t[v]));
+        merge(t[v*2].begin(), t[v*2].end(), t[v*2+1].begin(), t[v*2+1].end(), back_inserter(t[v]));
     }
 }
 ```
@@ -858,8 +855,7 @@ int query(int v, int tl, int tr, int l, int r, int x) {
         return INF;
     }
     int tm = (tl + tr) / 2;
-    return min(query(v*2, tl, tm, l, min(r, tm), x), 
-               query(v*2+1, tm+1, tr, max(l, tm+1), r, x));
+    return min(query(v*2, tl, tm, l, min(r, tm), x), query(v*2+1, tm+1, tr, max(l, tm+1), r, x));
 }
 ```
 
@@ -1263,8 +1259,7 @@ int query(int v, int tl, int tr, int l, int r) {
         return t[v];
     push(v);
     int tm = (tl + tr) / 2;
-    return max(query(v*2, tl, tm, l, min(r, tm)), 
-               query(v*2+1, tm+1, tr, max(l, tm+1), r));
+    return max(query(v*2, tl, tm, l, min(r, tm)), query(v*2+1, tm+1, tr, max(l, tm+1), r));
 }
 ```
 
@@ -1351,8 +1346,7 @@ int sum_y(int vx, int vy, int tly, int try_, int ly, int ry) {
     if (ly == tly && try_ == ry)
         return t[vx][vy];
     int tmy = (tly + try_) / 2;
-    return sum_y(vx, vy*2, tly, tmy, ly, min(ry, tmy))
-         + sum_y(vx, vy*2+1, tmy+1, try_, max(ly, tmy+1), ry);
+    return sum_y(vx, vy*2, tly, tmy, ly, min(ry, tmy)) + sum_y(vx, vy*2+1, tmy+1, try_, max(ly, tmy+1), ry);
 }
 
 int sum_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry) {
@@ -1361,8 +1355,7 @@ int sum_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry) {
     if (lx == tlx && trx == rx)
         return sum_y(vx, 1, 0, m-1, ly, ry);
     int tmx = (tlx + trx) / 2;
-    return sum_x(vx*2, tlx, tmx, lx, min(rx, tmx), ly, ry)
-         + sum_x(vx*2+1, tmx+1, trx, max(lx, tmx+1), rx, ly, ry);
+    return sum_x(vx*2, tlx, tmx, lx, min(rx, tmx), ly, ry) + sum_x(vx*2+1, tmx+1, trx, max(lx, tmx+1), rx, ly, ry);
 }
 ```
 
@@ -1500,8 +1493,7 @@ int get_sum(Vertex* v, int tl, int tr, int l, int r) {
     if (l == tl && tr == r)
         return v->sum;
     int tm = (tl + tr) / 2;
-    return get_sum(v->l, tl, tm, l, min(r, tm))
-         + get_sum(v->r, tm+1, tr, max(l, tm+1), r);
+    return get_sum(v->l, tl, tm, l, min(r, tm)) + get_sum(v->r, tm+1, tr, max(l, tm+1), r);
 }
 
 Vertex* update(Vertex* v, int tl, int tr, int pos, int new_val) {
