@@ -1,8 +1,4 @@
----
-tags:
-  - Translated
-e_maxx_link: treap
----
+> Bài viết được dịch lại của trang: [cp-algorithm](https://cp-algorithms.com/data_structures/treap.html)
 
 # Treap (Cartesian tree)
 
