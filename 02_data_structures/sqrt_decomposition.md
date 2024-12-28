@@ -31,7 +31,9 @@ ${\underbrace{a[0], a[1], \dots, a[s-1]}_{\text{b[0]}}}$,
 
 ${\underbrace{a[s], \dots, a[2s-1]}_{\text{b[1]}}}$, 
 
-${\dots, \underbrace{a[(s-1) \cdot s], \dots, a[n-1]}_{\text{b[s-1]}}}$
+${\dots,}$
+
+${\underbrace{a[(s-1) \cdot s], \dots, a[n-1]}_{\text{b[s-1]}}}$
 
 The last block may have fewer elements than the others (if $n$ not a multiple of $s$), it is not important to the discussion (as it can be handled easily).
 Thus, for each block $k$, we know the sum of elements on it $b[k]$:
@@ -61,6 +63,7 @@ This approach allows us to significantly reduce the number of operations. Indeed
 ### Implementation
 
 Let's start with the simplest implementation:
+> Hãy bắt đầu với việc triển khai đơn giản nhất:
 
 ```cpp
 // input data
@@ -92,6 +95,7 @@ for (;;) {
 ```
 
 This implementation has unreasonably many division operations (which are much slower than other arithmetical operations). Instead, we can calculate the indices of the blocks $c_l$ and $c_r$ which contain indices $l$ and $r$, and loop through blocks $c_l+1 \dots c_r-1$ with separate processing of the "tails" in blocks $c_l$ and $c_r$. This approach corresponds to the last formula in the description, and makes the case $c_l = c_r$ a special case.
+> Cài đặt này có quá nhiều phép chia không hợp lý (mà các phép chia này chậm hơn nhiều so với các phép toán số học khác). Thay vào đó, chúng ta có thể tính toán chỉ số của các khối $c_l$ và $c_r$ chứa các chỉ số $l$ và $r$, và lặp qua các khối từ $c_l+1 \dots c_r-1$, với việc xử lý riêng biệt các "đuôi" trong các khối $c_l$ and $c_r$. Phương pháp này tương ứng với công thức cuối cùng trong mô tả, và làm cho trường hợp $c_l = c_r$ trở thành một trường hợp đặc biệt.
 
 ```cpp
 int sum = 0;
@@ -112,20 +116,27 @@ else {
 ## Other problems
 
 So far we were discussing the problem of finding the sum of elements of a continuous subarray. This problem can be extended to allow to **update individual array elements**. If an element $a[i]$ changes, it's sufficient to update the value of $b[k]$ for the block to which this element belongs ($k = i / s$) in one operation:
+> Cho đến nay, chúng ta đã thảo luận về vấn đề tính tổng các phần tử của một mảng con liên tiếp. Vấn đề này có thể được mở rộng để cho phép cập nhật các phần tử riêng lẻ trong mảng. Nếu một phần tử $a[i]$ thay đổi, chỉ cần cập nhật giá trị của $b[k]$ đối với khối mà phần tử này thuộc về ($k = i / s$) trong một phép toán:
 
 $$ b[k] += a_{new}[i] - a_{old}[i] $$
 
 On the other hand, the task of finding the sum of elements can be replaced with the task of finding minimal/maximal element of a subarray. If this problem has to address individual elements' updates as well, updating the value of $b[k]$ is also possible, but it will require iterating through all values of block $k$ in $O(s) = O(\sqrt{n})$ operations.
+> Mặt khác, nhiệm vụ tìm tổng các phần tử có thể được thay thế bằng nhiệm vụ tìm phần tử nhỏ nhất/lớn nhất của một mảng con. Nếu bài toán này cũng cần phải xử lý việc cập nhật các phần tử riêng lẻ, việc cập nhật giá trị của $b[k]$ cũng có thể thực hiện được, nhưng nó sẽ yêu cầu phải lặp qua tất cả các giá trị của khối $k$ trong $O(s) = O(\sqrt{n})$ phép toán.
 
 Sqrt decomposition can be applied in a similar way to a whole class of other problems: finding the number of zero elements, finding the first non-zero element, counting elements which satisfy a certain property etc.
+> Sqrt decomposition có thể được áp dụng theo cách tương tự cho một loạt các bài toán khác: tìm số lượng phần tử bằng 0, tìm phần tử khác 0 đầu tiên, đếm số phần tử thỏa mãn một thuộc tính nhất định, v.v.
 
 Another class of problems appears when we need to **update array elements on intervals**: increment existing elements or replace them with a given value.
+> Một lớp bài toán khác xuất hiện khi chúng ta cần cập nhật các phần tử mảng trên các khoảng: tăng giá trị các phần tử hiện tại hoặc thay thế chúng bằng một giá trị cho trước.
 
 For example, let's say we can do two types of operations on an array: add a given value $\delta$ to all array elements on interval $[l, r]$ or query the value of element $a[i]$. Let's store the value which has to be added to all elements of block $k$ in $b[k]$ (initially all $b[k] = 0$). During each "add" operation we need to add $\delta$ to $b[k]$ for all blocks which belong to interval $[l, r]$ and to add $\delta$ to $a[i]$ for all elements which belong to the "tails" of the interval. The answer to query $i$ is simply $a[i] + b[i/s]$. This way "add" operation has $O(\sqrt{n})$ complexity, and answering a query has $O(1)$ complexity.
+> Ví dụ, giả sử chúng ta có thể thực hiện hai loại phép toán trên mảng: cộng một giá trị $\delta$ vào tất cả các phần tử trong mảng trên khoảng $[l, r]$ hoặc truy vấn giá trị của phần tử $a[i]$. Hãy lưu trữ giá trị cần thêm vào tất cả các phần tử của khối $k$ trong $b[k]$ (ban đầu tất cả $b[k] = 0$). Trong mỗi phép toán "cộng", chúng ta cần cộng $\delta$ vào $b[k]$ cho tất cả các khối thuộc khoảng $[l, r]$ và cộng $\delta$ vào $a[i]$ cho tất cả các phần tử thuộc "đuôi" của khoảng. Câu trả lời cho truy vấn $i$ đơn giản là $a[i] + b[i/s]$. Theo cách này, phép toán "cộng" có độ phức tạp $O(\sqrt{n})$, và việc trả lời một truy vấn có độ phức tạp $O(1)$.
 
 Finally, those two classes of problems can be combined if the task requires doing **both** element updates on an interval and queries on an interval. Both operations can be done with $O(\sqrt{n})$ complexity. This will require two block arrays $b$ and $c$: one to keep track of element updates and another to keep track of answers to the query.
+> Cuối cùng, hai lớp bài toán này có thể được kết hợp nếu nhiệm vụ yêu cầu thực hiện cả hai thao tác cập nhật phần tử trên một khoảng và truy vấn trên một khoảng. Cả hai phép toán này có thể được thực hiện với độ phức tạp $O(\sqrt{n})$. Điều này sẽ yêu cầu hai mảng khối $b$ và $c$: một để theo dõi các cập nhật phần tử và một để theo dõi các câu trả lời cho truy vấn.
 
 There exist other problems which can be solved using sqrt decomposition, for example, a problem about maintaining a set of numbers which would allow adding/deleting numbers, checking whether a number belongs to the set and finding $k$-th largest number. To solve it one has to store numbers in increasing order, split into several blocks with $\sqrt{n}$ numbers in each. Every time a number is added/deleted, the blocks have to be rebalanced by moving numbers between beginnings and ends of adjacent blocks.
+> Cũng có những bài toán khác có thể giải quyết bằng phân rã căn bậc hai, ví dụ, một bài toán về duy trì một tập hợp các số cho phép thêm/xóa số, kiểm tra xem một số có thuộc tập hợp hay không và tìm số lớn thứ $k$. Để giải quyết bài toán này, người ta phải lưu trữ các số theo thứ tự tăng dần, chia chúng thành nhiều khối, mỗi khối có $\sqrt{n}$ số. Mỗi khi một số được thêm vào/xóa, các khối phải được cân bằng lại bằng cách di chuyển các số giữa đầu và cuối của các khối liền kề.
 
 ## Mo's algorithm
 
