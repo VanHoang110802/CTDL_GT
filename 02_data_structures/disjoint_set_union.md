@@ -5,13 +5,16 @@
 
 This article discusses the data structure **Disjoint Set Union** or **DSU**.
 Often it is also called **Union Find** because of its two main operations.
+> Bài viết này thảo luận về cấu trúc dữ liệu Disjoint Set Union hay DSU. Nó thường được gọi là Union Find vì hai thao tác chính của nó.
 
 This data structure provides the following capabilities.
 We are given several elements, each of which is a separate set.
 A DSU will have an operation to combine any two sets, and it will be able to tell in which set a specific element is.
 The classical version also introduces a third operation, it can create a set from a new element.
+> Cấu trúc dữ liệu này cung cấp các khả năng sau: Chúng ta được cho một số phần tử, mỗi phần tử ban đầu là một tập hợp riêng biệt. Một DSU sẽ có một thao tác để hợp nhất bất kỳ hai tập hợp nào, và nó có thể xác định phần tử nào thuộc tập hợp nào. Phiên bản cổ điển cũng giới thiệu một thao tác thứ ba, đó là có thể tạo ra một tập hợp từ một phần tử mới.
 
 Thus the basic interface of this data structure consists of only three operations:
+> Vì vậy, giao diện cơ bản của cấu trúc dữ liệu này chỉ bao gồm ba thao tác:
 
 - `make_set(v)` - creates a new set consisting of the new element `v`
 - `union_sets(a, b)` - merges the two specified sets (the set in which the element `a` is located, and the set in which the element `b` is located)
@@ -23,8 +26,10 @@ This representative can be used to check if two elements are part of the same se
 Otherwise they are in different sets.
 
 As described in more detail later, the data structure allows you to do each of these operations in almost $O(1)$ time on average.
+Như đã mô tả chi tiết hơn ở các phần sau, cấu trúc dữ liệu này cho phép thực hiện mỗi thao tác trong thời gian gần như trung bình là $O(1)$.
 
 Also in one of the subsections an alternative structure of a DSU is explained, which achieves a slower average complexity of $O(\log n)$, but can be more powerful than the regular DSU structure.
+> Ngoài ra, trong một trong các tiểu mục, một cấu trúc thay thế của DSU được giải thích, có độ phức tạp trung bình chậm hơn là $O(\log n)$, nhưng có thể mạnh mẽ hơn so với cấu trúc DSU thông thường.
 
 ## Build an efficient data structure
 
