@@ -358,23 +358,33 @@ void union_sets(int a, int b) {
 
 In the same way as computing the path length to the leader, it is possible to maintain the parity of the length of the path before him.
 Why is this application in a separate paragraph?
+> Tương tự như cách tính độ dài đường đi đến đại diện (leader), ta có thể duy trì độ chẵn lẻ của độ dài đường đi trước đại diện đó. Tại sao ứng dụng này lại được tách thành một đoạn riêng?
 
 The unusual requirement of storing the parity of the path comes up in the following task:
 initially we are given an empty graph, it can be added edges, and we have to answer queries of the form "is the connected component containing this vertex **bipartite**?".
+> Yêu cầu đặc biệt về việc lưu trữ độ chẵn lẻ của đường đi xuất hiện trong bài toán sau:
+Ban đầu, chúng ta được cho một đồ thị rỗng, có thể thêm các cạnh vào, và phải trả lời các truy vấn dưới dạng "Liệu thành phần liên thông chứa đỉnh này có phải là đồ thị hai phần không?"
 
 To solve this problem, we make a DSU for storing of the components and store the parity of the path up to the representative for each vertex.
 Thus we can quickly check if adding an edge leads to a violation of the bipartiteness or not:
 namely if the ends of the edge lie in the same connected component and have the same parity length to the leader, then adding this edge will produce a cycle of odd length, and the component will lose the bipartiteness property.
+> Để giải quyết bài toán này, chúng ta tạo một DSU để lưu trữ các thành phần liên thông và lưu trữ độ chẵn lẻ của đường đi đến đại diện cho mỗi đỉnh.
+Như vậy, chúng ta có thể kiểm tra nhanh xem việc thêm một cạnh có dẫn đến vi phạm tính chất đồ thị hai phần hay không:
+Cụ thể, nếu các đầu của cạnh nằm trong cùng một thành phần liên thông và có độ chẵn lẻ của đường đi đến đại diện giống nhau, thì việc thêm cạnh này sẽ tạo ra một chu trình có độ dài lẻ, và thành phần liên thông đó sẽ mất tính chất đồ thị hai phần.
 
 The only difficulty that we face is to compute the parity in the `union_find` method.
+> Khó khăn duy nhất mà chúng ta gặp phải là cách tính độ chẵn lẻ trong phương thức `union_find`.
 
 If we add an edge $(a, b)$ that connects two connected components into one, then when you attach one tree to another we need to adjust the parity.
+> Nếu chúng ta thêm một cạnh $(a, b)$ nối hai thành phần liên thông lại với nhau, thì khi nối một cây vào cây kia, chúng ta cần điều chỉnh độ chẵn lẻ. 
 
 Let's derive a formula, which computes the parity issued to the leader of the set that will get attached to another set.
 Let $x$ be the parity of the path length from vertex $a$ up to its leader $A$, and $y$ as the parity of the path length from vertex $b$ up to its leader $B$, and $t$ the desired parity that we have to assign to $B$ after the merge.
 The path consists of the three parts:
 from $B$ to $b$, from $b$ to $a$, which is connected by one edge and therefore has parity $1$, and from $a$ to $A$.
 Therefore we receive the formula ($\oplus$ denotes the XOR operation):
+> Hãy suy ra công thức tính độ chẵn lẻ mà ta cần gán cho đại diện của tập hợp sẽ được nối vào tập hợp khác. Gọi $x$ là độ chẵn lẻ của độ dài đường đi từ đỉnh $a$ đến đại diện của nó $A$, và $y$ là độ chẵn lẻ của độ dài đường đi từ đỉnh $b$ đến đại diện của nó $B$, và $t$ là độ chẵn lẻ mà chúng ta cần gán cho $B$ sau khi hợp nhất.
+Đường đi gồm ba phần: từ $B$ đến $b$, từ $b$ đến $a$, được nối với nhau bởi một cạnh và do đó có độ chẵn lẻ là $1$, và từ $a$ đến $A$. Do đó, ta nhận được công thức (với $\oplus$ biểu thị phép toán XOR):
 
 $$t = x \oplus y \oplus 1$$
 
@@ -428,16 +438,23 @@ bool is_bipartite(int v) {
 ### Offline RMQ (range minimum query) in $O(\alpha(n))$ on average / Arpa's trick
 
 We are given an array `a[]` and we have to compute some minima in given segments of the array.
+> Chúng ta được cho một mảng `a[]` và phải tính toán một số giá trị nhỏ nhất trong các đoạn mảng đã cho.
 
 The idea to solve this problem with DSU is the following:
 We will iterate over the array and when we are at the `i`th element we will answer all queries `(L, R)` with `R == i`.
 To do this efficiently we will keep a DSU using the first `i` elements with the following structure: the parent of an element is the next smaller element to the right of it.
 Then using this structure the answer to a query will be the `a[find_set(L)]`, the smallest number to the right of `L`.
+> Ý tưởng để giải quyết bài toán này với DSU là như sau:
+Chúng ta sẽ lặp qua mảng và khi đang ở phần tử thứ `i`, chúng ta sẽ trả lời tất cả các truy vấn `(L, R)` với `R == i`. Để làm điều này một cách hiệu quả, chúng ta sẽ duy trì một DSU sử dụng các phần tử từ '1' đến 'i' với cấu trúc sau: cha của một phần tử là phần tử nhỏ hơn kế tiếp ở phía bên phải của nó.
+Sau đó, sử dụng cấu trúc này, câu trả lời cho một truy vấn sẽ là `a[find_set(L)]`, tức là số nhỏ nhất ở bên phải của `L`.
 
 This approach obviously only works offline, i.e. if we know all queries beforehand.
+> Phương pháp này rõ ràng chỉ hoạt động ngoại tuyến, tức là nếu chúng ta biết tất cả các truy vấn trước.
 
 It is easy to see that we can apply path compression.
 And we can also use Union by rank, if we store the actual leader in an separate array.
+> Rõ ràng chúng ta có thể áp dụng nén đường đi (path compression).
+Và chúng ta cũng có thể sử dụng Union by rank, nếu chúng ta lưu trữ đại diện thực sự của mỗi tập hợp trong một mảng riêng biệt.
 
 ```cpp
 struct Query {
@@ -467,11 +484,15 @@ for (int i = 0; i < n; i++) {
 Nowadays this algorithm is known as Arpa's trick.
 It is named after AmirReza Poorakhavan, who independently discovered and popularized this technique.
 Although this algorithm existed already before his discovery.
+> Ngày nay, thuật toán này được biết đến với tên gọi Arpa's trick (mẹo của Arpa). Nó được đặt theo tên của AmirReza Poorakhavan, người đã phát hiện và phổ biến kỹ thuật này một cách độc lập.
+Mặc dù thuật toán này đã tồn tại trước khi anh ta phát hiện ra.
 
 ### Offline LCA (lowest common ancestor in a tree) in $O(\alpha(n))$ on average 
 
 The algorithm for finding the LCA is discussed in the article [Lowest Common Ancestor - Tarjan's off-line algorithm](../graph/lca_tarjan.md).
 This algorithm compares favorable with other algorithms for finding the LCA due to its simplicity (especially compared to an optimal algorithm like the one from [Farach-Colton and Bender](../graph/lca_farachcoltonbender.md)).
+> Thuật toán tìm LCA (Lowest Common Ancestor) được thảo luận trong bài viết Lowest Common Ancestor - Thuật toán ngoại tuyến của Tarjan.
+Thuật toán này có ưu điểm so với các thuật toán khác để tìm LCA nhờ vào sự đơn giản của nó (đặc biệt khi so với một thuật toán tối ưu như thuật toán từ Farach-Colton và Bender).
 
 ### Storing the DSU explicitly in a set list / Applications of this idea when merging various data structures
 
