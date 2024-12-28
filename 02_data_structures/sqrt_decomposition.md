@@ -243,21 +243,32 @@ Còn hàm `get_answer` chỉ cần xem cây nhị phân thứ hai và trả về
 
 
 Sorting all queries will take $O(Q \log Q)$.
+> Sắp xếp tất cả các truy vấn sẽ tốn $O(Q \log Q)$.
 
 How about the other operations?
 How many times will the `add` and `remove` be called?
+> Còn các phép toán khác thì sao?
+Hàm `add`và `remove` sẽ được gọi bao nhiêu lần?
 
 Let's say the block size is $S$.
+> Giả sử kích thước khối là $S$.
 
 If we only look at all queries having the left index in the same block, the queries are sorted by the right index.
 Therefore we will call `add(cur_r)` and `remove(cur_r)` only $O(N)$ times for all these queries combined.
 This gives $O(\frac{N}{S} N)$ calls for all blocks.
+> Nếu chỉ xét tất cả các truy vấn có chỉ số trái nằm trong cùng một khối, các truy vấn sẽ được sắp xếp theo chỉ số phải.
+Do đó, chúng ta sẽ gọi `add(cur_r)` và `remove(cur_r)` chỉ $O(N)$ lần cho tất cả các truy vấn này cộng lại.
+Điều này mang lại $O(\frac{N}{S} N)$ lần gọi cho tất cả các khối.
 
 The value of `cur_l` can change by at most $O(S)$ during between two queries.
 Therefore we have an additional $O(S Q)$ calls of `add(cur_l)` and `remove(cur_l)`.
+> Giá trị của `cur_l` có thể thay đổi tối đa $O(S)$ trong suốt quá trình giữa hai truy vấn.
+Do đó, chúng ta có thêm $O(S Q)$ lần gọi `add(cur_l)` và `remove(cur_l)`.
 
 For $S \approx \sqrt{N}$ this gives $O((N + Q) \sqrt{N})$ operations in total.
 Thus the complexity is $O((N+Q)F\sqrt{N})$ where $O(F)$  is the complexity of `add` and `remove` function.
+> Với $S \approx \sqrt{N}$, tổng số phép toán sẽ là $O((N + Q) \sqrt{N})$.
+Vì vậy, độ phức tạp là $O((N+Q)F\sqrt{N})$, trong đó $O(F)$ là độ phức tạp của các hàm `add` và `remove`.
 
 ### Tips for improving runtime
 
