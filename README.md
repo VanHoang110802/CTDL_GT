@@ -1,40 +1,21 @@
 # CTDL_GT
 
-Algebra
-> đại số
+Algebra: đại số
 
-Data Structures
+Data Structures: Cấu trúc dữ liệu
 
-> Cấu trúc dữ liệu
+Dynamic Programming: Lập trình động
 
-Dynamic Programming
+String Processing: Xử lý chuỗi
 
-> Lập trình động
+Linear Algebra: Đại số tuyến tính
 
-String Processing
+Combinatorics: Tổ hợp
 
-> Xử lý chuỗi
+Numerical Methods: Phương pháp số
 
-Linear Algebra
+Geometry: Hình học
 
-> Đại số tuyến tính
+Graphs: Đồ thị
 
-Combinatorics
-
-> Tổ hợp
-
-Numerical Methods
-
-> Phương pháp số
-
-Geometry
-
-> Hình học
-
-Graphs
-
-> Đồ thị
-
-Miscellaneous
-
-> Linh tinh
+Miscellaneous: Linh tinh
