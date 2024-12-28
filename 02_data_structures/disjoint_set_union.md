@@ -563,17 +563,24 @@ More details (including proof of the time complexity) can be found in the articl
 ## Historical retrospective
 
 The data structure DSU has been known for a long time.
+> Cấu trúc dữ liệu DSU (Disjoint Set Union) đã được biết đến từ lâu.
 
 This way of storing this structure in the form **of a forest of trees** was apparently first described by Galler and Fisher in 1964 (Galler, Fisher, "An Improved Equivalence Algorithm), however the complete analysis of the time complexity was conducted much later.
+> Cách lưu trữ cấu trúc này dưới dạng rừng các cây dường như lần đầu tiên được mô tả bởi Galler và Fisher vào năm 1964 (Galler, Fisher, "An Improved Equivalence Algorithm"), tuy nhiên phân tích đầy đủ về độ phức tạp thời gian chỉ được thực hiện sau đó rất lâu.
 
 The optimizations path compression and Union by rank has been developed by McIlroy and Morris, and independently of them also by Tritter.
+> Các tối ưu hóa như nén đường đi (path compression) và hợp nhất theo hạng (Union by rank) đã được phát triển bởi McIlroy và Morris, và độc lập với họ cũng bởi Tritter.
 
 Hopcroft and Ullman showed in 1973 the time complexity $O(\log^\star n)$ (Hopcroft, Ullman "Set-merging algorithms") - here $\log^\star$ is the **iterated logarithm** (this is a slow-growing function, but still not as slow as the inverse Ackermann function).
+> Hopcroft và Ullman đã chỉ ra vào năm 1973 độ phức tạp thời gian là $O(\log^\star n)$ (Hopcroft, Ullman "Set-merging algorithms") - ở đây $\log^\star$ là logarit lặp lại (đây là một hàm tăng chậm, nhưng vẫn không chậm như hàm ngược của Ackermann).
 
 For the first time the evaluation of $O(\alpha(n))$ was shown in 1975 (Tarjan "Efficiency of a Good But Not Linear Set Union Algorithm").
 Later in 1985 he, along with Leeuwen, published multiple complexity analyses for several different rank heuristics and ways of compressing the path (Tarjan, Leeuwen "Worst-case Analysis of Set Union Algorithms").
+> Lần đầu tiên, việc đánh giá độ phức tạp $O(\alpha(n))$ đã được chỉ ra vào năm 1975 (Tarjan "Efficiency of a Good But Not Linear Set Union Algorithm").
+Sau đó, vào năm 1985, ông cùng với Leeuwen đã công bố nhiều phân tích độ phức tạp cho các chiến lược xếp hạng khác nhau và các cách nén đường đi (Tarjan, Leeuwen "Worst-case Analysis of Set Union Algorithms").
 
 Finally in 1989 Fredman and Sachs proved that in the adopted model of computation **any** algorithm for the disjoint set union problem has to work in at least $O(\alpha(n))$ time on average (Fredman, Saks, "The cell probe complexity of dynamic data structures").
+> Cuối cùng, vào năm 1989, Fredman và Sachs đã chứng minh rằng trong mô hình tính toán đã được chấp nhận, bất kỳ thuật toán nào giải quyết vấn đề hợp nhất các tập con rời rạc cũng phải hoạt động trong ít nhất $O(\alpha(n))$ thời gian trung bình (Fredman, Saks, "The cell probe complexity of dynamic data structures").
 
 ## Problems
 
