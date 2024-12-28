@@ -148,22 +148,28 @@ In some problems this merging step can be quite problematic.
 E.g. when each queries asks to find the **mode** of its range (the number that appears the most often).
 For this each block would have to store the count of each number in it in some sort of data structure, and we cannot longer perform the merge step fast enough any more.
 **Mo's algorithm** uses a completely different approach, that can answer these kind of queries fast, because it only keeps track of one data structure, and the only operations with it are easy and fast.
+> Một ý tưởng tương tự, dựa trên phân rã căn bậc hai, có thể được sử dụng để trả lời các truy vấn theo khoảng (range queries, $Q$) một cách ngoại tuyến trong $O((N+Q)\sqrt{N})$.
+Điều này có thể nghe có vẻ tệ hơn nhiều so với các phương pháp trong phần trước, vì đây là độ phức tạp hơi kém hơn so với trước đây và không thể cập nhật giá trị giữa hai truy vấn. Tuy nhiên, trong nhiều tình huống, phương pháp này lại có những ưu điểm. Trong phân rã căn bậc hai thông thường, chúng ta phải tính trước các câu trả lời cho từng khối và kết hợp chúng khi trả lời các truy vấn. Trong một số bài toán, bước kết hợp này có thể gặp khá nhiều vấn đề. Ví dụ, khi mỗi truy vấn yêu cầu tìm mode (số xuất hiện nhiều nhất) trong khoảng của nó. Để làm điều này, mỗi khối sẽ phải lưu trữ số lần xuất hiện của từng số trong nó, sử dụng một cấu trúc dữ liệu nào đó, và lúc này chúng ta không thể thực hiện bước kết hợp một cách nhanh chóng nữa. Thuật toán Mo sử dụng một phương pháp hoàn toàn khác, có thể trả lời các truy vấn kiểu này một cách nhanh chóng, bởi vì nó chỉ theo dõi một cấu trúc dữ liệu duy nhất và các phép toán với nó là dễ dàng và nhanh chóng.
 
 The idea is to answer the queries in a special order based on the indices.
 We will first answer all queries which have the left index in block 0, then answer all queries which have left index in block 1 and so on.
 And also we will have to answer the queries of a block is a special order, namely sorted by the right index of the queries.
+> Ý tưởng là trả lời các truy vấn theo một thứ tự đặc biệt dựa trên chỉ số. Chúng ta sẽ trả lời tất cả các truy vấn có chỉ số trái nằm trong khối 0 trước, sau đó là các truy vấn có chỉ số trái nằm trong khối 1, và cứ thế tiếp tục. Đồng thời, chúng ta cũng sẽ phải trả lời các truy vấn của một khối theo một thứ tự đặc biệt, đó là sắp xếp theo chỉ số phải của các truy vấn.
 
 As already said we will use a single data structure.
 This data structure will store information about the range.
 At the beginning this range will be empty.
 When we want to answer the next query (in the special order), we simply extend or reduce the range, by adding/removing elements on both sides of the current range, until we transformed it into the query range.
 This way, we only need to add or remove a single element once at a time, which should be pretty easy operations in our data structure.
+> Như đã nói, chúng ta sẽ sử dụng một cấu trúc dữ liệu duy nhất. Cấu trúc dữ liệu này sẽ lưu trữ thông tin về khoảng. Ban đầu, khoảng này sẽ là rỗng. Khi chúng ta muốn trả lời truy vấn tiếp theo (theo thứ tự đặc biệt), chúng ta chỉ cần mở rộng hoặc thu hẹp khoảng, bằng cách thêm/xóa phần tử ở cả hai bên của khoảng hiện tại, cho đến khi chuyển nó thành khoảng truy vấn. Theo cách này, chúng ta chỉ cần thêm hoặc xóa một phần tử một lần tại một thời điểm, điều này sẽ là các phép toán khá dễ dàng trong cấu trúc dữ liệu của chúng ta.
 
 Since we change the order of answering the queries, this is only possible when we are allowed to answer the queries in offline mode.
+> Vì chúng ta thay đổi thứ tự trả lời các truy vấn, phương pháp này chỉ khả thi khi chúng ta được phép trả lời các truy vấn ở chế độ ngoại tuyến.
 
 ### Implementation
 
 In Mo's algorithm we use two functions for adding an index and for removing an index from the range which we are currently maintaining.
+> Trong thuật toán Mo, chúng ta sử dụng hai hàm: một để thêm một chỉ số vào khoảng hiện tại mà chúng ta đang duy trì, và một để loại bỏ chỉ số đó khỏi khoảng.
 
 ```cpp
 void remove(idx);  // TODO: remove value at idx from data structure
@@ -218,11 +224,20 @@ For example if we are asked to find range sum queries then we use a simple integ
 The `add` function will simply add the value of the position and subsequently update the answer variable.
 On the other hand `remove` function will subtract the value at position and subsequently update the answer variable.
 And `get_answer` just returns the integer.
+> Tùy vào bài toán, chúng ta có thể sử dụng một cấu trúc dữ liệu khác và điều chỉnh các hàm `add`/`remove`/`get_answer` cho phù hợp.
+Ví dụ, nếu yêu cầu là tìm tổng các phần tử trong một khoảng, chúng ta có thể sử dụng một số nguyên đơn giản làm cấu trúc dữ liệu, với giá trị ban đầu là $0$.
+Hàm `add` sẽ đơn giản cộng giá trị của vị trí vào và sau đó cập nhật biến đáp án.
+Ngược lại, hàm `remove` sẽ trừ giá trị tại vị trí và sau đó cập nhật biến đáp án.
+Còn hàm `get_answer` chỉ cần trả về giá trị của số nguyên đó.
 
 For answering mode-queries, we can use a binary search tree (e.g. `map<int, int>`) for storing how often each number appears in the current range, and a second binary search tree (e.g. `set<pair<int, int>>`) for keeping counts of the numbers (e.g. as count-number pairs) in order.
 The `add` method removes the current number from the second BST, increases the count in the first one, and inserts the number back into the second one.
 `remove` does the same thing, it only decreases the count.
 And `get_answer` just looks at second tree and returns the best value in $O(1)$.
+> Để trả lời các truy vấn về mode, chúng ta có thể sử dụng một cây tìm kiếm nhị phân (ví dụ: `map<int, int>`) để lưu trữ tần suất xuất hiện của mỗi số trong khoảng hiện tại, và một cây tìm kiếm nhị phân thứ hai (ví dụ: `set<pair<int, int>>`) để giữ các cặp đếm-số theo thứ tự.
+Hàm `add` sẽ loại bỏ số hiện tại khỏi cây nhị phân thứ hai, tăng tần suất trong cây nhị phân đầu tiên, và chèn số đó trở lại vào cây nhị phân thứ hai.
+Hàm `remove` làm điều tương tự, nhưng chỉ giảm tần suất.
+Còn hàm `get_answer` chỉ cần xem cây nhị phân thứ hai và trả về giá trị tốt nhất trong  $O(1)$.
 
 ### Complexity
 
