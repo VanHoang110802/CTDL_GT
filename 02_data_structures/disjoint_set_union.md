@@ -541,24 +541,33 @@ To efficiently combine multiple sets we just apply the above-described recipe:
 we merge the sets by simply adding smaller ones to larger.
 In the end we get a $O(n \log^2 n)$ solution, because one number will only added to a set at most $O(\log n)$ times.
 
-### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average  {data-toc-label="Storing the DSU by maintaining a clear tree structure / Online bridge finding"}
+### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average 
 
 One of the most powerful applications of DSU is that it allows you to store both as **compressed and uncompressed trees**.
 The compressed form can be used for merging of trees and for the verification if two vertices are in the same tree, and the uncompressed form can be used - for example - to search for paths between two given vertices, or other traversals of the tree structure.
+> Một trong những ứng dụng mạnh mẽ nhất của DSU là khả năng lưu trữ cả cây nén và cây không nén.
+Dạng nén có thể được sử dụng để hợp nhất các cây và kiểm tra xem hai đỉnh có thuộc cùng một cây hay không, trong khi dạng không nén có thể được sử dụng - ví dụ - để tìm kiếm đường đi giữa hai đỉnh cho trước, hoặc thực hiện các phép duyệt khác trên cấu trúc cây.
 
 In the implementation this means that in addition to the compressed ancestor array `parent[]` we will need to keep the array of uncompressed ancestors `real_parent[]`.
 It is trivial that maintaining this additional array will not worsen the complexity:
 changes in it only occur when we merge two trees, and only in one element.
+> Trong việc triển khai, điều này có nghĩa là ngoài mảng tổ tiên nén `parent[]`, chúng ta sẽ cần giữ thêm mảng tổ tiên không nén `real_parent[]`.
+Việc duy trì mảng bổ sung này là điều hiển nhiên rằng sẽ không làm tăng độ phức tạp: các thay đổi trong đó chỉ xảy ra khi chúng ta hợp nhất hai cây và chỉ ở một phần tử duy nhất.
 
 On the other hand when applied in practice, we often need to connect trees using a specified edge other that using the two root nodes.
 This means that we have no other choice but to re-root one of the trees (make the ends of the edge the new root of the tree).
+> Mặt khác, khi áp dụng vào thực tế, chúng ta thường cần kết nối các cây bằng một cạnh xác định, thay vì chỉ sử dụng hai nút gốc.
+Điều này có nghĩa là chúng ta không có lựa chọn nào khác ngoài việc thay đổi gốc của một trong các cây (làm cho một trong các đỉnh của cạnh trở thành gốc mới của cây).
 
 At first glance it seems that this re-rooting is very costly and will greatly worsen the time complexity.
 Indeed, for rooting a tree at vertex $v$ we must go from the vertex to the old root and change directions in `parent[]` and `real_parent[]` for all nodes on that path.
+> Thoạt nhìn, có vẻ như việc thay đổi gốc cây này rất tốn kém và sẽ làm tăng đáng kể độ phức tạp thời gian. Thực tế, để thay đổi gốc của cây tại đỉnh $v$, chúng ta phải đi từ đỉnh $v$ đến gốc cũ và thay đổi hướng trong các mảng `parent[]` và `real_parent[]` đối với tất cả các nút trên đường đi đó.
 
 However in reality it isn't so bad, we can just re-root the smaller of the two trees similar to the ideas in the previous sections, and get $O(\log n)$ on average.
+> Thực tế, điều này không tồi đến vậy, chúng ta chỉ cần thay đổi gốc của cây nhỏ hơn trong hai cây, tương tự như các ý tưởng trong các phần trước, và sẽ có độ phức tạp trung bình là $O(\log n)$.
 
 More details (including proof of the time complexity) can be found in the article [Finding Bridges Online](../graph/bridge-searching-online.md).
+> Chi tiết hơn (bao gồm cả chứng minh độ phức tạp thời gian) có thể được tìm thấy trong bài viết
 
 ## Historical retrospective
 
